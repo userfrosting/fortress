@@ -1,0 +1,114 @@
+{
+    "user_name" : {
+        "validators" : {
+            "length" : {
+                "min" : 1,
+                "max" : 50,
+                "messages" : {
+                    "default" : "'Username' must be between 1 and 50 characters long.",
+                    "es_US" : "Su nombre de usuario debe estar entre 1 y 50 caracteres de longitud"
+                }
+            },
+            "required" : {
+                "messages" : {
+                    "default" : "'User name' is required.",
+                    "es_US" : "Por favor, ingrese su nombre de usuario"
+                }
+            }
+        },
+        "sanitizer" : "escape"
+    },
+    "display_name" : {
+        "validators" : {
+            "length" : {
+                "min" : 1,
+                "max" : 50,
+                "messages" : {
+                    "default" : "'Display name' must be between 1 and 50 characters long.",
+                    "es_US" : "Su nombre debe estar entre 1 y 50 caracteres de longitud"
+                }
+            },
+            "required" : {
+                "messages" : {
+                    "default" : "'Display name' is required.",
+                    "es_US" : "Por favor, ingrese su nombre"
+                }
+            }
+        }
+    },          
+    "email" : {
+        "validators" : {
+            "required" : {
+                "messages" : {
+                    "default" : "You must specify an email address."
+                }
+            },
+            "length" : {
+                "min" : 1,
+                "max" : 150,
+                "messages" : {
+                    "default" : "'Email' must be between 1 and 150 characters long.",
+                    "es_US" : "Dirección de correo electrónico debe estar entre 1 y 150 caracteres de longitud"
+                }
+            },
+            "email" : {
+                "messages" : {
+                    "default" : "'Email' must be a valid email address.",
+                    "es_US" : "Dirección de correo electrónico no válida"
+                }
+            }
+        }
+    },
+    "title" : {
+        "validators" : {
+            "required" : {
+                "messages" : {
+                    "default" : "You must select at least one title."
+                }
+            }
+        }
+    },
+    "bunnies" : {
+        "validators" : {
+            "required" : {
+                "messages" : {
+                    "default" : "You must have 2-4 bunnies."
+                }
+            },
+            "range" : {
+                "min" : 2,
+                "max" : 4,
+                "messages" : {
+                    "default" : "You must have 2-4 bunnies."
+                }
+            }
+        }
+    },
+    "password" : {
+        "validators" : {
+            "required" : {
+                "messages" : {
+                    "default" : "'Password' is required.",
+                    "es_US" : "Por favor, ingrese su contraseña"
+                }
+            },
+            "length" : {
+                "min" : 8,
+                "max" : 50,
+                "messages" : {
+                    "default" : "'Password' must be between 8 and 50 characters long.",
+                    "es_US" : "La contraseña debe tener entre 8 y 50 caracteres de longitud"
+                }
+            }
+        }      
+    },
+    "beard" : {
+        "validators" : {
+            "required" : {
+                "messages" : {
+                    "default" : "'You must select a beard."
+                }
+            }
+        }      
+    }
+}
