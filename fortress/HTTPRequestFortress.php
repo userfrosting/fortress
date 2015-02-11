@@ -142,7 +142,7 @@ class HTTPRequestFortress {
 
     // Raise a success, rperforming appropriate action and halting the script 
     public function raiseSuccess(){
-        if ($ajax) {
+        if ($this->_ajax) {
           echo json_encode(array("errors" => 0, "successes" => 1));
         } else {
             if ($this->_followup_uri != null) {
