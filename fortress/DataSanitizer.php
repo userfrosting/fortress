@@ -26,9 +26,9 @@ class DataSanitizer implements DataSanitizerInterface {
     }
     
     /* Perform transformations, in the following order:
-     * 1. Set any default values for unspecified fields.
-     * 2. Perform any other specified transformations.
-     * 3. Escape/purge/purify HTML entities
+     * 1. Escape/purge/purify HTML entities
+     * 2. Set any default values for unspecified fields.
+     * 3. Perform any other specified transformations.
      */
     public function sanitize($data, $schemaRequired = true) {
         
@@ -39,11 +39,11 @@ class DataSanitizer implements DataSanitizerInterface {
             $sanitizedData[$name] = $this->sanitizeField($name, $value, $schemaRequired);   
         }
         
-        // 2. Get default values for any fields missing from $data.  Primarily for checkboxes, etc which are not submitted when they are unchecked
+        // 2. Get default values for any fields missing from $data.  Especially useful for checkboxes, etc which are not submitted when they are unchecked
         foreach ($this->_schema->getSchema() as $field_name => $field){
-            if (!isset($this->_fields[$field_name])){
+            if (!isset($sanitizedData[$field_name])){
                 if (isset($field['default']))
-                    $this->_fields[$field_name] = $field['default'];
+                    $sanitizedData[$field_name] = $field['default'];
             }               
         }
         
@@ -74,15 +74,6 @@ class DataSanitizer implements DataSanitizerInterface {
             case "escape": 
             default: return $this->escapeHtmlCharacters($rawValue);
         }
-    }
-    
-
-    /* Sets the default value for a field. */
-    public function setDefault($field, $defaultValue) {
-        if (!isset($this->_fields[$field])){
-            $this->_fields[$field] = $defaultValue;
-        }
-        return $this;
     }
 
     /* Autodetect if a field is an array or scalar, and filter appropriately. */
