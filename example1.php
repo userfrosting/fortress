@@ -12,10 +12,15 @@ $rf->removeFields(['ajaxMode', 'csrf_token']);
 
 // Sanitize and validate data, halting on errors
 $rf->sanitize();
+
+echo "Sanitized data: <br>";
+print_r($rf->data());
+
 $rf->validate();
 
 // Create a new group with the filtered data
 $data = $rf->data();
+
 if (!yourFunctionHere($data)){
     $rf->raiseFatalError();
 }

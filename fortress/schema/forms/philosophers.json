@@ -59,14 +59,10 @@
             }
         }
     },
-    "title" : {
+    "message" : {
         "validators" : {
-            "required" : {
-                "messages" : {
-                    "default" : "You must select at least one title."
-                }
-            }
-        }
+        },
+        "sanitizer" : "purify"
     },
     "bunnies" : {
         "validators" : {

@@ -106,8 +106,7 @@ class HTTPRequestFortress {
     
     /* Sanitize all fields and optionally add any error messages to the global message stream. */
     public function sanitize($reportErrors = true){
-        $this->_sanitizer->sanitize($this->_data);
-        $this->_data = $this->_sanitizer->data();
+        $this->_data = $this->_sanitizer->sanitize($this->_data);
         // TODO: Implement sanitizer errors
     }
     
