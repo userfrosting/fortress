@@ -21,7 +21,7 @@ class ClientSideValidator {
 
     
     /* Generate FormValidation compatible rules from the schema */
-    public function formValidationRulesJson(){
+    public function formValidationRulesJson($encode = true){
         $client_rules = [];
         $implicit_rules = [];
         foreach ($this->_schema as $field_name => $field){
@@ -32,7 +32,10 @@ class ClientSideValidator {
                 $client_rules[$field_name]['validators'] = array_merge($client_rules[$field_name]['validators'], $this->transformValidator($validator_name, $validator));
             }
         }
-        return $client_rules;
+        if ($encode)
+            return json_encode($client_rules, JSON_PRETTY_PRINT);
+        else
+            return $client_rules;
     }
     
     private function transformValidator($validator_name, $validator){
