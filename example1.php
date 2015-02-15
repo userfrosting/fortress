@@ -18,14 +18,24 @@ $rf->removeFields(['ajaxMode', 'csrf_token']);
 $rf->sanitize();
 
 echo "Sanitized data: <br>";
+
 print_r($rf->data());
+
 
 // Validate.  In normal usage we'd want the script to simply halt on validation errors.  But for this demo, we will simply print the message stream.
 if (!$rf->validate(true, false)) {
     // Test the error stream and reset
+    echo "<pre>";
     print_r($_SESSION['Fortress']['userAlerts']);
+    echo "</pre>";
     Fortress\HTTPRequestFortress::resetMessageStream();
 }
+
+// Test client validators
+$clientVal = new Fortress\ClientSideValidator("fortress/schema/forms/philosophers.json");
+echo "<pre>";
+print_r($clientVal->formValidationRulesJson());
+echo "</pre>";
 
 // Create a new group with the filtered data
 $data = $rf->data();

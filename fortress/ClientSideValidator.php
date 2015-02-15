@@ -19,6 +19,76 @@ class ClientSideValidator {
         $this->_locale = $locale;
     }
 
+    
+    /* Generate FormValidation compatible rules from the schema */
+    public function formValidationRulesJson(){
+        $client_rules = [];
+        $implicit_rules = [];
+        foreach ($this->_schema as $field_name => $field){
+            $client_rules[$field_name] = [];
+            $client_rules[$field_name]['validators'] = [];
+            $validators = $field['validators'];
+            foreach ($validators as $validator_name => $validator){
+                $client_rules[$field_name]['validators'] = array_merge($client_rules[$field_name]['validators'], $this->transformValidator($validator_name, $validator));
+            }
+        }
+        return $client_rules;
+    }
+    
+    private function transformValidator($validator_name, $validator){
+        $params = [];
+        // Message
+        if (isset($validator['messages'])){
+            if (isset($validator['messages'][$this->_locale])){
+                $params["message"] = $validator['messages'][$this->_locale];
+            } else if (isset($validator['messages']["default"])){
+                $params["message"] = $validator['messages']["default"];
+            }    
+        }        
+        $transformedValidatorJson = [];        
+        switch ($validator_name){
+            // Required validator
+
+            case "length":
+                if (isset($validator['min'])) $params['min'] = $validator['min'];
+                if (isset($validator['max'])) $params['max'] = $validator['max'];
+                $transformedValidatorJson['stringLength'] = $params;
+                break;
+            case "range":
+                if (isset($validator['min'])) $params['min'] = $validator['min'];
+                if (isset($validator['max'])) $params['max'] = $validator['max'];
+                if (isset($validator['min']) && isset($validator['max']))
+                    $transformedValidatorJson['between'] = $params;
+                else if (isset($validator['min']))
+                    $transformedValidatorJson['greaterThan'] = $params;
+                else if (isset($validator['max']))
+                    $transformedValidatorJson['lessThan'] = $params;
+                break;
+            case "integer":
+                $transformedValidatorJson['integer'] = $params;
+                break;
+            case "array":
+                if (isset($validator['min'])) $params['min'] = $validator['min'];
+                if (isset($validator['max'])) $params['max'] = $validator['max'];                
+                $transformedValidatorJson['choice'] = $params;
+                break;
+            case "email":
+                $transformedValidatorJson['emailAddress'] = $params;
+                break;
+            case "matches":
+                if (isset($validator['field'])) $params['field'] = $validator['field'];   
+                $transformedValidatorJson['identical'] = $params;
+                break;
+            case "required":
+                $transformedValidatorJson['notEmpty'] = $params;
+                break;
+            default:
+                break;
+        }
+        return $transformedValidatorJson;
+        
+    }
+   
     public function clientRules(){
         $client_rules = array();
         $implicit_rules = array();
@@ -66,8 +136,8 @@ class ClientSideValidator {
                     $prefix = "data-fv-integer";
                     $field_rules .= $this->html5Attributes($validator, $prefix);   
                 }                  
-                // Choice validator
-                if ($validator_name == "choice"){
+                // Array validator
+                if ($validator_name == "array"){
                     $prefix = "data-fv-choice";
                     $field_rules .= $this->html5Attributes($validator, $prefix);
                     if (isset($validator['min']))
@@ -80,8 +150,8 @@ class ClientSideValidator {
                     $prefix = "data-fv-emailaddress";
                     $field_rules .= $this->html5Attributes($validator, $prefix); 
                 }            
-                // Equals validator
-                if ($validator_name == "equals"){
+                // Match another field
+                if ($validator_name == "matches"){
                     $prefix = "data-fv-identical";
                     if (isset($validator['field'])){
                         $field_rules .= "$prefix-field={$validator['field']} ";

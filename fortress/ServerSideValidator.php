@@ -38,51 +38,69 @@ class ServerSideValidator extends \Valitron\Validator implements ServerSideValid
         return parent::validate();      // Validate!
     }
     
+    private function ruleWithMessage($rule, $message_set) {
+        // Weird way to adapt with Valitron's funky interface
+        $params = array_merge([$rule], array_slice(func_get_args(), 2));
+        call_user_func_array([$this,"rule"], $params);
+        // Set message, if available
+        if (isset($message_set[$this->_locale])){
+            $this->message($message_set[$this->_locale]);
+        } else if (isset($message_set["default"])){
+            $this->message($message_set["default"]);
+        }    
+    }
+    
     /* Generate and add rules from the schema */
     private function generateSchemaRules(){
         foreach ($this->_schema->getSchema() as $field_name => $field){
             $validators = $field['validators'];
             foreach ($validators as $validator_name => $validator){
+                if (isset($validator['messages']))
+                    $message_set = $validator['messages'];
+                else
+                    $message_set = [];
                 // Required validator
                 if ($validator_name == "required"){
-                    $this->rule("required", $field_name);
+                    $this->ruleWithMessage("required", $message_set, $field_name);
                 }
                 // String length validator
                 if ($validator_name == "length"){
                     if (isset($validator['min']) && isset($validator['max'])) {
-                        $this->rule("lengthBetween", $field_name, $validator['min'], $validator['max']);
+                        $this->ruleWithMessage("lengthBetween", $message_set, $field_name, $validator['min'], $validator['max']);
                     } else {          
-                        if (isset($validator['min']))
-                            $this->rule("lengthMin", $field_name, $validator['min']);
-                        if (isset($validator['max']))
-                            $this->rule("lengthMax", $field_name, $validator['max']);
+                        if (isset($validator['min'])) {
+                            $this->ruleWithMessage("lengthMin", $message_set, $field_name, $validator['min']);
+                        }
+                        if (isset($validator['max'])) {
+                            $this->ruleWithMessage("lengthMax", $message_set, $field_name, $validator['max']);
+                        }
                     }
                 }
                 // Numeric range validator
                 if ($validator_name == "range"){
                     if (isset($validator['min'])){
-                        $this->rule("min", $field_name, $validator['min']);
+                        $this->ruleWithMessage("min", $message_set, $field_name, $validator['min']);
                     }               
                     if (isset($validator['max'])){
-                        $this->rule("max", $field_name, $validator['max']);
+                        $this->ruleWithMessage("max", $message_set, $field_name, $validator['max']);
                     }
                 }
                 // Integer validator
                 if ($validator_name == "integer"){
-                    $this->rule("integer", $field_name); 
+                    $this->ruleWithMessage("integer", $message_set, $field_name);
                 }                  
-                // Choice validator
-                if ($validator_name == "choice"){
+                // Array validator
+                if ($validator_name == "array"){
                     // For now, just check that it is an array.  Really we need a new validation rule here.
-                    $this->rule("array", $field_name);
+                    $this->ruleWithMessage("array", $message_set, $field_name);
                 }
                 // Email validator
                 if ($validator_name == "email"){
-                    $this->rule("email", $field_name);
+                    $this->ruleWithMessage("email", $message_set, $field_name);
                 }            
-                // Equals validator
-                if ($validator_name == "equals"){
-                    $this->rule("equals", $field_name, $validator['field']);
+                // Match another field
+                if ($validator_name == "matches"){
+                    $this->ruleWithMessage("equals", $message_set, $field_name, $validator['field']);
                 }
             }
         }

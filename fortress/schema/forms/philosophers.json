@@ -15,8 +15,7 @@
                     "es_US" : "Por favor, ingrese su nombre de usuario"
                 }
             }
-        },
-        "sanitizer" : "escape"
+        }
     },
     "display_name" : {
         "validators" : {
@@ -62,7 +61,9 @@
     "message" : {
         "validators" : {
         },
-        "sanitizer" : "purify"
+        "sanitizers" : {
+            "purify": {}
+        }
     },
     "bunnies" : {
         "validators" : {
@@ -96,7 +97,10 @@
                     "es_US" : "La contraseña debe tener entre 8 y 50 caracteres de longitud"
                 }
             }
-        }      
+        },
+        "sanitizers" : {
+            "raw" : {}
+        }    
     },
     "beard" : {
         "default" : "pointy",
@@ -106,6 +110,9 @@
                     "default" : "'You must select a beard."
                 }
             }
-        }      
+        },
+        "sanitizers" : {
+            "escape" : {}
+        }
     }
 }

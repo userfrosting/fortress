@@ -64,15 +64,25 @@ class DataSanitizer implements DataSanitizerInterface {
         
         $fieldParameters = $schemaFields[$name];
         
+        $sanitizedValue = $rawValue;
         // Field exists in schema, so validate accordingly
-        if (!isset($fieldParameters['sanitizer'])) {
-            return $this->escapeHtmlCharacters($rawValue);
-        }
-        
-        switch (strtolower($fieldParameters['sanitizer'])){
-            case "purify": return $this->_purifier->purify($rawValue);
-            case "escape": 
-            default: return $this->escapeHtmlCharacters($rawValue);
+        if (!isset($fieldParameters['sanitizers']) || empty($fieldParameters['sanitizers'])) {
+            return $this->purgeHtmlCharacters($sanitizedValue);
+        } else {
+            $processed = false;
+            foreach ($fieldParameters['sanitizers'] as $sanitizer => $attributes){
+                switch (strtolower($sanitizer)){
+                    case "purify": $sanitizedValue = $this->_purifier->purify($sanitizedValue); $processed = true; break;
+                    case "escape": $sanitizedValue = $this->escapeHtmlCharacters($sanitizedValue); $processed = true; break;
+                    case "purge" : $sanitizedValue = $this->purgeHtmlCharacters($sanitizedValue); $processed = true; break;
+                    case "raw" : $processed = true; break;
+                    default: break;
+                }
+            }
+            // If no sanitizers have been applied, then apply purge by default
+            if (!$processed)
+                $sanitizedValue = $this->purgeHtmlCharacters($sanitizedValue);
+            return $sanitizedValue;
         }
     }
 
@@ -82,6 +92,14 @@ class DataSanitizer implements DataSanitizerInterface {
             return filter_var_array($value, FILTER_SANITIZE_SPECIAL_CHARS);
         else
             return filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
+    }
+    
+    /* Autodetect if a field is an array or scalar, and filter appropriately. */
+    private function purgeHtmlCharacters($value){
+            if (is_array($value))
+            return filter_var_array($value, FILTER_SANITIZE_STRING);
+        else
+            return filter_var($value, FILTER_SANITIZE_STRING);
     }
 }
 
