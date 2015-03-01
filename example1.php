@@ -38,7 +38,7 @@ print_r($rf->data());
 
 // Validate.  In normal usage we'd want the script to simply halt on validation errors.  But for this demo, we will simply print the message stream.
 if (!$rf->validate(true, false)) {
-
+    Fortress\HTTPRequestFortress::$message_stream->addMessageTranslated("danger", "Validation failed for {{placeholder}}", ["placeholder" => "the form"]);
 }
 
 // Test client validators

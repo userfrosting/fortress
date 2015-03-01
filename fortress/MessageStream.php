@@ -33,6 +33,12 @@ class MessageStream {
         //self::checkMessageStreamExists();
         $this->_messages[] = $alert;
     }
+
+    // Add a session message to the session message stream, translating as necessary
+    public function addMessageTranslated($type, $message_id, $placeholders = []){
+        $message = MessageTranslator::translate($message_id, $placeholders);
+        $this->addMessage($type, $message);
+    }    
     
     // Return the array of messages
     public function messages(){
