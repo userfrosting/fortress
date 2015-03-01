@@ -41,12 +41,10 @@ class ClientSideValidator {
     private function transformValidator($validator_name, $validator){
         $params = [];
         // Message
-        if (isset($validator['messages'])){
-            if (isset($validator['messages'][$this->_locale])){
-                $params["message"] = $validator['messages'][$this->_locale];
-            } else if (isset($validator['messages']["default"])){
-                $params["message"] = $validator['messages']["default"];
-            }    
+        if (isset($validator['message'])){
+            if (isset($validator['message'])){
+                $params["message"] = MessageTranslator::translate($validator['message'], $validator);
+            }
         }        
         $transformedValidatorJson = [];        
         switch ($validator_name){
@@ -182,12 +180,10 @@ class ClientSideValidator {
     
     public function html5Attributes($validator, $prefix){
         $attr = "$prefix=true ";
-        if (isset($validator['messages'])){
+        if (isset($validator['message'])){
             $msg = "";
-            if (isset($validator['messages'][$this->_locale])){
-                $msg = $validator['messages'][$this->_locale];
-            } else if (isset($validator['messages']["default"])){
-                $msg = $validator['messages']["default"];
+            if (isset($validator['message'])){
+                $msg = $validator['message'];
             } else {
                 return $attr;
             }

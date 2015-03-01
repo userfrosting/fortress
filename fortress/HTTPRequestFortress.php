@@ -9,9 +9,10 @@ namespace Fortress;
 
 class HTTPRequestFortress {
 
+    public static $message_stream =  null;    // The message stream (will be stored in the $_SESSION variable)
+
     protected $_validator;                        // A valid ServerSideValidatorInterface object
     protected $_sanitizer;                        // A valid DataSanitizerInterface object
-    protected static $_message_stream =  null;    // The name of the message stream (string)
 
     protected $_request_method = "post";  // "get" or "post"
     protected $_followup_uri = null;      // A URI to redirect to when the request is finished being processed, either on error or success
@@ -35,7 +36,7 @@ class HTTPRequestFortress {
             throw new \Exception("$request_method must be 'get' or 'post'.");
     
         // Set up the message stream
-        if (!isset(static::$_message_stream))
+        if (!isset(self::$message_stream))
             throw new \Exception("Please set a message stream using setMessageStream!");
     
         // Check that the submitted request method matches the parameter request method.
@@ -87,26 +88,7 @@ class HTTPRequestFortress {
         return $this->_followup_uri = $uri;
     }
     
-    /* Set a message stream by specifying a key in the Fortress "namespace" of $_SESSION. */
-    public static function setMessageStream($stream){
-        self::$_message_stream = $stream;
-        if (!isset($_SESSION['Fortress']))
-            $_SESSION['Fortress'] = [];
-        if (!isset($_SESSION['Fortress'][$stream]))
-            $_SESSION['Fortress'][$stream] = [];
-    }
 
-    /* Clear the message stream */
-    public static function resetMessageStream(){
-        self::checkMessageStreamExists();
-        $_SESSION['Fortress'][self::$_message_stream] = [];
-    }    
-    
-    private static function checkMessageStreamExists(){
-        if (!isset(self::$_message_stream) || !isset($_SESSION['Fortress']) || !isset($_SESSION['Fortress'][self::$_message_stream]))
-            throw new \Exception("No message stream has been set!  Please use HTTPRequestFortress::setMessageStream to set a message stream.");    
-    }
-    
     // Get the AJAX request mode.
     public function getAjaxMode(){
         return $this->_ajax;
@@ -130,7 +112,7 @@ class HTTPRequestFortress {
             if (count($this->_validator->errors()) > 0) {	
                 foreach ($this->_validator->errors() as $idx => $field){
                     foreach($field as $eidx => $error) {
-                        static::addMessage("danger", $error);
+                        self::$message_stream->addMessage("danger", $error);
                     }
                 }
             }
@@ -167,20 +149,18 @@ class HTTPRequestFortress {
         }
         exit();    
     }
-        
-    // Add a session message to the session message stream
-    public static function addMessage($type, $message){
-        $alert = [
-            "type" => $type,
-            "message" => $message
-        ];
-        self::checkMessageStreamExists();
-        $_SESSION['Fortress'][self::$_message_stream][] = $alert;
-    }
     
-    public function messages(){
-        self::checkMessageStreamExists();
-        return $_SESSION['Fortress'][self::$_message_stream];
+    /* Set up a persistent message stream by specifying a key in the Fortress "namespace" of $_SESSION. */
+    public static function setMessageStream($stream_name){
+        // Create message stream if it doesn't already exist
+        if (!isset($_SESSION['Fortress']))
+            $_SESSION['Fortress'] = [];
+            
+        if (!isset($_SESSION['Fortress'][$stream_name]))
+            $_SESSION['Fortress'][$stream_name] = new MessageStream($stream_name);
+        
+        self::$message_stream = $_SESSION['Fortress'][$stream_name];
+        
     }
 }
     

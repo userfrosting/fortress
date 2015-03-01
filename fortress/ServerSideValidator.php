@@ -42,12 +42,11 @@ class ServerSideValidator extends \Valitron\Validator implements ServerSideValid
         // Weird way to adapt with Valitron's funky interface
         $params = array_merge([$rule], array_slice(func_get_args(), 2));
         call_user_func_array([$this,"rule"], $params);
-        // Set message, if available
-        if (isset($message_set[$this->_locale])){
-            $this->message($message_set[$this->_locale]);
-        } else if (isset($message_set["default"])){
-            $this->message($message_set["default"]);
-        }    
+        // Set message.  Use Valitron's default message if not specified in the schema.
+        if (!$message_set){
+            $message_set = "'" . $params[1] . "' " . vsprintf(static::$_ruleMessages[$rule], array_slice(func_get_args(), 3));
+        }
+        $this->message($message_set);
     }
     
     /* Generate and add rules from the schema */
@@ -55,10 +54,10 @@ class ServerSideValidator extends \Valitron\Validator implements ServerSideValid
         foreach ($this->_schema->getSchema() as $field_name => $field){
             $validators = $field['validators'];
             foreach ($validators as $validator_name => $validator){
-                if (isset($validator['messages']))
-                    $message_set = $validator['messages'];
-                else
-                    $message_set = [];
+                if (isset($validator['message'])){
+                    $message_set = MessageTranslator::translate($validator['message'], $validator);
+                }else
+                    $message_set = null;
                 // Required validator
                 if ($validator_name == "required"){
                     $this->ruleWithMessage("required", $message_set, $field_name);
