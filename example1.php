@@ -32,7 +32,7 @@ $rf = new Fortress\HTTPRequestFortress($ms, $requestSchema, $_GET);
 $rf->removeFields(['csrf_token']);
 
 // Sanitize, and print sanitized data for demo purposes
-$rf->sanitize();
+$rf->sanitize(true, "error");
 
 echo "<h2>Sanitized data</h2>";
 echo "<pre>";

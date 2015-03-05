@@ -62,8 +62,8 @@ class HTTPRequestFortress {
     }
     
     /* Sanitize all fields and optionally add any error messages to the global message stream. */
-    public function sanitize($reportErrors = true){
-        $this->_data = $this->_sanitizer->sanitize($this->_data);
+    public function sanitize($reportErrors = true, $on_unexpected_var = "skip"){
+        $this->_data = $this->_sanitizer->sanitize($this->_data, $on_unexpected_var);
         // TODO: Implement sanitizer errors
     }
     
