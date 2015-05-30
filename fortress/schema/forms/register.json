@@ -29,7 +29,7 @@
                 "values" : [
                     "0", "1"
                 ],
-                "message" : "Please specify whether or not you like puppies"
+                "message" : "The value for {{self}} must be '0' or '1'."
             }
         }
     },
