@@ -14,12 +14,10 @@ interface ServerSideValidatorInterface {
 class ServerSideValidator extends \Valitron\Validator implements ServerSideValidatorInterface {
 
     protected $_schema;         // A valid RequestSchema object
-    protected $_locale = "";
     
-    public function __construct($schema, $locale = "en_US") {        
+    public function __construct($schema) {        
         // Set schema
         $this->setSchema($schema);
-        $this->_locale = $locale;  
         // TODO: use locale to determine Valitron language
         
         // Construct the parent with an empty data array.
