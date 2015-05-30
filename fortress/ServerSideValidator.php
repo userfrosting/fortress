@@ -103,6 +103,14 @@ class ServerSideValidator extends \Valitron\Validator implements ServerSideValid
                 if ($validator_name == "matches"){
                     $this->ruleWithMessage("equals", $message_set, $field_name, $validator['field']);
                 }
+                // Check membership in array
+                if ($validator_name == "member_of"){
+                    $this->ruleWithMessage("in", $message_set, $field_name, $validator['values']);
+                }
+                // Negation of membership
+                if ($validator_name == "not_member_of"){
+                    $this->ruleWithMessage("notIn", $message_set, $field_name, $validator['values']);
+                }
             }
         }
     }    

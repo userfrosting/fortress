@@ -51,7 +51,9 @@ class ClientSideValidator {
         $transformedValidatorJson = [];        
         switch ($validator_name){
             // Required validator
-
+            case "required":
+                $transformedValidatorJson['notEmpty'] = $params;
+                break;
             case "length":
                 if (isset($validator['min'])) $params['min'] = $validator['min'];
                 if (isset($validator['max'])) $params['max'] = $validator['max'];
@@ -82,8 +84,11 @@ class ClientSideValidator {
                 if (isset($validator['field'])) $params['field'] = $validator['field'];   
                 $transformedValidatorJson['identical'] = $params;
                 break;
-            case "required":
-                $transformedValidatorJson['notEmpty'] = $params;
+            case "member_of":
+                $transformedValidatorJson['regexp'] = "^" . implode("|", $validator['values']) . "$";
+                break;
+            case "not_member_of":
+                $transformedValidatorJson['regexp'] = "^(?!" . implode("|", $validator['values']) . "$).*$";
                 break;
             default:
                 break;
