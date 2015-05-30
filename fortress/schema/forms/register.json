@@ -26,11 +26,10 @@
     "puppies" : {
         "validators" : {
             "member_of" : {
-                "values" : ["yes", "no"],
+                "values" : [
+                    "0", "1"
+                ],
                 "message" : "Please specify whether or not you like puppies"
-            },
-            "required" : {
-                "message" : "Please tell us how you feel about puppies"
             }
         }
     },

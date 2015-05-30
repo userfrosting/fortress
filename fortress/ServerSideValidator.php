@@ -4,7 +4,7 @@ namespace Fortress;
 
 interface ServerSideValidatorInterface {
     public function setSchema($schema);
-    public function validate($data, $schemaRequired);
+    public function validate($data);
     public function data();
     public function errors();    
 }
@@ -32,7 +32,7 @@ class ServerSideValidator extends \Valitron\Validator implements ServerSideValid
     }
     
     /* Validate the specified data against the schema rules. */
-    public function validate($data, $schemaRequired = true){
+    public function validate($data){
         $this->_fields = $data;         // Setting the parent class Validator's field data.
         $this->generateSchemaRules();   // Build Validator rules from the schema.
         return parent::validate();      // Validate!
@@ -105,11 +105,11 @@ class ServerSideValidator extends \Valitron\Validator implements ServerSideValid
                 }
                 // Check membership in array
                 if ($validator_name == "member_of"){
-                    $this->ruleWithMessage("in", $message_set, $field_name, $validator['values']);
+                    $this->ruleWithMessage("in", $message_set, $field_name, $validator['values'], true);    // Strict comparison
                 }
                 // Negation of membership
                 if ($validator_name == "not_member_of"){
-                    $this->ruleWithMessage("notIn", $message_set, $field_name, $validator['values']);
+                    $this->ruleWithMessage("notIn", $message_set, $field_name, $validator['values'], true);  // Strict comparison
                 }
             }
         }
