@@ -30,7 +30,7 @@ class ServerSideValidator extends \Valitron\Validator implements ServerSideValid
     }
     
     /* Validate the specified data against the schema rules. */
-    public function validate($data){
+    public function validate($data = []){
         $this->_fields = $data;         // Setting the parent class Validator's field data.
         $this->generateSchemaRules();   // Build Validator rules from the schema.
         return parent::validate();      // Validate!
