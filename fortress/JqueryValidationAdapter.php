@@ -33,7 +33,9 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter {
                     // Message
                     if (isset($validator['message'])){
                         $validator = array_merge(["self" => $field_name], $validator);
-                        $client_messages[$field_name] = $this->_translator->translate($validator['message'], $validator);
+                        if (!isset($client_messages[$field_name]))
+                            $client_messages[$field_name] = [];
+                        $client_messages[$field_name][$validator_name] = $this->_translator->translate($validator['message'], $validator);
                     }  
                 }
             }
