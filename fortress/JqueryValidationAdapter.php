@@ -29,13 +29,18 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter {
             if (isset($field['validators'])){
                 $validators = $field['validators'];
                 foreach ($validators as $validator_name => $validator){
-                    $client_rules[$field_name] = array_merge($client_rules[$field_name], $this->transformValidator($field_name, $validator_name, $validator));
+                    $new_rules = $this->transformValidator($field_name, $validator_name, $validator);
+                    $client_rules[$field_name] = array_merge($client_rules[$field_name], $new_rules);
                     // Message
                     if (isset($validator['message'])){
                         $validator = array_merge(["self" => $field_name], $validator);
                         if (!isset($client_messages[$field_name]))
                             $client_messages[$field_name] = [];
-                        $client_messages[$field_name][$validator_name] = $this->_translator->translate($validator['message'], $validator);
+                        // Copy the translated message to every translated rule created by this validation rule
+                        $message = $this->_translator->translate($validator['message'], $validator);
+                        foreach ($new_rules as $translated_rule_name => $rule){
+                            $client_messages[$field_name][$translated_rule_name] = $message;
+                        }
                     }  
                 }
             }
