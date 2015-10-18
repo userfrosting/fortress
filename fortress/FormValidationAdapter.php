@@ -13,6 +13,14 @@ namespace Fortress;
  */
 class FormValidationAdapter extends ClientSideValidationAdapter {
 
+    public function rules($format = "json", $string_encode = true) {
+        if ($format == "html5") {
+            return $this->formValidationRulesHtml5();
+        } else {
+            return $this->formValidationRulesJson($string_encode);
+        }
+    }
+
     /**
      * Generate FormValidation compatible rules from the specified RequestSchema, as a JSON document.  
      * See [this](http://formvalidation.io/getting-started/#calling-plugin) as an example of what this function will generate.
