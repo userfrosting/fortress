@@ -67,7 +67,7 @@ if (!$rf->validate()) {
 }
 
 // Test client validators
-$clientVal = new Fortress\ClientSideValidator($schema, $translator);
+$clientVal = new Fortress\FormValidationAdapter($schema, $translator);
 echo "<h2>Client-side validation schema (JSON)</h2>";
 echo "<pre>";
 print_r($clientVal->formValidationRulesJson());
