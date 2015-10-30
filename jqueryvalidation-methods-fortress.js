@@ -7,9 +7,9 @@ $.validator.addMethod("noTrailingWhitespace", function(value, element) {
 }, "No trailing whitespace allowed");
 
 jQuery.validator.addMethod("memberOf", function(value, element, arr) {
-    return $.inArray(arr) != -1;
+    return $.inArray(value, arr) != -1;
 }, "Data provided must match one of the provided options.");
 
 jQuery.validator.addMethod("notMemberOf", function(value, element, arr) {
-    return $.inArray(arr) == -1;
+    return $.inArray(value, arr) == -1;
 }, "Data provided must NOT match one of the provided options.");
