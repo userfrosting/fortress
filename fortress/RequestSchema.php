@@ -24,10 +24,20 @@ class RequestSchema {
      * @param string $file The full path to the file containing the [WDVSS schema](https://github.com/alexweissman/wdvss).
      * @throws Exception The file does not exist or is not a valid JSON schema.
      */    
-    public function __construct($file){
-        $this->_schema = json_decode(file_get_contents($file),true);
+     
+    public function __construct($input, $inputtype='file'){
+        if($inputtype=='file')
+        {
+            $this->_schema = json_decode(file_get_contents($input),true);
+        }
+        else
+        {
+            $this->_schema = json_decode($input,true);
+        }
+
         if ($this->_schema === null) {
-            throw new \Exception("Either the schema '$file' could not be found, or it does not contain a valid JSON document: " . json_last_error());
+            throw new \Exception(($inputtype=="file"?"Either the schema '$input' could not be found, OR":'').
+                    " Input does not contain a valid JSON : " . json_last_error());
         }
     }
     
