@@ -28,8 +28,18 @@ class MessageTranslator {
      *
      * @param string $path The full path to the translation file.
      */
-    public function setTranslationTable($path){
-        $this->_translation_table = include($path);
+    public function setTranslationTable($input,$inputtype='file'){
+        if($inputtype=='file')
+        {
+            $this->_translation_table = include($input);
+        }
+        else
+        {
+            if(is_array($input))
+            {
+                $this->_translation_table = array_merge($this->_translation_table,$input);
+            }
+        }
     }
 
     /**
@@ -37,8 +47,18 @@ class MessageTranslator {
      *
      * @param string $path The full path to the default translation file.
      */    
-    public function setDefaultTable($path){
-        $this->_default_table = include($path);
+    public function setDefaultTable($input,$inputtype='file'){
+        if($inputtype=='file')
+        {
+            $this->_default_table = include($input);
+        }
+        else
+        {
+            if(is_array($input))
+            {
+                $this->_default_table = array_merge($this->_default_table,$input);
+            }
+        }
     }
     
     /**
