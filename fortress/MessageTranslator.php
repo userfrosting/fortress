@@ -17,50 +17,94 @@ class MessageTranslator {
      * @var array
      */
     protected $_translation_table = [];
-    
+
     /**
      * @var array
-     */    
+     */
     protected $_default_table = [];
-    
+
     /**
      * Set the path to the file containing the translation table to be used.  A translation table is an associative array of message ids => translated messages.
      *
-     * @param string $path The full path to the translation file.
+     * @param string $input The full path to the translation file or Array
      */
-    public function setTranslationTable($input,$inputtype='file'){
-        if($inputtype=='file')
-        {
-            $this->_translation_table = include($input);
-        }
-        else
-        {
-            if(is_array($input))
-            {
-                $this->_translation_table = array_merge($this->_translation_table,$input);
+    public function setTranslationTable($input) {
+        $inputtype = gettype($input);
+        if ($inputtype == 'array') {
+            $this->_translation_table = $input;
+        } else if ($inputtype == 'string') {
+            if (file_exists($input)) {
+                $this->_translation_table = include($input);
+            } else {
+                throw new \Exception("The translation file ($input) could not be found");
             }
+        } else {
+            throw new \Exception("Invalid input format");
+        }
+    }
+
+    /**
+     * Set the path to the file containing the translation table to be used.  A translation table is an associative array of message ids => translated messages.
+     *
+     * @param string $input The full path to the translation file or Array
+     */
+    public function addTranslationTable($input) {
+        $inputtype = gettype($input);
+        if ($inputtype == 'array') {
+            $this->_translation_table = array_merge($this->_translation_table, $input);
+        } else if ($inputtype == 'string') {
+            if (file_exists($input)) {
+                $var_newinput = include($input);
+                $this->_translation_table = array_merge($this->_translation_table, $var_newinput);
+            } else {
+                throw new \Exception("The translation file ($input) could not be found");
+            }
+        } else {
+            throw new \Exception("Invalid input format");
         }
     }
 
     /**
      * Set the path to the file containing a default translation table, to be used when a message id is missing from the regular translation table.
      *
-     * @param string $path The full path to the default translation file.
-     */    
-    public function setDefaultTable($input,$inputtype='file'){
-        if($inputtype=='file')
-        {
-            $this->_default_table = include($input);
-        }
-        else
-        {
-            if(is_array($input))
-            {
-                $this->_default_table = array_merge($this->_default_table,$input);
+     * @param string $input The full path to the default translation file or Array
+     */
+    public function setDefaultTable($input) {
+        $inputtype = gettype($input);
+        if ($inputtype == 'array') {
+            $this->_default_table = $input;
+        } else if ($inputtype == 'string') {
+            if (file_exists($input)) {
+                $this->_default_table = include($input);
+            } else {
+                throw new \Exception("The default translation file ($input) could not be found");
             }
+        } else {
+            throw new \Exception("Invalid input format");
         }
     }
-    
+
+    /**
+     * Set the path to the file containing a default translation table, to be used when a message id is missing from the regular translation table.
+     *
+     * @param string $input The full path to the default translation file or Array
+     */
+    public function addDefaultTable($input) {
+        $inputtype = gettype($input);
+        if ($inputtype == 'array') {
+            $this->_default_table = array_merge($this->_default_table, $input);
+        } else if ($inputtype == 'string') {
+            if (file_exists($input)) {
+                $var_newinput = include($input);
+                $this->_default_table = array_merge($this->_default_table, $var_newinput);
+            } else {
+                throw new \Exception("The default translation file ($input) could not be found");
+            }
+        } else {
+            throw new \Exception("Invalid input format");
+        }
+    }
+
     /**
      * Translate the given message id into the currently configured language, substituting any placeholders that appear in the translated string.
      *
@@ -69,24 +113,25 @@ class MessageTranslator {
      * @param array $placeholders[optional] An optional hash of placeholder names => placeholder values to substitute.
      * @return string The translated message.  
      */
-    public function translate($message_id, $placeholders = []){
+    public function translate($message_id, $placeholders = []) {
         // Get the message, translated into the currently set language
-        if (isset($this->_translation_table[$message_id])){
+        if (isset($this->_translation_table[$message_id])) {
             $message = $this->_translation_table[$message_id];
-        } else if (isset($this->_default_table[$message_id])){
+        } else if (isset($this->_default_table[$message_id])) {
             $message = $this->_default_table[$message_id];
         } else {
-            $message = $message_id;    
+            $message = $message_id;
         }
-        
+
         // Interpolate placeholders
-        foreach ($placeholders as $name => $value){
+        foreach ($placeholders as $name => $value) {
             if (gettype($value) != "array" && gettype($value) != "object") {
                 $find = '{{' . trim($name) . '}}';
                 $message = str_replace($find, $value, $message);
             }
         }
-      
+
         return $message;
     }
+
 }
