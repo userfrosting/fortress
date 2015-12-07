@@ -16,28 +16,55 @@ class RequestSchema {
     /**
      * @var array The schema, as a dictionary of field names -> field properties
      */
-    protected $_schema = [];  
+    protected $_schema = [];
 
     /**
      * Loads the request schema from a file.
      *
-     * @param string $file The full path to the file containing the [WDVSS schema](https://github.com/alexweissman/wdvss).
-     * @throws Exception The file does not exist or is not a valid JSON schema.
-     */    
-     
-    public function __construct($input, $inputtype='file'){
-        if($inputtype=='file')
-        {
-            $this->_schema = json_decode(file_get_contents($input),true);
+     * @param string $input The full path to the file or associative Array containing the 
+     * [WDVSS schema](https://github.com/alexweissman/wdvss).
+     * @throws Exception Not an Array or File Path (string), The file does not exist or is not a valid JSON schema.
+     */
+    public function __construct($input) {
+        $inputtype = gettype($input);
+        if ($inputtype == 'array') {
+            $this->_schema = $input;
+        } else if ($inputtype == 'string') {
+            if (file_exists($input)) {
+                $this->_schema = json_decode(file_get_contents($input), true);
+                if ($this->_schema === null) {
+                    throw new \Exception("The file ($input) does not contain a valid JSON : " . json_last_error());
+                }
+            } else {
+                throw new \Exception("The schema file ($input) could not be found");
+            }
+        } else {
+            throw new \Exception("Invalid input format");
         }
-        else
-        {
-            $this->_schema = json_decode($input,true);
-        }
+    }
 
-        if ($this->_schema === null) {
-            throw new \Exception(($inputtype=="file"?"Either the schema '$input' could not be found, OR":'').
-                    " Input does not contain a valid JSON : " . json_last_error());
+    /**
+     * Adds the request schema from a file or Array.
+     *
+     * @param string $input The Array or full path to the file containing the [WDVSS schema](https://github.com/alexweissman/wdvss).
+     * @throws Exception The input is not an Array or String, file does not exist or is not a valid JSON schema.
+     */
+    public function addSchema($input) {
+        $inputtype = gettype($input);
+        if ($inputtype == 'array') {
+            $this->_schema = array_merge($this->_schema, $input);
+        } else if ($inputtype == 'string') {
+            if (file_exists($input)) {
+                $var_newinput = json_decode(file_get_contents($input), true);
+                if($var_newinput === null) {
+                    throw new \Exception("The file ($input) does not contain a valid JSON : " . json_last_error());
+                }
+                $this->_schema = array_merge($this->_schema, $var_newinput);
+            } else {
+                throw new \Exception("The schema file ($input) could not be found");
+            }
+        } else {
+            throw new \Exception("Invalid input format");
         }
     }
     
@@ -46,7 +73,7 @@ class RequestSchema {
      *
      * @return array The schema data.
      */
-    public function getSchema(){
+    public function getSchema() {
         return $this->_schema;
     }
 
@@ -58,14 +85,14 @@ class RequestSchema {
      * @param string $value The new default value for this field.
      * @return RequestSchema This schema object.
      */
-    public function setDefault($field, $value){
+    public function setDefault($field, $value) {
         if (!isset($this->_schema[$field]))
             $this->_schema[$field] = [];
         $this->_schema[$field]['default'] = $value;
-        
+
         return $this;
     }
-        
+
     /**
      * Adds a new validator for a specified field.  
      *
@@ -76,13 +103,13 @@ class RequestSchema {
      * @param array $parameters An array of parameters, hashed as parameter_name => parameter value (e.g. [ "min" => 50 ])
      * @return RequestSchema This schema object.
      */
-    public function addValidator($field, $validator_name, $parameters = []){
+    public function addValidator($field, $validator_name, $parameters = []) {
         if (!isset($this->_schema[$field]))
             $this->_schema[$field] = [];
         if (!isset($this->_schema[$field]['validators']))
             $this->_schema[$field]['validators'] = [];
         $this->_schema[$field]['validators'][$validator_name] = $parameters;
-        
+
         return $this;
     }
 
@@ -96,13 +123,14 @@ class RequestSchema {
      * @param array $parameters An array of parameters, hashed as parameter_name => parameter value
      * @return RequestSchema This schema object.
      */
-    public function addSanitizer($field, $sanitizer_name, $parameters = []){
+    public function addSanitizer($field, $sanitizer_name, $parameters = []) {
         if (!isset($this->_schema[$field]))
             $this->_schema[$field] = [];
         if (!isset($this->_schema[$field]['sanitizers']))
             $this->_schema[$field]['sanitizers'] = [];
         $this->_schema[$field]['sanitizers'][$sanitizer_name] = $parameters;
-        
+
         return $this;
-    }    
+    }
+
 }
