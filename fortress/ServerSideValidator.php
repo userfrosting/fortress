@@ -156,6 +156,10 @@ class ServerSideValidator extends \Valitron\Validator implements ServerSideValid
                 if ($validator_name == "not_member_of"){
                     $this->ruleWithMessage("notIn", $message_set, $field_name, $validator['values'], true);  // Strict comparison
                 }
+                // validate uri
+                if ($validator_name == "uri"){
+                    $this->ruleWithMessage("slug", $message_set, $field_name);
+                }
             }
         }
     }    

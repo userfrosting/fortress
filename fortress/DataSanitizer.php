@@ -116,6 +116,7 @@ interface DataSanitizerInterface {
                     case "purify": $sanitizedValue = $this->_purifier->purify($sanitizedValue); $processed = true; break;
                     case "escape": $sanitizedValue = $this->escapeHtmlCharacters($sanitizedValue); $processed = true; break;
                     case "purge" : $sanitizedValue = $this->purgeHtmlCharacters($sanitizedValue); $processed = true; break;
+                    case "purgeuri" : $sanitizedValue = $this->purgeUriCharacters($sanitizedValue); $processed = true; break;
                     case "raw" : $processed = true; break;
                     default: break;
                 }
@@ -142,6 +143,32 @@ interface DataSanitizerInterface {
         else
             return filter_var($value, FILTER_SANITIZE_STRING);
     }
+
+    /** Clean up characters unwanted for uri */
+    private function purgeUriCharacters($value){
+        // replace non letter or digits by -
+        $value = preg_replace('~[^\pL\d]+~u', '-', $value);
+
+        // transliterate
+        $value = iconv('utf-8', 'us-ascii//TRANSLIT', $value);
+
+        // remove unwanted characters
+        $value = preg_replace('~[^-\w]+~', '', $value);
+
+        // trim
+        $value = trim($value, '-');
+
+        // remove duplicate -
+        $value = preg_replace('~-+~', '-', $value);
+
+        // lowercase
+        $value = strtolower($value);
+
+        if (empty($value))
+        {
+            return 'n-a';
 }
 
-?>
+        return $value;
+    }
+}
