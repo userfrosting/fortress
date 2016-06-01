@@ -1,41 +1,43 @@
 <?php
 
-namespace Fortress;
-
 /**
  * ClientSideValidationAdapter Class
  *
  * Loads validation rules from a schema and generates client-side rules compatible with a particular client-side (usually Javascript) plugin.
  *
- * @package Fortress
+ * @package userfrosting/fortress
  * @author Alex Weissman
- * @link http://alexanderweissman.com
+ * @link https://alexanderweissman.com
+ * @license MIT
  */
-abstract class ClientSideValidationAdapter {
+namespace UserFrosting\Fortress\Adapter;
+
+abstract class ClientSideValidationAdapter
+{
 
     /**
      * @var RequestSchema
      */
-    protected $_schema;
+    protected $schema;
 
     /**
      * @var MessageTranslator
      */    
-    protected $_translator; 
+    protected $translator; 
 
     /**
      * Create a new client-side validator.
      *
+     * @param RequestSchema $schema  A RequestSchema object, containing the validation rules.
      * @param MessageTranslator $translator A MessageTranslator to be used to translate message ids found in the schema.     
-     * @param RequestSchema $schema optional A RequestSchema object, containing the validation rules.
      */  
-    public function __construct($translator, $schema = null) {        
+    public function __construct($schema, $translator)
+    {        
         // Set schema
-        if ($schema)
-            $this->setSchema($schema);
+        $this->setSchema($schema);
         
         // Set translator
-        $this->_translator = $translator;
+        $this->setTranslator($translator);
     }
     
     /**
@@ -43,10 +45,21 @@ abstract class ClientSideValidationAdapter {
      *
      * @param RequestSchema $schema A RequestSchema object, containing the validation rules.
      */
-    public function setSchema($schema){
-        $this->_schema = $schema;
+    public function setSchema($schema)
+    {
+        $this->schema = $schema;
     }
 
+    /**
+     * Set the translator for this validator, as a valid MessageTranslator object.
+     *
+     * @param MessageTranslator $translator A MessageTranslator to be used to translate message ids found in the schema.
+     */    
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
+    }
+    
     /**
      * Generate and return the validation rules for this specific validation adapter.
      *

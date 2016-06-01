@@ -37,7 +37,8 @@
                 ],
                 "message" : "The value for '{{self}}' must be '0' or '1'."
             }
-        }
+        },
+        "transformations" : ["purify", "trim"]
     },
     "email" : {
         "validators" : {
@@ -52,7 +53,8 @@
             "email" : {
                 "message" : "ACCOUNT_INVALID_EMAIL"
             }
-        }
+        },
+        "default" : "butts@buttland.com"
     },
     "password" : {
         "validators" : {
@@ -64,10 +66,7 @@
                 "max" : 50,
                 "message" : "ACCOUNT_PASS_CHAR_LIMIT"
             }
-        },
-        "sanitizers" : {
-            "raw" : {}
-        }    
+        } 
     },
     "passwordc" : {
         "validators" : {
@@ -83,9 +82,6 @@
                 "max" : 50,
                 "message" : "ACCOUNT_PASS_CHAR_LIMIT"
             }
-        },
-        "sanitizers" : {
-            "raw" : {}
-        }    
+        }
     }
 }

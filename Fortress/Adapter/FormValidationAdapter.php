@@ -1,19 +1,25 @@
 <?php
 
-namespace Fortress;
-
 /**
  * FormValidationAdapter Class
  *
  * Loads validation rules from a schema and generates client-side rules compatible with the [FormValidation](http://formvalidation.io) JS plugin.
  *
- * @package Fortress
+ * @package userfrosting/fortress
  * @author Alex Weissman
- * @link http://alexanderweissman.com
+ * @link https://alexanderweissman.com
+ * @license MIT
  */
-class FormValidationAdapter extends ClientSideValidationAdapter {
+namespace UserFrosting\Fortress\Adapter;
 
-    public function rules($format = "json", $string_encode = true) {
+class FormValidationAdapter extends ClientSideValidationAdapter
+{
+
+    /**
+     * {@inheritDoc}
+     */
+    public function rules($format = "json", $string_encode = true)
+    {
         if ($format == "html5") {
             return $this->formValidationRulesHtml5();
         } else {
@@ -28,10 +34,11 @@ class FormValidationAdapter extends ClientSideValidationAdapter {
      * @param boolean $encode Specify whether to return a PHP array, or a JSON-encoded string.
      * @return string|array Returns either the array of rules, or a JSON-encoded representation of that array.
      */
-    public function formValidationRulesJson($encode = true){
+    public function formValidationRulesJson($encode = true)
+    {
         $client_rules = [];
         $implicit_rules = [];
-        foreach ($this->_schema->getSchema() as $field_name => $field){
+        foreach ($this->schema->getSchema() as $field_name => $field){
             $client_rules[$field_name] = [];
             $client_rules[$field_name]['validators'] = [];
             if (isset($field['validators'])){
@@ -54,10 +61,11 @@ class FormValidationAdapter extends ClientSideValidationAdapter {
      * @return array Returns an array of rules, mapping field names -> string of data-* attributes, separated by spaces.
      * Example: `data-fv-notempty data-fv-notempty-message="The gender is required"`.
      */   
-    public function formValidationRulesHtml5(){
+    public function formValidationRulesHtml5()
+    {
         $client_rules = array();
         $implicit_rules = array();
-        foreach ($this->_schema->getSchema() as $field_name => $field){
+        foreach ($this->schema->getSchema() as $field_name => $field){
             $field_rules = "";
             $validators = $field['validators'];
             foreach ($validators as $validator_name => $validator){
@@ -142,12 +150,20 @@ class FormValidationAdapter extends ClientSideValidationAdapter {
         return $client_rules;    
     }
     
-    private function transformValidator($field_name, $validator_name, $validator){
+    /**
+     * Transform a validator for a particular field into one or more FormValidation rules.
+     *
+     * @param string $field_name
+     * @param string $validator_name
+     * @param string[] $validator     
+     */    
+    private function transformValidator($field_name, $validator_name, $validator)
+    {
         $params = [];
         // Message
             if (isset($validator['message'])){
                 $validator = array_merge(["self" => $field_name], $validator);
-                $params["message"] = $this->_translator->translate($validator['message'], $validator);
+                $params["message"] = $this->translator->translate($validator['message'], $validator);
             }      
         $transformedValidatorJson = [];        
         switch ($validator_name){
@@ -204,10 +220,16 @@ class FormValidationAdapter extends ClientSideValidationAdapter {
                 break;
         }
         return $transformedValidatorJson;
-        
     }    
     
-    public function html5Attributes($validator, $prefix){
+    /**
+     * Transform a validator for a particular field into a string of FormValidation rules as HTML data-* attributes.
+     *
+     * @param string[] $validator
+     * @param string $prefix
+     */      
+    public function html5Attributes($validator, $prefix)
+    {
         $attr = "$prefix=true ";
         if (isset($validator['message'])){
             $msg = "";

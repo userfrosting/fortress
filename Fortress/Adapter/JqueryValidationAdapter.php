@@ -1,30 +1,33 @@
 <?php
 
-namespace Fortress;
-
 /**
  * JqueryValidationAdapter Class
  *
  * Loads validation rules from a schema and generates client-side rules compatible with the [jQuery Validation](http://http://jqueryvalidation.org) JS plugin.
  *
- * @package Fortress
+ * @package userfrosting/fortress
  * @author Alex Weissman
- * @link http://alexanderweissman.com
+ * @link https://alexanderweissman.com
+ * @license MIT
  */
-class JqueryValidationAdapter extends ClientSideValidationAdapter {
+namespace UserFrosting\Fortress\Adapter;
+
+class JqueryValidationAdapter extends ClientSideValidationAdapter
+{
 
     /**
      * Generate jQuery Validation compatible rules from the specified RequestSchema, as a JSON document.  
      * See [this](https://github.com/jzaefferer/jquery-validation/blob/master/demo/bootstrap/index.html#L168-L209) as an example of what this function will generate.
      * 
-     * @param boolean $encode Specify whether to return a PHP array, or a JSON-encoded string.
+     * @param boolean $string_encode Specify whether to return a PHP array, or a JSON-encoded string.
      * @return string|array Returns either the array of rules, or a JSON-encoded representation of that array.
      */
-    public function rules($format = "json", $string_encode = true) {
+    public function rules($format = "json", $string_encode = true)
+    {
         $client_rules = [];
         $client_messages = [];
         $implicit_rules = [];
-        foreach ($this->_schema->getSchema() as $field_name => $field){
+        foreach ($this->schema->getSchema() as $field_name => $field){
             $client_rules[$field_name] = [];
             if (isset($field['validators'])){
                 $validators = $field['validators'];
@@ -37,7 +40,7 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter {
                         if (!isset($client_messages[$field_name]))
                             $client_messages[$field_name] = [];
                         // Copy the translated message to every translated rule created by this validation rule
-                        $message = $this->_translator->translate($validator['message'], $validator);
+                        $message = $this->translator->translate($validator['message'], $validator);
                         foreach ($new_rules as $translated_rule_name => $rule){
                             $client_messages[$field_name][$translated_rule_name] = $message;
                         }
@@ -56,8 +59,15 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter {
             return $result;
     }
    
-    // Transform a validator for a particular field into one or more jQueryValidation rules.
-    private function transformValidator($field_name, $validator_name, $validator){   
+    /**
+     * Transform a validator for a particular field into one or more jQueryValidation rules.
+     *
+     * @param string $field_name
+     * @param string $validator_name
+     * @param string[] $validator     
+     */
+    private function transformValidator($field_name, $validator_name, $validator)
+    {   
         $transformedValidatorJson = [];        
         switch ($validator_name){
             // Required validator
