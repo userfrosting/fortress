@@ -32,6 +32,11 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
             if (isset($field['validators'])){
                 $validators = $field['validators'];
                 foreach ($validators as $validator_name => $validator){
+                
+                    // Skip messages that are for server-side use only
+                    if (isset($validator['domain']) && $validator['domain'] == "server")
+                        continue;
+                    
                     $new_rules = $this->transformValidator($field_name, $validator_name, $validator);
                     $client_rules[$field_name] = array_merge($client_rules[$field_name], $new_rules);
                     // Message

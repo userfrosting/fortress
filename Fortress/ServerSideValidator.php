@@ -104,11 +104,17 @@ class ServerSideValidator extends \Valitron\Validator implements ServerSideValid
                 continue;
             $validators = $field['validators'];
             foreach ($validators as $validator_name => $validator){
+                // Skip messages that are for client-side use only
+                if (isset($validator['domain']) && $validator['domain'] == "client")
+                    continue;
+                    
+                // Generate translated message
                 if (isset($validator['message'])){
                     $params = array_merge(["self" => $field_name], $validator);
                     $message_set = $this->translator->translate($validator['message'], $params);
-                }else
+                } else
                     $message_set = null;
+                
                 // Required validator
                 if ($validator_name == "required"){
                     $this->ruleWithMessage("required", $message_set, $field_name);

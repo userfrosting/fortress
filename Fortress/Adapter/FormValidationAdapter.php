@@ -69,6 +69,10 @@ class FormValidationAdapter extends ClientSideValidationAdapter
             $field_rules = "";
             $validators = $field['validators'];
             foreach ($validators as $validator_name => $validator){
+                // Skip messages that are for server-side use only
+                if (isset($validator['domain']) && $validator['domain'] == "server")
+                    continue;                
+                
                 // Required validator
                 if ($validator_name == "required"){
                     $prefix = "data-fv-notempty";

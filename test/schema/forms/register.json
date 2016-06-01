@@ -29,6 +29,21 @@
             }
         }
     },
+    "secret" : {
+        "validators" : {
+            "length" : {
+                "min" : 1,
+                "max" : 100,
+                "message" : "Secret must be between {{ min }} and {{ max }} characters long.",
+                "domain" : "client"
+            },
+            "numeric" : {},
+            "required" : {
+                "message" : "Secret must be specified.",
+                "domain" : "server"
+            }
+        }
+    },
     "puppies" : {
         "validators" : {
             "member_of" : {
