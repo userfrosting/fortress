@@ -14,7 +14,7 @@
     "require": {
         "ezyang/htmlpurifier": "4.7.0",
         "php": ">=5.4.0",
-        "userfrosting/i18n": "1.0",
+        "userfrosting/i18n": "~1.0",
         "vlucas/valitron": "1.2.3"
     },
     "autoload": {
@@ -22,5 +22,5 @@
             "UserFrosting\\Fortress\\": "Fortress"
         }
     },
-    "minimum-stability" : "dev"    
+    "minimum-stability" : "dev"
 }
