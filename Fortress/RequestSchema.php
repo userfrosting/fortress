@@ -20,19 +20,19 @@ class RequestSchema {
     /**
      * @var array The schema, as a dictionary of field names -> field properties
      */
-    protected $schema = [];  
+    protected $schema = [];
 
     /**
      * Loads the request schema from a file.
      *
      * @param string $file The full path to the file containing the [WDVSS schema](https://github.com/alexweissman/wdvss).
      * @throws Exception The file does not exist or is not a valid JSON schema.
-     */    
+     */
     public function __construct($file)
     {
         $this->loadSchema($file);
     }
-    
+
     /**
      * Get the schema, as an associative array.
      *
@@ -53,17 +53,37 @@ class RequestSchema {
         $doc = file_get_contents($file);
         if ($doc === false)
             throw new FileNotFoundException("The schema '$file' could not be found.");
-        
+
         $schema = json_decode($doc, true);
         if ($schema === null) {
             throw new JsonException("The schema '$file' does not contain a valid JSON document.  JSON error: " . json_last_error());
         }
-        
+
         $this->schema = $schema;
-    }    
+    }
     
     /**
-     * Set the default value for a specified field.  
+     * Extend the loaded schema from a JSON file.
+     * 
+     * New field rules will merge with the old, and replace old values.
+     * @param string $file Path to the schema file.
+     */
+    public function extendSchema($file)
+    {
+        $doc = file_get_contents($file);
+        if ($doc === false)
+            throw new FileNotFoundException("The schema '$file' could not be found.");
+
+        $schema = json_decode($doc, true);
+        if ($schema === null) {
+            throw new JsonException("The schema '$file' does not contain a valid JSON document.  JSON error: " . json_last_error());
+        }
+
+        $this->schema = array_replace_recursive($this->schema, $schema);
+    }
+
+    /**
+     * Set the default value for a specified field.
      *
      * If the specified field does not exist in the schema, add it.  If a default already exists for this field, replace it with the value specified here.
      * @param string $field The name of the field (e.g., "user_name")
@@ -75,12 +95,12 @@ class RequestSchema {
         if (!isset($this->schema[$field]))
             $this->schema[$field] = [];
         $this->schema[$field]['default'] = $value;
-        
+
         return $this;
     }
-        
+
     /**
-     * Adds a new validator for a specified field.  
+     * Adds a new validator for a specified field.
      *
      * If the specified field does not exist in the schema, add it.  If a validator with the specified name already exists for the field,
      * replace it with the parameters specified here.
@@ -96,14 +116,14 @@ class RequestSchema {
         if (!isset($this->schema[$field]['validators']))
             $this->schema[$field]['validators'] = [];
         $this->schema[$field]['validators'][$validator_name] = $parameters;
-        
+
         return $this;
     }
 
     /**
-     * Set a sequence of transformations for a specified field.  
+     * Set a sequence of transformations for a specified field.
      *
-     * If the specified field does not exist in the schema, add it. 
+     * If the specified field does not exist in the schema, add it.
      * @param string $field The name of the field for this transformation (e.g., "user_name")
      * @param string[] $transformations An array of transformations, as specified in https://github.com/alexweissman/wdvss (e.g. "purge")
      * @return RequestSchema This schema object.
@@ -113,7 +133,7 @@ class RequestSchema {
         if (!isset($this->schema[$field]))
             $this->schema[$field] = [];
         $this->schema[$field]['transformations'] = $transformations;
-        
+
         return $this;
-    }    
+    }
 }
