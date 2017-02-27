@@ -14,7 +14,6 @@ namespace UserFrosting\Fortress\Adapter;
 
 abstract class ClientSideValidationAdapter
 {
-
     /**
      * @var RequestSchema
      */
@@ -69,5 +68,4 @@ abstract class ClientSideValidationAdapter
      * @return mixed The validation rule collection.
      */    
     abstract public function rules($format = "json", $string_encode = true);
-    
 }

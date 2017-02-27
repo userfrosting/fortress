@@ -21,6 +21,5 @@
         "psr-4": {
             "UserFrosting\\Fortress\\": "Fortress"
         }
-    },
-    "minimum-stability" : "dev"
+    }
 }

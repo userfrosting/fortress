@@ -14,6 +14,9 @@
             },
             "required" : {
                 "message" : "ACCOUNT_SPECIFY_USERNAME"
+            },
+            "username" : {
+                "message": "'{{self}}' must be a valid username."
             }
         }
     },
@@ -54,6 +57,13 @@
             }
         },
         "transformations" : ["purify", "trim"]
+    },
+    "phone" : {
+        "validators" : {
+            "telephone" : {
+                "message" : "The value for '{{self}}' must be a valid telephone number."
+            }
+        }
     },
     "email" : {
         "validators" : {

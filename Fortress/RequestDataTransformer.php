@@ -16,7 +16,6 @@ use UserFrosting\Support\Exception\BadRequestException;
 
 class RequestDataTransformer implements RequestDataTransformerInterface
 {
-    
     /**
      * @var RequestSchema
      */        
@@ -60,22 +59,22 @@ class RequestDataTransformer implements RequestDataTransformerInterface
      * Also, set any default values for unspecified fields.
      *
      * @param array $data The array of data to be transformed.
-     * @param string $on_unexpected_var[optional] Determines what to do when a field is encountered that is not in the schema.  Set to one of:
+     * @param string $onUnexpectedVar[optional] Determines what to do when a field is encountered that is not in the schema.  Set to one of:
      * "allow": Treat the field as any other, allowing the value through.
      * "error": Raise an exception.
      * "skip" (default): Quietly ignore the field.  It will not be part of the transformed data array.
      * @return array The array of transformed data, mapping field names => values.
      */
-    public function transform($data, $on_unexpected_var = "skip")
+    public function transform($data, $onUnexpectedVar = "skip")
     {
         $schemaFields = $this->schema->getSchema();
         
         // 1. Perform sequence of transformations on each field.
         $transformedData = [];
-        foreach ($data as $name => $value){        
+        foreach ($data as $name => $value) {        
             // Handle values not listed in the schema
             if (!isset($schemaFields[$name])) {
-                switch ($on_unexpected_var) {
+                switch ($onUnexpectedVar) {
                     case "allow" : $transformedData[$name] = $value; break;
                     case "error" :
                         $e = new BadRequestException("The field '$name' is not a valid input field.");
@@ -89,10 +88,11 @@ class RequestDataTransformer implements RequestDataTransformerInterface
         }
         
         // 2. Get default values for any fields missing from $data.  Especially useful for checkboxes, etc which are not submitted when they are unchecked
-        foreach ($this->schema->getSchema() as $field_name => $field){
-            if (!isset($transformedData[$field_name])){
-                if (isset($field['default']))
-                    $transformedData[$field_name] = $field['default'];
+        foreach ($this->schema->getSchema() as $fieldName => $field) {
+            if (!isset($transformedData[$fieldName])) {
+                if (isset($field['default'])) {
+                    $transformedData[$fieldName] = $field['default'];
+                }
             }               
         }
         
@@ -118,8 +118,8 @@ class RequestDataTransformer implements RequestDataTransformerInterface
             // Field exists in schema, so apply sequence of transformations
             $transformedValue = $value;
             
-            foreach ($fieldParameters['transformations'] as $transformation){
-                switch (strtolower($transformation)){
+            foreach ($fieldParameters['transformations'] as $transformation) {
+                switch (strtolower($transformation)) {
                     case "purify": $transformedValue = $this->purifier->purify($transformedValue); break;
                     case "escape": $transformedValue = $this->escapeHtmlCharacters($transformedValue); break;
                     case "purge" : $transformedValue = $this->purgeHtmlCharacters($transformedValue); break;
@@ -140,10 +140,11 @@ class RequestDataTransformer implements RequestDataTransformerInterface
      */
     private function escapeHtmlCharacters($value)
     {
-        if (is_array($value))
+        if (is_array($value)) {
             return filter_var_array($value, FILTER_SANITIZE_SPECIAL_CHARS);
-        else
+        } else {
             return filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
+        }
     }
     
     /**
@@ -154,10 +155,11 @@ class RequestDataTransformer implements RequestDataTransformerInterface
      */
     private function purgeHtmlCharacters($value)
     {
-        if (is_array($value))
+        if (is_array($value)) {
             return filter_var_array($value, FILTER_SANITIZE_STRING);
-        else
+        } else {
             return filter_var($value, FILTER_SANITIZE_STRING);
+        }
     }
     
     /**
@@ -168,9 +170,10 @@ class RequestDataTransformer implements RequestDataTransformerInterface
      */
     private function trim($value)
     {
-        if (is_array($value))
+        if (is_array($value)) {
             return array_map('trim', $value);
-        else
+        } else {
             return trim($value);
+        }
     }    
 }

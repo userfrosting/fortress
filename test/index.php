@@ -8,8 +8,8 @@ require_once("../vendor/autoload.php");
 // Create a message translator
 $translator = new UserFrosting\I18n\MessageTranslator();
 // Set the translation paths
-$translator->setTranslationTable("locale/en_US.php");
-$translator->setDefaultTable("locale/en_US.php");
+$translator->setPaths(["locale/"]);
+$translator->loadLocaleFiles("en_US");
 
 /*******************************************************/
 
@@ -37,7 +37,8 @@ $transformer = new \UserFrosting\Fortress\RequestDataTransformer($schema);
 // Transform, and print transformed data for demo purposes
 $transformedData = $transformer->transform([
     "puppies" => "<script>I'm definitely really a puppy  </script>0  ",
-    "horses" => "seven pretty horses"
+    "horses" => "seven pretty horses",
+    'phone' => '111-545-3345'
 ], "skip");
 
 echo "<h2>Transformed data</h2>";

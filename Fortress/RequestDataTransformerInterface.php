@@ -28,13 +28,13 @@ interface RequestDataTransformerInterface
      * Also, set any default values for unspecified fields.
      *
      * @param array $data The array of data to be transformed.
-     * @param string $on_unexpected_var[optional] Determines what to do when a field is encountered that is not in the schema.  Set to one of:
+     * @param string $onUnexpectedVar[optional] Determines what to do when a field is encountered that is not in the schema.  Set to one of:
      * "allow": Treat the field as any other, allowing the value through.
      * "error": Raise an exception.
      * "skip" (default): Quietly ignore the field.  It will not be part of the transformed data array.
      * @return array The array of transformed data, mapping field names => values.
      */
-    public function transform($data, $on_unexpected_var);
+    public function transform($data, $onUnexpectedVar);
     
     /**
      * Transform a raw field value.
