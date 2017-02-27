@@ -101,7 +101,7 @@ An example request schema, written using the [WDVSS standard](https://github.com
 
 ## Dependencies
 
-- PHP 5.4+
+- PHP 5.6+
 - [Valitron (server-side validation)](https://github.com/vlucas/valitron)
 - [HTML Purifier](https://github.com/ezyang/htmlpurifier)
 
@@ -115,8 +115,8 @@ An example request schema, written using the [WDVSS standard](https://github.com
 ```
 {
     "require": {
-        "php": ">=5.4.0",
-        "userfrosting/fortress": "2.0"
+        "php": ">=5.6.0",
+        "userfrosting/fortress": "^4.0.0"
     }
 }
 ```
