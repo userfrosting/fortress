@@ -1,17 +1,21 @@
 <?php
+/**
+ * UserFrosting (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2017 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
+ */
+namespace UserFrosting\Fortress\Adapter;
 
 /**
  * JqueryValidationAdapter Class
  *
  * Loads validation rules from a schema and generates client-side rules compatible with the [jQuery Validation](http://http://jqueryvalidation.org) JS plugin.
  *
- * @package userfrosting/fortress
  * @author Alex Weissman
  * @link https://alexanderweissman.com
- * @license MIT
  */
-namespace UserFrosting\Fortress\Adapter;
-
 class JqueryValidationAdapter extends ClientSideValidationAdapter
 {
     /**

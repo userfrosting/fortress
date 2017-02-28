@@ -1,17 +1,21 @@
 <?php
+/**
+ * UserFrosting (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2017 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
+ */
+namespace UserFrosting\Fortress\Adapter;
 
 /**
  * ClientSideValidationAdapter Class
  *
  * Loads validation rules from a schema and generates client-side rules compatible with a particular client-side (usually Javascript) plugin.
  *
- * @package userfrosting/fortress
  * @author Alex Weissman
  * @link https://alexanderweissman.com
- * @license MIT
  */
-namespace UserFrosting\Fortress\Adapter;
-
 abstract class ClientSideValidationAdapter
 {
     /**
@@ -64,8 +68,8 @@ abstract class ClientSideValidationAdapter
      *
      * This method returns a collection of rules, in the format required by the specified plugin.
      * @param string $format The format in which to return the rules.  For example, "json" or "html5".
-     * @param bool $string_encode In the case of JSON rules, specify whether or not to encode the result as a serialized JSON string.
+     * @param bool $stringEncode In the case of JSON rules, specify whether or not to encode the result as a serialized JSON string.
      * @return mixed The validation rule collection.
      */    
-    abstract public function rules($format = "json", $string_encode = true);
+    abstract public function rules($format = "json", $stringEncode = true);
 }

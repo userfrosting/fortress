@@ -1,47 +1,51 @@
 <?php
+/**
+ * UserFrosting (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2017 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
+ */
+namespace UserFrosting\Fortress;
+
+use UserFrosting\Support\Exception\BadRequestException;
 
 /**
  * RequestDataTransformer Class
  *
  * Perform a series of transformations on a set of data fields, as specified by a RequestSchema.
  *
- * @package userfrosting/fortress
  * @author Alex Weissman
  * @link https://alexanderweissman.com
- * @license MIT
  */
-namespace UserFrosting\Fortress;
-
-use UserFrosting\Support\Exception\BadRequestException;
-
 class RequestDataTransformer implements RequestDataTransformerInterface
 {
     /**
      * @var RequestSchema
-     */        
+     */
     protected $schema;
-    
+
     /**
      * @var HTMLPurifier
-     */       
+     */
     protected $purifier;
-    
+
     /**
      * Create a new data transformer.
      *
      * @param RequestSchema $schema A RequestSchema object, containing the transformation rules.
-     */      
+     */
     public function __construct($schema)
     {
         // Create purifier
         $config = \HTMLPurifier_Config::createDefault();
         $config->set('Cache.DefinitionImpl', null); // turn off cache
         $this->purifier = new \HTMLPurifier($config);
-        
+
         // Set schema
         $this->setSchema($schema);
     }
-    
+
     /**
      * Set the schema for this transformer, as a valid RequestSchema object.
      *
@@ -51,7 +55,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     {
         $this->schema = $schema;
     }
-    
+
     /**
      * Process each field in the specified data array, applying transformations in the specified order.
      *
@@ -68,10 +72,10 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     public function transform($data, $onUnexpectedVar = "skip")
     {
         $schemaFields = $this->schema->getSchema();
-        
+
         // 1. Perform sequence of transformations on each field.
         $transformedData = [];
-        foreach ($data as $name => $value) {        
+        foreach ($data as $name => $value) {
             // Handle values not listed in the schema
             if (!isset($schemaFields[$name])) {
                 switch ($onUnexpectedVar) {
@@ -86,19 +90,19 @@ class RequestDataTransformer implements RequestDataTransformerInterface
                 $transformedData[$name] = $this->transformField($name, $value);
             }
         }
-        
+
         // 2. Get default values for any fields missing from $data.  Especially useful for checkboxes, etc which are not submitted when they are unchecked
         foreach ($this->schema->getSchema() as $fieldName => $field) {
             if (!isset($transformedData[$fieldName])) {
                 if (isset($field['default'])) {
                     $transformedData[$fieldName] = $field['default'];
                 }
-            }               
+            }
         }
-        
+
         return $transformedData;
     }
-    
+
     /**
      * Transform a raw field value.
      *
@@ -109,15 +113,15 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     public function transformField($name, $value)
     {
         $schemaFields = $this->schema->getSchema();
-        
+
         $fieldParameters = $schemaFields[$name];
-        
+
         if (!isset($fieldParameters['transformations']) || empty($fieldParameters['transformations'])) {
             return $value;
         } else {
             // Field exists in schema, so apply sequence of transformations
             $transformedValue = $value;
-            
+
             foreach ($fieldParameters['transformations'] as $transformation) {
                 switch (strtolower($transformation)) {
                     case "purify": $transformedValue = $this->purifier->purify($transformedValue); break;
@@ -127,7 +131,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
                     default: break;
                 }
             }
-            
+
             return $transformedValue;
         }
     }
@@ -146,7 +150,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
             return filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
         }
     }
-    
+
     /**
      * Autodetect if a field is an array or scalar, and filter appropriately.
      *
@@ -161,7 +165,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
             return filter_var($value, FILTER_SANITIZE_STRING);
         }
     }
-    
+
     /**
      * Autodetect if a field is an array or scalar, and filter appropriately.
      *
@@ -175,5 +179,5 @@ class RequestDataTransformer implements RequestDataTransformerInterface
         } else {
             return trim($value);
         }
-    }    
+    }
 }

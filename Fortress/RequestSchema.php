@@ -1,23 +1,26 @@
 <?php
-
 /**
- * RequestSchema Class
+ * UserFrosting (http://www.userfrosting.com)
  *
- * Represents a schema for an HTTP request, compliant with the WDVSS standard (https://github.com/alexweissman/wdvss)
- *
- * @package userfrosting/fortress
- * @author Alex Weissman
- * @link https://alexanderweissman.com
- * @license MIT
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2017 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
  */
 namespace UserFrosting\Fortress;
 
 use UserFrosting\Support\Exception\FileNotFoundException;
 use UserFrosting\Support\Exception\JsonException;
 
+/**
+ * RequestSchema Class
+ *
+ * Represents a schema for an HTTP request, compliant with the WDVSS standard (https://github.com/alexweissman/wdvss)
+ *
+ * @author Alexander Weissman
+ * @link https://alexanderweissman.com
+ */
 class RequestSchema
 {
-
     /**
      * @var array The schema, as a dictionary of field names -> field properties
      */
@@ -77,7 +80,7 @@ class RequestSchema
         if (!isset($this->schema[$field])) {
             $this->schema[$field] = [];
         }
-        
+
         $this->schema[$field]['default'] = $value;
 
         return $this;
@@ -89,11 +92,11 @@ class RequestSchema
      * If the specified field does not exist in the schema, add it.  If a validator with the specified name already exists for the field,
      * replace it with the parameters specified here.
      * @param string $field The name of the field for this validator (e.g., "user_name")
-     * @param string $validator_name A validator rule, as specified in https://github.com/alexweissman/wdvss (e.g. "length")
+     * @param string $validatorName A validator rule, as specified in https://github.com/alexweissman/wdvss (e.g. "length")
      * @param array $parameters An array of parameters, hashed as parameter_name => parameter value (e.g. [ "min" => 50 ])
      * @return RequestSchema This schema object.
      */
-    public function addValidator($field, $validator_name, $parameters = [])
+    public function addValidator($field, $validatorName, $parameters = [])
     {
         if (!isset($this->schema[$field])) {
             $this->schema[$field] = [];
@@ -103,7 +106,7 @@ class RequestSchema
             $this->schema[$field]['validators'] = [];
         }
 
-        $this->schema[$field]['validators'][$validator_name] = $parameters;
+        $this->schema[$field]['validators'][$validatorName] = $parameters;
 
         return $this;
     }

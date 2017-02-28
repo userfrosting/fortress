@@ -1,19 +1,23 @@
 <?php
+/**
+ * UserFrosting (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2017 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
+ */
+namespace UserFrosting\Fortress;
+
+use \Valitron\Validator;
 
 /**
  * ServerSideValidator Class
  *
  * Loads validation rules from a schema and validates a target array of data.
  *
- * @package userfrosting/fortress
- * @author Alex Weissman
+ * @author Alexander Weissman
  * @link https://alexanderweissman.com
- * @license MIT
  */
-namespace UserFrosting\Fortress;
-
-use \Valitron\Validator;
-
 class ServerSideValidator extends Validator implements ServerSideValidatorInterface
 {
     /**
