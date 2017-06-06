@@ -3,10 +3,9 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @copyright Copyright (c) 2013-2017 Alexander Weissman
  * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
  */
-namespace UserFrosting\Fortress;
+namespace UserFrosting\Fortress\Schema;
 
 use UserFrosting\Support\Exception\FileNotFoundException;
 use UserFrosting\Support\Exception\JsonException;
@@ -16,10 +15,9 @@ use UserFrosting\Support\Exception\JsonException;
  *
  * Represents a schema for an HTTP request, compliant with the WDVSS standard (https://github.com/alexweissman/wdvss)
  *
- * @author Alexander Weissman
- * @link https://alexanderweissman.com
+ * @author Alexander Weissman (https://alexanderweissman.com)
  */
-class RequestSchema
+abstract class RequestSchema
 {
     /**
      * @var array The schema, as a dictionary of field names -> field properties
@@ -30,7 +28,6 @@ class RequestSchema
      * Loads the request schema from a file.
      *
      * @param string $file The full path to the file containing the [WDVSS schema](https://github.com/alexweissman/wdvss).
-     * @throws Exception The file does not exist or is not a valid JSON schema.
      */
     public function __construct($file)
     {
@@ -48,24 +45,12 @@ class RequestSchema
     }
 
     /**
-     * Load a schema from a JSON file.
+     * Load a schema from a file.
      *
-     * @param string $file Path to the schema file.
+     * @param string $path Path to the schema file.
+     * @throws Exception The file does not exist or is not a valid format.
      */
-    public function loadSchema($file)
-    {
-        $doc = file_get_contents($file);
-        if ($doc === false) {
-            throw new FileNotFoundException("The schema '$file' could not be found.");
-        }
-
-        $schema = json_decode($doc, true);
-        if ($schema === null) {
-            throw new JsonException("The schema '$file' does not contain a valid JSON document.  JSON error: " . json_last_error());
-        }
-
-        $this->schema = $schema;
-    }
+    abstract public function loadSchema($path);
 
     /**
      * Set the default value for a specified field.
