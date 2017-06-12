@@ -7,6 +7,7 @@
  */
 namespace UserFrosting\Fortress\RequestSchema;
 
+use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
 use UserFrosting\Support\Repository\Repository;
 
 /**
@@ -14,15 +15,10 @@ use UserFrosting\Support\Repository\Repository;
  *
  * @author Alexander Weissman (https://alexanderweissman.com)
  */
-class RequestSchemaRepository extends Repository
+class RequestSchemaRepository extends Repository implements RequestSchemaInterface
 {
     /**
-     * Set the default value for a specified field.
-     *
-     * If the specified field does not exist in the schema, add it.  If a default already exists for this field, replace it with the value specified here.
-     * @param string $field The name of the field (e.g., "user_name")
-     * @param string $value The new default value for this field.
-     * @return RequestSchema This schema object.
+     * {@inheritDoc}
      */
     public function setDefault($field, $value)
     {
@@ -36,16 +32,9 @@ class RequestSchemaRepository extends Repository
     }
 
     /**
-     * Adds a new validator for a specified field.
-     *
-     * If the specified field does not exist in the schema, add it.  If a validator with the specified name already exists for the field,
-     * replace it with the parameters specified here.
-     * @param string $field The name of the field for this validator (e.g., "user_name")
-     * @param string $validatorName A validator rule, as specified in https://github.com/alexweissman/wdvss (e.g. "length")
-     * @param array $parameters An array of parameters, hashed as parameter_name => parameter value (e.g. [ "min" => 50 ])
-     * @return RequestSchema This schema object.
+     * {@inheritDoc}
      */
-    public function addValidator($field, $validatorName, $parameters = [])
+    public function addValidator($field, $validatorName, array $parameters = [])
     {
         if (!isset($this->items[$field])) {
             $this->items[$field] = [];
@@ -61,15 +50,24 @@ class RequestSchemaRepository extends Repository
     }
 
     /**
-     * Set a sequence of transformations for a specified field.
-     *
-     * If the specified field does not exist in the schema, add it.
-     * @param string $field The name of the field for this transformation (e.g., "user_name")
-     * @param string[] $transformations An array of transformations, as specified in https://github.com/alexweissman/wdvss (e.g. "purge")
-     * @return RequestSchema This schema object.
+     * {@inheritDoc}
+     */
+    public function removeValidator($field, $validatorName)
+    {
+        unset($this->items[$field]['validators'][$validatorName]);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function setTransformations($field, $transformations = [])
     {
+        if (!is_array($transformations)) {
+            $transformations = array($transformations);
+        }
+
         if (!isset($this->items[$field])) {
             $this->items[$field] = [];
         }

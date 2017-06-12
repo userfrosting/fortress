@@ -3,6 +3,8 @@
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\RequestSchema;
 use UserFrosting\Fortress\RequestDataTransformer;
+use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
+use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 
 class RequestDataTransformerTest extends TestCase
 {
@@ -15,7 +17,8 @@ class RequestDataTransformerTest extends TestCase
         $this->basePath = __DIR__ . '/data';
 
         // Arrange
-        $schema = new RequestSchema($this->basePath . '/register.yaml');
+        $loader = new YamlFileLoader($this->basePath . '/register.yaml');
+        $schema = new RequestSchemaRepository($loader->load());
         $this->transformer = new RequestDataTransformer($schema);
     }
 
@@ -30,7 +33,9 @@ class RequestDataTransformerTest extends TestCase
             'admin' => 1
         ];
 
-        $schema = new RequestSchema();
+        // Arrange
+        $schema = new RequestSchemaRepository();
+
         $schema->mergeItems(null, [
             'email' => []
         ]);

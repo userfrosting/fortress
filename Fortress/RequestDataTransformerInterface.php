@@ -3,27 +3,27 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @copyright Copyright (c) 2013-2017 Alexander Weissman
  * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
  */
 namespace UserFrosting\Fortress;
 
+use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
+
 /**
  * RequestDataTransformer Interface
  *
- * Perform a series of transformations on a set of data fields, as specified by a RequestSchema.
+ * Perform a series of transformations on a set of data fields, as specified by a RequestSchemaInterface.
  *
- * @author Alexander Weissman
- * @link https://alexanderweissman.com
+ * @author Alex Weissman (https://alexanderweissman.com)
  */
 interface RequestDataTransformerInterface
 {
     /**
-     * Set the schema for this transformer, as a valid RequestSchema object.
+     * Set the schema for this transformer, as a valid RequestSchemaInterface object.
      *
-     * @param RequestSchema $schema A RequestSchema object, containing the transformation rules.
+     * @param RequestSchemaInterface $schema A RequestSchemaInterface object, containing the transformation rules.
      */
-    public function setSchema($schema);
+    public function setSchema(RequestSchemaInterface $schema);
 
     /**
      * Process each field in the specified data array, applying transformations in the specified order.
@@ -38,7 +38,7 @@ interface RequestDataTransformerInterface
      * "skip" (default): Quietly ignore the field.  It will not be part of the transformed data array.
      * @return array The array of transformed data, mapping field names => values.
      */
-    public function transform($data, $onUnexpectedVar);
+    public function transform(array $data, $onUnexpectedVar);
 
     /**
      * Transform a raw field value.

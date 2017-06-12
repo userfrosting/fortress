@@ -3,25 +3,24 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @copyright Copyright (c) 2013-2017 Alexander Weissman
  * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
  */
 namespace UserFrosting\Fortress;
 
+use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
 use UserFrosting\Support\Exception\BadRequestException;
 
 /**
  * RequestDataTransformer Class
  *
- * Perform a series of transformations on a set of data fields, as specified by a RequestSchema.
+ * Perform a series of transformations on a set of data fields, as specified by a RequestSchemaInterface.
  *
- * @author Alex Weissman
- * @link https://alexanderweissman.com
+ * @author Alex Weissman (https://alexanderweissman.com)
  */
 class RequestDataTransformer implements RequestDataTransformerInterface
 {
     /**
-     * @var RequestSchema
+     * @var RequestSchemaInterface
      */
     protected $schema;
 
@@ -33,9 +32,9 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     /**
      * Create a new data transformer.
      *
-     * @param RequestSchema $schema A RequestSchema object, containing the transformation rules.
+     * @param RequestSchemaInterface $schema A RequestSchemaInterface object, containing the transformation rules.
      */
-    public function __construct($schema)
+    public function __construct(RequestSchemaInterface $schema)
     {
         // Create purifier
         $config = \HTMLPurifier_Config::createDefault();
@@ -47,31 +46,22 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     }
 
     /**
-     * Set the schema for this transformer, as a valid RequestSchema object.
+     * Set the schema for this transformer, as a valid RequestSchemaInterface object.
      *
-     * @param RequestSchema $schema A RequestSchema object, containing the transformation rules.
+     * @param RequestSchemaInterface $schema A RequestSchemaInterface object, containing the transformation rules.
      */
-    public function setSchema($schema)
+    public function setSchema(RequestSchemaInterface $schema)
     {
         $this->schema = $schema;
+        return $this;
     }
 
     /**
-     * Process each field in the specified data array, applying transformations in the specified order.
-     *
-     * Example transformations: escape/purge/purify HTML entities
-     * Also, set any default values for unspecified fields.
-     *
-     * @param array $data The array of data to be transformed.
-     * @param string $onUnexpectedVar[optional] Determines what to do when a field is encountered that is not in the schema.  Set to one of:
-     * "allow": Treat the field as any other, allowing the value through.
-     * "error": Raise an exception.
-     * "skip" (default): Quietly ignore the field.  It will not be part of the transformed data array.
-     * @return array The array of transformed data, mapping field names => values.
+     * {@inheritDoc}
      */
-    public function transform($data, $onUnexpectedVar = "skip")
+    public function transform(array $data, $onUnexpectedVar = 'skip')
     {
-        $schemaFields = $this->schema->getSchema();
+        $schemaFields = $this->schema->all();
 
         // 1. Perform sequence of transformations on each field.
         $transformedData = [];
@@ -79,12 +69,12 @@ class RequestDataTransformer implements RequestDataTransformerInterface
             // Handle values not listed in the schema
             if (!isset($schemaFields[$name])) {
                 switch ($onUnexpectedVar) {
-                    case "allow" : $transformedData[$name] = $value; break;
-                    case "error" :
+                    case 'allow' : $transformedData[$name] = $value; break;
+                    case 'error' :
                         $e = new BadRequestException("The field '$name' is not a valid input field.");
                         throw $e;
                         break;
-                    case "skip" : default: continue;
+                    case 'skip' : default: continue;
                 }
             } else {
                 $transformedData[$name] = $this->transformField($name, $value);
@@ -92,7 +82,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
         }
 
         // 2. Get default values for any fields missing from $data.  Especially useful for checkboxes, etc which are not submitted when they are unchecked
-        foreach ($this->schema->getSchema() as $fieldName => $field) {
+        foreach ($this->schema->all() as $fieldName => $field) {
             if (!isset($transformedData[$fieldName])) {
                 if (isset($field['default'])) {
                     $transformedData[$fieldName] = $field['default'];
@@ -104,15 +94,11 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     }
 
     /**
-     * Transform a raw field value.
-     *
-     * @param string $name The name of the field to transform, as specified in the schema.
-     * @param string $value The value to be transformed.
-     * @return string The transformed value.
+     * {@inheritDoc}
      */
     public function transformField($name, $value)
     {
-        $schemaFields = $this->schema->getSchema();
+        $schemaFields = $this->schema->all();
 
         $fieldParameters = $schemaFields[$name];
 
@@ -124,10 +110,10 @@ class RequestDataTransformer implements RequestDataTransformerInterface
 
             foreach ($fieldParameters['transformations'] as $transformation) {
                 switch (strtolower($transformation)) {
-                    case "purify": $transformedValue = $this->purifier->purify($transformedValue); break;
-                    case "escape": $transformedValue = $this->escapeHtmlCharacters($transformedValue); break;
-                    case "purge" : $transformedValue = $this->purgeHtmlCharacters($transformedValue); break;
-                    case "trim"  : $transformedValue = $this->trim($transformedValue); break;
+                    case 'purify': $transformedValue = $this->purifier->purify($transformedValue); break;
+                    case 'escape': $transformedValue = $this->escapeHtmlCharacters($transformedValue); break;
+                    case 'purge' : $transformedValue = $this->purgeHtmlCharacters($transformedValue); break;
+                    case 'trim'  : $transformedValue = $this->trim($transformedValue); break;
                     default: break;
                 }
             }
