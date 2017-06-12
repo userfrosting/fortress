@@ -14,7 +14,7 @@ $translator->loadLocaleFiles("en_US");
 /*******************************************************/
 
 // Load the request schema
-$schema = new UserFrosting\Fortress\RequestSchema("schema/forms/register.json");
+$schema = new UserFrosting\Fortress\Schema\YamlSchema("schema/forms/register.json");
 
 $schema->addValidator("puppies", "required");
 

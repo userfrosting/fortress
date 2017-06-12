@@ -1,8 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use UserFrosting\Fortress\Schema\JsonSchema;
-use UserFrosting\Fortress\Schema\YamlSchema;
+use UserFrosting\Fortress\RequestSchema;
 
 class RequestSchemaTest extends TestCase
 {
@@ -28,10 +27,10 @@ class RequestSchemaTest extends TestCase
     public function testReadJsonSchema()
     {
         // Arrange
-        $schema = new JsonSchema($this->basePath . '/contact.json');
+        $schema = new RequestSchema($this->basePath . '/contact.json');
 
         // Act
-        $result = $schema->getSchema();
+        $result = $schema->all();
 
         // Assert
         $this->assertArraySubset($this->contactSchema, $result);
@@ -40,24 +39,90 @@ class RequestSchemaTest extends TestCase
     public function testReadYamlSchema()
     {
         // Arrange
-        $schema = new YamlSchema($this->basePath . '/contact.yaml');
+        $schema = new RequestSchema($this->basePath . '/contact.yaml');
 
         // Act
-        $result = $schema->getSchema();
+        $result = $schema->all();
 
         // Assert
         $this->assertArraySubset($this->contactSchema, $result);
     }
 
-    public function testReadYamlFromJsonSchema()
+    public function testSetDefault()
     {
         // Arrange
-        $schema = new YamlSchema($this->basePath . '/contact.json');
+        $schema = new RequestSchema($this->basePath . '/contact.yaml');
 
         // Act
-        $result = $schema->getSchema();
+        $schema->setDefault('message', "I require more voles.");
+        $result = $schema->all();
 
         // Assert
-        $this->assertArraySubset($this->contactSchema, $result);
+        $contactSchema = [
+            "message" => [
+                "default" => "I require more voles.",
+                "validators" => [
+                    "required" => [
+                        "message" => "Please enter a message"
+                    ]
+                ]
+            ]
+        ];
+        $this->assertArraySubset($contactSchema, $result);
+    }
+
+    public function testAddValidator()
+    {
+        // Arrange
+        $schema = new RequestSchema($this->basePath . '/contact.yaml');
+
+        // Act
+        $schema->addValidator('message', 'length', [
+            'max' => 10000,
+            'message' => 'Your message is too long!'
+        ]);
+        $result = $schema->all();
+
+        // Assert
+        $contactSchema = [
+            "message" => [
+                "validators" => [
+                    "required" => [
+                        "message" => "Please enter a message"
+                    ],
+                    "length" => [
+                        "max" => 10000,
+                        "message" => "Your message is too long!"
+                    ]
+                ]
+            ]
+        ];
+        $this->assertArraySubset($contactSchema, $result);
+    }
+
+    public function testSetTransformation()
+    {
+        // Arrange
+        $schema = new RequestSchema($this->basePath . '/contact.yaml');
+
+        // Act
+        $schema->setTransformations('message', ['purge', 'owlify']);
+        $result = $schema->all();
+
+        // Assert
+        $contactSchema = [
+            "message" => [
+                "validators" => [
+                    "required" => [
+                        "message" => "Please enter a message"
+                    ]
+                ],
+                "transformations" => [
+                    "purge",
+                    "owlify"
+                ]
+            ]
+        ];
+        $this->assertArraySubset($contactSchema, $result);
     }
 }

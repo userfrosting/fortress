@@ -5,53 +5,17 @@
  * @link      https://github.com/userfrosting/fortress
  * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
  */
-namespace UserFrosting\Fortress\Schema;
+namespace UserFrosting\Fortress\RequestSchema;
 
-use UserFrosting\Support\Exception\FileNotFoundException;
-use UserFrosting\Support\Exception\JsonException;
+use UserFrosting\Support\Repository\Repository;
 
 /**
- * RequestSchema Class
- *
  * Represents a schema for an HTTP request, compliant with the WDVSS standard (https://github.com/alexweissman/wdvss)
  *
  * @author Alexander Weissman (https://alexanderweissman.com)
  */
-abstract class RequestSchema
+class RequestSchemaRepository extends Repository
 {
-    /**
-     * @var array The schema, as a dictionary of field names -> field properties
-     */
-    protected $schema = [];
-
-    /**
-     * Loads the request schema from a file.
-     *
-     * @param string $file The full path to the file containing the [WDVSS schema](https://github.com/alexweissman/wdvss).
-     */
-    public function __construct($file)
-    {
-        $this->loadSchema($file);
-    }
-
-    /**
-     * Get the schema, as an associative array.
-     *
-     * @return array The schema data.
-     */
-    public function getSchema()
-    {
-        return $this->schema;
-    }
-
-    /**
-     * Load a schema from a file.
-     *
-     * @param string $path Path to the schema file.
-     * @throws Exception The file does not exist or is not a valid format.
-     */
-    abstract public function loadSchema($path);
-
     /**
      * Set the default value for a specified field.
      *
@@ -62,11 +26,11 @@ abstract class RequestSchema
      */
     public function setDefault($field, $value)
     {
-        if (!isset($this->schema[$field])) {
-            $this->schema[$field] = [];
+        if (!isset($this->items[$field])) {
+            $this->items[$field] = [];
         }
 
-        $this->schema[$field]['default'] = $value;
+        $this->items[$field]['default'] = $value;
 
         return $this;
     }
@@ -83,15 +47,15 @@ abstract class RequestSchema
      */
     public function addValidator($field, $validatorName, $parameters = [])
     {
-        if (!isset($this->schema[$field])) {
-            $this->schema[$field] = [];
+        if (!isset($this->items[$field])) {
+            $this->items[$field] = [];
         }
 
-        if (!isset($this->schema[$field]['validators'])) {
-            $this->schema[$field]['validators'] = [];
+        if (!isset($this->items[$field]['validators'])) {
+            $this->items[$field]['validators'] = [];
         }
 
-        $this->schema[$field]['validators'][$validatorName] = $parameters;
+        $this->items[$field]['validators'][$validatorName] = $parameters;
 
         return $this;
     }
@@ -106,11 +70,11 @@ abstract class RequestSchema
      */
     public function setTransformations($field, $transformations = [])
     {
-        if (!isset($this->schema[$field])) {
-            $this->schema[$field] = [];
+        if (!isset($this->items[$field])) {
+            $this->items[$field] = [];
         }
 
-        $this->schema[$field]['transformations'] = $transformations;
+        $this->items[$field]['transformations'] = $transformations;
 
         return $this;
     }
