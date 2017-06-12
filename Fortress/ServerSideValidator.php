@@ -3,39 +3,39 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @copyright Copyright (c) 2013-2017 Alexander Weissman
  * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
  */
 namespace UserFrosting\Fortress;
 
-use \Valitron\Validator;
+use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
+use UserFrosting\I18n\MessageTranslator;
+use Valitron\Validator;
 
 /**
  * ServerSideValidator Class
  *
  * Loads validation rules from a schema and validates a target array of data.
  *
- * @author Alexander Weissman
- * @link https://alexanderweissman.com
+ * @author Alexander Weissman (https://alexanderweissman.com)
  */
 class ServerSideValidator extends Validator implements ServerSideValidatorInterface
 {
     /**
-     * @var RequestSchema
+     * @var RequestSchemaInterface
      */
     protected $schema;
 
     /**
-     * @var MessageTranslatorInterface
+     * @var MessageTranslator
      */
     protected $translator;
 
     /** Create a new server-side validator.
      *
-     * @param RequestSchema $schema A RequestSchema object, containing the validation rules.
+     * @param RequestSchemaInterface $schema A RequestSchemaInterface object, containing the validation rules.
      * @param MessageTranslator $translator A MessageTranslator to be used to translate message ids found in the schema.
      */
-    public function __construct($schema, $translator)
+    public function __construct(RequestSchemaInterface $schema, MessageTranslator $translator)
     {
         // Set schema
         $this->setSchema($schema);
@@ -49,36 +49,39 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     }
 
     /**
-     * Set the schema for this validator, as a valid RequestSchema object.
-     *
-     * @param RequestSchema $schema A RequestSchema object, containing the validation rules.
+     * {@inheritDoc}
      */
-    public function setSchema($schema)
+    public function setSchema(RequestSchemaInterface $schema)
     {
         $this->schema = $schema;
     }
 
     /**
-     * Set the translator for this validator, as a valid MessageTranslator object.
-     *
-     * @param MessageTranslator $translator A MessageTranslator to be used to translate message ids found in the schema.
+     * {@inheritDoc}
      */
-    public function setTranslator($translator)
+    public function setTranslator(MessageTranslator $translator)
     {
         $this->translator = $translator;
     }
 
     /**
-     * Validate the specified data against the schema rules.
-     *
-     * @param array $data An array of data, mapping field names to field values.
-     * @return boolean True if the data was successfully validated, false otherwise.
+     * {@inheritDoc}
      */
-    public function validate($data = [])
+    public function validate(array $data = [])
     {
         $this->_fields = $data;         // Setting the parent class Validator's field data.
         $this->generateSchemaRules();   // Build Validator rules from the schema.
         return parent::validate();      // Validate!
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * We expose this method to the public interface for testing purposes.
+     */
+    public function hasRule($name, $field)
+    {
+        return parent::hasRule($name, $field);
     }
 
     /**
@@ -90,12 +93,16 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
      * @param  bool $caseSensitive
      * @return bool
      */
-    protected function validateEqualsValue($field, $value, $targetValue, $caseSensitive = false)
+    protected function validateEqualsValue($field, $value, $params)
     {
+        $targetValue = $params[0];
+        $caseSensitive = is_bool($params[1]) ? $params[1] : false;
+
         if (!$caseSensitive) {
             $value = strtolower($value);
             $targetValue = strtolower($targetValue);
         }
+
         return $value == $targetValue;
     }
 
@@ -108,9 +115,9 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
      * @param  bool $caseSensitive
      * @return bool
      */
-    protected function validateNotEqualsValue($field, $value, $targetValue, $caseSensitive = false)
+    protected function validateNotEqualsValue($field, $value, $params)
     {
-        return !$this->validateEqualsValue($field, $value, $targetValue, $caseSensitive);
+        return !$this->validateEqualsValue($field, $value, $params);
     }
 
     /**
@@ -176,7 +183,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
      */
     private function generateSchemaRules()
     {
-        foreach ($this->schema->getSchema() as $fieldName => $field) {
+        foreach ($this->schema->all() as $fieldName => $field) {
             if (!isset($field['validators'])) {
                 continue;
             }
