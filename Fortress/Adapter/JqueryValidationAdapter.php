@@ -3,7 +3,6 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @copyright Copyright (c) 2013-2017 Alexander Weissman
  * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
  */
 namespace UserFrosting\Fortress\Adapter;
@@ -13,8 +12,7 @@ namespace UserFrosting\Fortress\Adapter;
  *
  * Loads validation rules from a schema and generates client-side rules compatible with the [jQuery Validation](http://http://jqueryvalidation.org) JS plugin.
  *
- * @author Alex Weissman
- * @link https://alexanderweissman.com
+ * @author Alex Weissman (https://alexanderweissman.com)
  */
 class JqueryValidationAdapter extends ClientSideValidationAdapter
 {
@@ -25,12 +23,12 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
      * @param boolean $stringEncode Specify whether to return a PHP array, or a JSON-encoded string.
      * @return string|array Returns either the array of rules, or a JSON-encoded representation of that array.
      */
-    public function rules($format = "json", $stringEncode = true)
+    public function rules($format = "json", $stringEncode = false)
     {
         $clientRules = [];
         $clientMessages = [];
         $implicitRules = [];
-        foreach ($this->schema->getSchema() as $fieldName => $field) {
+        foreach ($this->schema->all() as $fieldName => $field) {
             $clientRules[$fieldName] = [];
 
             if (isset($field['validators'])) {
@@ -38,7 +36,7 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
                 foreach ($validators as $validatorName => $validator) {
 
                     // Skip messages that are for server-side use only
-                    if (isset($validator['domain']) && $validator['domain'] == "server") {
+                    if (isset($validator['domain']) && $validator['domain'] == 'server') {
                         continue;
                     }
 
@@ -46,7 +44,7 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
                     $clientRules[$fieldName] = array_merge($clientRules[$fieldName], $newRules);
                     // Message
                     if (isset($validator['message'])) {
-                        $validator = array_merge(["self" => $fieldName], $validator);
+                        $validator = array_merge(['self' => $fieldName], $validator);
                         if (!isset($clientMessages[$fieldName])) {
                             $clientMessages[$fieldName] = [];
                         }
@@ -60,14 +58,15 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
             }
         }
         $result = [
-            "rules" => $clientRules,
-            "messages" => $clientMessages
+            'rules' => $clientRules,
+            'messages' => $clientMessages
         ];
 
-        if ($stringEncode)
+        if ($stringEncode) {
             return json_encode($result, JSON_PRETTY_PRINT);
-        else
+        } else {
             return $result;
+        }
     }
 
     /**
@@ -77,7 +76,7 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
      * @param string $validatorName
      * @param string[] $validator
      */
-    private function transformValidator($fieldName, $validatorName, $validator)
+    private function transformValidator($fieldName, $validatorName, array $validator)
     {
         $transformedValidatorJson = [];
         switch ($validatorName) {

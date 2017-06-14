@@ -3,7 +3,6 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @copyright Copyright (c) 2013-2017 Alexander Weissman
  * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
  */
 namespace UserFrosting\Fortress\Adapter;
@@ -13,8 +12,7 @@ namespace UserFrosting\Fortress\Adapter;
  *
  * Loads validation rules from a schema and generates client-side rules compatible with the [FormValidation](http://formvalidation.io) JS plugin.
  *
- * @author Alex Weissman
- * @link https://alexanderweissman.com
+ * @author Alex Weissman (https://alexanderweissman.com)
  */
 class FormValidationAdapter extends ClientSideValidationAdapter
 {
@@ -172,7 +170,7 @@ class FormValidationAdapter extends ClientSideValidationAdapter
      * @param string $validatorName
      * @param string[] $validator
      */
-    private function transformValidator($fieldName, $validatorName, $validator)
+    private function transformValidator($fieldName, $validatorName, array $validator)
     {
         $params = [];
         // Message

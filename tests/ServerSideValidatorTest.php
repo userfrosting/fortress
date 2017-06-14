@@ -1,26 +1,17 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use UserFrosting\Fortress\RequestSchema;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Fortress\ServerSideValidator;
 use UserFrosting\I18n\MessageTranslator;
-use UserFrosting\Support\Repository\Loader\YamlFileLoader;
+
 
 class ServerSideValidatorTest extends TestCase
 {
-    protected $basePath;
-
     protected $translator;
     
     public function setUp()
     {
-        $this->basePath = __DIR__ . '/data';
-
-        // Set up loader and schema
-        $loader = new YamlFileLoader($this->basePath . '/register.yaml');
-        $schema = new RequestSchemaRepository($loader->load());
-
         // Create a message translator        
         $this->translator = new MessageTranslator();
     }

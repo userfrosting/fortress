@@ -3,23 +3,24 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @copyright Copyright (c) 2013-2017 Alexander Weissman
  * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
  */
 namespace UserFrosting\Fortress\Adapter;
+
+use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
+use UserFrosting\I18n\MessageTranslator;
 
 /**
  * ClientSideValidationAdapter Class
  *
  * Loads validation rules from a schema and generates client-side rules compatible with a particular client-side (usually Javascript) plugin.
  *
- * @author Alex Weissman
- * @link https://alexanderweissman.com
+ * @author Alex Weissman (https://alexanderweissman.com)
  */
 abstract class ClientSideValidationAdapter
 {
     /**
-     * @var RequestSchema
+     * @var RequestSchemaInterface
      */
     protected $schema;
 
@@ -31,10 +32,10 @@ abstract class ClientSideValidationAdapter
     /**
      * Create a new client-side validator.
      *
-     * @param RequestSchema $schema  A RequestSchema object, containing the validation rules.
+     * @param RequestSchemaInterface $schema A RequestSchema object, containing the validation rules.
      * @param MessageTranslator $translator A MessageTranslator to be used to translate message ids found in the schema.     
      */  
-    public function __construct($schema, $translator)
+    public function __construct(RequestSchemaInterface $schema, MessageTranslator $translator)
     {        
         // Set schema
         $this->setSchema($schema);
@@ -44,13 +45,14 @@ abstract class ClientSideValidationAdapter
     }
     
     /**
-     * Set the schema for this validator, as a valid RequestSchema object.
+     * Set the schema for this validator.
      *
-     * @param RequestSchema $schema A RequestSchema object, containing the validation rules.
+     * @param RequestSchemaInterface $schema A RequestSchemaInterface object, containing the validation rules.
      */
-    public function setSchema($schema)
+    public function setSchema(RequestSchemaInterface $schema)
     {
         $this->schema = $schema;
+        return $this;
     }
 
     /**
@@ -58,9 +60,10 @@ abstract class ClientSideValidationAdapter
      *
      * @param MessageTranslator $translator A MessageTranslator to be used to translate message ids found in the schema.
      */    
-    public function setTranslator($translator)
+    public function setTranslator(MessageTranslator $translator)
     {
         $this->translator = $translator;
+        return $this;
     }
     
     /**
