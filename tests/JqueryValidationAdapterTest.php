@@ -1,9 +1,10 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Fortress\Adapter\JqueryValidationAdapter;
+use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\I18n\MessageTranslator;
+use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 
 class JqueryValidationAdapterTest extends TestCase
 {
@@ -780,5 +781,290 @@ class JqueryValidationAdapterTest extends TestCase
             ],
             'messages' => []
         ], $result);
+    }
+
+    public function testManyRules()
+    {
+        // Arrange
+        $schema = new RequestSchemaRepository(array (
+            'user_name' => 
+            array (
+              'validators' => 
+              array (
+                'length' => 
+                array (
+                  'min' => 1,
+                  'max' => 50,
+                  'message' => 'ACCOUNT_USER_CHAR_LIMIT',
+                ),
+                'no_leading_whitespace' => 
+                array (
+                  'message' => "'{{self}}' must not contain leading whitespace.",
+                ),
+                'no_trailing_whitespace' => 
+                array (
+                  'message' => "'{{self}}' must not contain trailing whitespace.",
+                ),
+                'required' => 
+                array (
+                  'message' => 'ACCOUNT_SPECIFY_USERNAME',
+                ),
+                'username' => 
+                array (
+                  'message' => "'{{self}}' must be a valid username.",
+                ),
+              ),
+            ),
+            'display_name' => 
+            array (
+              'validators' => 
+              array (
+                'length' => 
+                array (
+                  'min' => 1,
+                  'max' => 50,
+                  'message' => 'ACCOUNT_DISPLAY_CHAR_LIMIT',
+                ),
+                'required' => 
+                array (
+                  'message' => 'ACCOUNT_SPECIFY_DISPLAY_NAME',
+                ),
+              ),
+            ),
+            'secret' => 
+            array (
+              'validators' => 
+              array (
+                'length' => 
+                array (
+                  'min' => 1,
+                  'max' => 100,
+                  'message' => 'Secret must be between {{ min }} and {{ max }} characters long.',
+                  'domain' => 'client',
+                ),
+                'numeric' => 
+                array (
+                ),
+                'required' => 
+                array (
+                  'message' => 'Secret must be specified.',
+                  'domain' => 'server',
+                ),
+              ),
+            ),
+            'puppies' => 
+            array (
+              'validators' => 
+              array (
+                'member_of' => 
+                array (
+                  'values' => 
+                  array (
+                    0 => '0',
+                    1 => '1',
+                  ),
+                  'message' => "The value for '{{self}}' must be '0' or '1'.",
+                ),
+              ),
+              'transformations' => 
+              array (
+                0 => 'purify',
+                1 => 'trim',
+              ),
+            ),
+            'phone' => 
+            array (
+              'validators' => 
+              array (
+                'telephone' => 
+                array (
+                  'message' => "The value for '{{self}}' must be a valid telephone number.",
+                ),
+              ),
+            ),
+            'email' => 
+            array (
+              'validators' => 
+              array (
+                'required' => 
+                array (
+                  'message' => 'ACCOUNT_SPECIFY_EMAIL'
+                ),
+                'length' => 
+                array (
+                  'min' => 1,
+                  'max' => 100,
+                  'message' => 'ACCOUNT_EMAIL_CHAR_LIMIT'
+                ),
+                'email' => 
+                array (
+                  'message' => 'ACCOUNT_INVALID_EMAIL'
+                ),
+              )
+            ),
+            'password' => 
+            array (
+              'validators' => 
+              array (
+                'required' => 
+                array (
+                  'message' => 'ACCOUNT_SPECIFY_PASSWORD'
+                ),
+                'length' => 
+                array (
+                  'min' => 8,
+                  'max' => 50,
+                  'message' => 'ACCOUNT_PASS_CHAR_LIMIT'
+                ),
+              ),
+            ),
+            'passwordc' => 
+            array (
+              'validators' => 
+              array (
+                'required' => 
+                array (
+                  'message' => 'ACCOUNT_SPECIFY_PASSWORD'
+                ),
+                'matches' => 
+                array (
+                  'field' => 'password',
+                  'message' => 'ACCOUNT_PASS_MISMATCH'
+                ),
+                'length' => 
+                array (
+                  'min' => 8,
+                  'max' => 50,
+                  'message' => 'ACCOUNT_PASS_CHAR_LIMIT'
+                )
+              )
+            )
+        ));
+
+        // Act
+        $adapter = new JqueryValidationAdapter($schema, $this->translator);
+        $result = $adapter->rules();
+
+        $this->assertEquals(array (
+            'rules' => 
+                array (
+                  'user_name' => 
+                  array (
+                    'rangelength' => 
+                    array (
+                      0 => 1,
+                      1 => 50
+                    ),
+                    'noLeadingWhitespace' => true,
+                    'noTrailingWhitespace' => true,
+                    'required' => true,
+                    'username' => true
+                  ),
+                  'display_name' => 
+                  array (
+                    'rangelength' => 
+                    array (
+                      0 => 1,
+                      1 => 50,
+                    ),
+                    'required' => true
+                  ),
+                  'secret' => 
+                  array (
+                    'rangelength' => 
+                    array (
+                      0 => 1,
+                      1 => 100
+                    ),
+                    'number' => true
+                  ),
+                  'puppies' => 
+                  array (
+                    'memberOf' => 
+                    array (
+                      0 => '0',
+                      1 => '1'
+                    )
+                  ),
+                  'phone' => 
+                  array (
+                    'phoneUS' => true
+                  ),
+                  'email' => 
+                  array (
+                    'required' => true,
+                    'rangelength' => 
+                    array (
+                      0 => 1,
+                      1 => 100
+                    ),
+                    'email' => true
+                  ),
+                  'password' => 
+                  array (
+                    'required' => true,
+                    'rangelength' => 
+                    array (
+                      0 => 8,
+                      1 => 50
+                    )
+                  ),
+                  'passwordc' => 
+                  array (
+                    'required' => true,
+                    'matchFormField' => 'password',
+                    'rangelength' => 
+                    array (
+                      0 => 8,
+                      1 => 50
+                    )
+                  )
+                ),
+            'messages' => 
+                array (
+                  'user_name' => 
+                  array (
+                    'rangelength' => 'ACCOUNT_USER_CHAR_LIMIT',
+                    'noLeadingWhitespace' => "'user_name' must not contain leading whitespace.",
+                    'noTrailingWhitespace' => "'user_name' must not contain trailing whitespace.",
+                    'required' => 'ACCOUNT_SPECIFY_USERNAME',
+                    'username' => "'user_name' must be a valid username.",
+                  ),
+                  'display_name' => 
+                  array (
+                    'rangelength' => 'ACCOUNT_DISPLAY_CHAR_LIMIT',
+                    'required' => 'ACCOUNT_SPECIFY_DISPLAY_NAME',
+                  ),
+                  'secret' => 
+                  array (
+                    'rangelength' => 'Secret must be between 1 and 100 characters long.',
+                  ),
+                  'puppies' => 
+                  array (
+                    'memberOf' => "The value for 'puppies' must be '0' or '1'.",
+                  ),
+                  'phone' => 
+                  array (
+                    'phoneUS' => "The value for 'phone' must be a valid telephone number.",
+                  ),
+                  'email' => 
+                  array (
+                    'required' => 'ACCOUNT_SPECIFY_EMAIL',
+                    'rangelength' => 'ACCOUNT_EMAIL_CHAR_LIMIT',
+                    'email' => 'ACCOUNT_INVALID_EMAIL',
+                  ),
+                  'password' => 
+                  array (
+                    'required' => 'ACCOUNT_SPECIFY_PASSWORD',
+                    'rangelength' => 'ACCOUNT_PASS_CHAR_LIMIT',
+                  ),
+                  'passwordc' => 
+                  array (
+                    'required' => 'ACCOUNT_SPECIFY_PASSWORD',
+                    'matchFormField' => 'ACCOUNT_PASS_MISMATCH',
+                    'rangelength' => 'ACCOUNT_PASS_CHAR_LIMIT'
+                  )
+                ),
+          ), $result);
     }
 }
