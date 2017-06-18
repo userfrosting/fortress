@@ -14,8 +14,8 @@
     "require": {
         "ezyang/htmlpurifier": "4.7.0",
         "php": ">=5.6.0",
-        "userfrosting/i18n": "dev-develop",
-        "userfrosting/support": "dev-develop",
+        "userfrosting/i18n": "~4.1.0",
+        "userfrosting/support": "~4.1.0",
         "vlucas/valitron": "1.2.3"
     },
     "require-dev": {
