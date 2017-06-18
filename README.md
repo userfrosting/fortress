@@ -1,4 +1,4 @@
-# Fortress
+# Fortress 4.1
 
 [![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support)
 
@@ -23,80 +23,41 @@ Sounds simple, right?  Unfortunately, even experienced developers often slip up,
 
 Part of the problem is that this kind of filtering must be done at every point in the application where the user can submit raw data to the server.  A modern web application might accept hundreds of different types of POST requests, and it can become extremely tedious to code the rules for each request manually.  Much of this work must also be done on both the client side (for user experience) and the server side (for security).
 
-Fortress solves this problem by providing a uniform interface for validating raw user input on both the client side (in Javascript) and on the server side (in PHP) using a single unified set of rules.  All you have to do is create a **request schema**, which defines what fields you're expecting the user to submit, and [rules](https://github.com/userfrosting/wdvss) for how to handle the contents of those fields.  For example, you might want to check that an email address is well-formed.  The request schema, which is simply a JSON document, makes it easy to manipulate these rules in one place.
+Fortress solves this problem by providing a uniform interface for validating raw user input on both the client side (in Javascript) and on the server side (in PHP) using a single unified set of rules.  All you have to do is create a **request schema**, which defines what fields you're expecting the user to submit, and [rules](https://github.com/userfrosting/wdvss) for how to handle the contents of those fields.  For example, you might want to check that an email address is well-formed.  The request schema, which is simply a YAML or JSON document, makes it easy to manipulate these rules in one place.
 
 The request schema can be applied on the server side to received request data, but also be transformed to formats compatible with client-side validation libraries such as [the jQuery Validation plugin](https://jqueryvalidation.org/), making it easy to perform client- and server-side validation without having to write every rule twice.
 
 An example request schema, written using the [WDVSS standard](https://github.com/userfrosting/wdvss):
 
-**schema.json**
+**schema.yaml**
 
 ```
-{
-    "user_name" : {
-        "validators" : {
-            "length" : {
-                "min" : 1,
-                "max" : 50,
-                "message" : "ACCOUNT_USER_CHAR_LIMIT"
-            },
-            "required" : {
-                "message" : "ACCOUNT_SPECIFY_USERNAME"
-            }
-        }       
-    },    
-    "email" : {
-        "validators" : {
-            "required" : {
-                "message" : "ACCOUNT_SPECIFY_EMAIL"
-            },
-            "length" : {
-                "min" : 1,
-                "max" : 150,
-                "message" : "ACCOUNT_EMAIL_CHAR_LIMIT"
-            },
-            "email" : {
-                "message" : "ACCOUNT_INVALID_EMAIL"
-            }
-        }
-    },
-    "message" : {
-        "default" : "My message", 
-        "transformations" : ["trim"]
-    },
-    "password" : {
-        "validators" : {
-            "required" : {
-                "message" : "ACCOUNT_SPECIFY_PASSWORD"
-            },
-            "matches" : {
-                "field" : "passwordc",
-                "message" : "ACCOUNT_PASS_MISMATCH"
-            },            
-            "length" : {
-                "min" : 8,
-                "max" : 50,
-                "message" : "ACCOUNT_PASS_CHAR_LIMIT"
-            }
-        } 
-    },
-    "passwordc" : {
-        "validators" : {
-            "required" : {
-                "message" : "ACCOUNT_SPECIFY_PASSWORD"
-            },
-            "matches" : {
-                "field" : "password",
-                "message" : "ACCOUNT_PASS_MISMATCH"
-            },
-            "length" : {
-                "min" : 8,
-                "max" : 50,
-                "message" : "ACCOUNT_PASS_CHAR_LIMIT"
-            }
-        }  
-    }
-}
+name: 
+    validators: 
+        length: 
+            min: 1
+            max: 200
+            message: Please enter a name between 1 and 200 characters.
+        required : 
+            message : Please specify your name.
+
+email: 
+    validators: 
+        required: 
+            message: Please specify your email address.
+
+        length: 
+            min: 1
+            max: 150
+            message: Please enter an email address between 1 and 150 characters.
+
+        email: 
+            message : That does not appear to be a valid email address.
+
+message: 
+    validators: 
+        required: 
+            message: Please enter a message
 ```
 
 ## Dependencies
@@ -104,6 +65,9 @@ An example request schema, written using the [WDVSS standard](https://github.com
 - PHP 5.6+
 - [Valitron (server-side validation)](https://github.com/vlucas/valitron)
 - [HTML Purifier](https://github.com/ezyang/htmlpurifier)
+- [Symfony YAML Parser](http://symfony.com/doc/current/components/yaml.html)
+- userfrosting/i18n
+- userfrosting/support
 
 ## Installation
 
@@ -116,34 +80,33 @@ An example request schema, written using the [WDVSS standard](https://github.com
 {
     "require": {
         "php": ">=5.6.0",
-        "userfrosting/fortress": "^4.0.0"
+        "userfrosting/fortress": "^4.1.0"
     }
 }
 ```
 
 and running `composer install`.
 
-3. Include the `vendor/autoload.php` file in your project.  For an example of how this can be done, see `fortress/config-fortress.php`.
+3. Include the `vendor/autoload.php` file in your project:
+
+```
+require dirname(__DIR__) . '/vendor/autoload.php';
+```
 
 ## Usage
 
-### Translator object
-
-Fortress requires a `MessageTranslator` (see [i18n](https://github.com/userfrosting/i18n)) object to translate message keys that may appear in rules:
-
-```
-$translator = new \UserFrosting\I18n\MessageTranslator();
-$translator->setPaths("locale/");
-$translator->loadLocaleFiles("en_US");
-```
-
 ### Request schema
 
-Then, you can load a JSON schema file containing the rules.  For example, the `schema.json` file we demonstrated above:
+To read a YAML or JSON schema, use a `YamlFileLoader`:
 
 ```
-// Load the request schema
-$schema = new UserFrosting\Fortress\RequestSchema("schema/forms/register.json");
+$loader = new \UserFrosting\Support\Repository\Loader\YamlFileLoader('schema/forms/contact.yaml');
+```
+
+To use it, it must be read and loaded into a `RequestSchemaRepository` object:
+
+```
+$schema = new \UserFrosting\RequestSchema\RequestSchemaRepository($loader->load());
 ```
 
 You can add additional validation rules to a schema at runtime, if you wish:
@@ -172,7 +135,6 @@ The data transformer performs the following tasks:
 2. Perform a series of transformations on the input data.  For example, `trim` or `purify`.
 3. Set any default values for fields in the schema which are not present in the input array.
 
-
 ```
 $post = [
     "puppies" => "<script>I'm definitely really a puppy  </script>0  ",
@@ -192,7 +154,18 @@ echo "</pre>";
 
 ### Server-side data validation
 
-When processing a POST request, for example, you should create a `ServerSideValidator` object with the schema.  Then, call `validate` on the input array.  `validate` will return false if any of the rules are failed.  Call `errors` to get the list of generated error messages.  You might want to store these error messages to a flash messaging system so they can be shown to the user.
+To process an array of user input, create a `ServerSideValidator` object with the schema and a translator object.
+
+### Translator object
+
+Fortress requires a `MessageTranslator` (see [i18n](https://github.com/userfrosting/i18n)) object to translate message keys that may appear in rules:
+
+```
+$localeLoader = new \UserFrosting\Support\Loader\ArrayFileLoader('locales/en_US/translations.php');
+$translator = new \UserFrosting\I18n\MessageTranslator($localeLoader->load());
+```
+
+Then, call `validate` on the input array.  `validate` will return false if any of the rules are failed.  Call `errors` to get the list of generated error messages.  You might want to store these error messages to a flash messaging system so they can be shown to the user.
 
 ```
 $validator = new \UserFrosting\Fortress\ServerSideValidator($schema, $translator);
@@ -229,14 +202,11 @@ In the definitions of translatable message keys, the keyword "self" is reserved 
 for a field defined as:
 
 ```
-"tagline": {
-    "validators" : {
-        "length" : {
-            "min" : 10,
-            "message" : "MIN_LENGTH"
-        }
-    }
-}
+tagline:
+  validators:
+    length:
+      min: 10
+      message: MIN_LENGTH
 ```
 
 Would translate to:
@@ -250,7 +220,7 @@ Sometimes, you only want a validation rule to be applied server-side but not in 
 Alternatively, there might be fields that appear in the form that should be validated for the sake of user experience, but are not actually used by (or even sent to) the server.
 
 To accomplish this, each validation rule can now accept a `domain` property.  Setting to "server" will have it only applied server-side.  Setting to "client" will have it only appear in the client-side rules.  If not specified, rules will be applied both server- and client-side by default.  You can also set this explicitly with the value "both". 
- 
+
 ## Testing
 
 ```
