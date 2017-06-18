@@ -3,7 +3,7 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/UserFrosting/blob/master/LICENSE.md (MIT License)
  */
 namespace UserFrosting\Fortress;
 
@@ -51,7 +51,6 @@ interface ServerSideValidatorInterface
     /**
      * Get array of error messages
      *
-     * @param  null|string $field
      * @return array|bool
      */
     public function errors();
