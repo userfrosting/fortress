@@ -106,7 +106,7 @@ $loader = new \UserFrosting\Support\Repository\Loader\YamlFileLoader('schema/for
 To use it, it must be read and loaded into a `RequestSchemaRepository` object:
 
 ```
-$schema = new \UserFrosting\RequestSchema\RequestSchemaRepository($loader->load());
+$schema = new \UserFrosting\Fortress\RequestSchema\RequestSchemaRepository($loader->load());
 ```
 
 You can add additional validation rules to a schema at runtime, if you wish:
