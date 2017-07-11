@@ -30,14 +30,16 @@ class RequestDataTransformerTest extends TestCase
         // Arrange
         $rawInput = [
             'email' => 'david@owlfancy.com',
-            'admin' => 1
+            'admin' => 1,
+            'description' => 'Some stuff to describe'
         ];
 
         // Arrange
         $schema = new RequestSchemaRepository();
 
         $schema->mergeItems(null, [
-            'email' => []
+            'email' => [],
+            'description' => null  // Replicating an input that has no validation operations
         ]);
         $this->transformer = new RequestDataTransformer($schema);
         
@@ -46,7 +48,8 @@ class RequestDataTransformerTest extends TestCase
 
         // Assert
         $transformedData = [
-            'email' => 'david@owlfancy.com'
+            'email' => 'david@owlfancy.com',
+            'description' => 'Some stuff to describe'
         ];
 
         $this->assertEquals($transformedData, $result);

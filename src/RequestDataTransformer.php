@@ -67,7 +67,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
         $transformedData = [];
         foreach ($data as $name => $value) {
             // Handle values not listed in the schema
-            if (!isset($schemaFields[$name])) {
+            if (!array_key_exists($name,$schemaFields)) {
                 switch ($onUnexpectedVar) {
                     case 'allow' : $transformedData[$name] = $value; break;
                     case 'error' :
