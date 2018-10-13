@@ -1,24 +1,29 @@
 {
-    "name": "alexweissman/fortress",
+    "name": "userfrosting/fortress",
     "type": "library",
-    "description": "A PHP library for sanitizing, validating, and canonicalizing HTTP request data against a JSON Schema",
-    "keywords": ["php validation", "php sanitization"],
-    "homepage": "https://github.com/alexweissman/fortress",
+    "description": "A PHP library for whitelisting, validating, and canonicalizing HTTP request data against a JSON Schema",
+    "keywords": ["userfrosting", "transformation", "validation", "whitelisting"],
+    "homepage": "https://github.com/userfrosting/fortress",
     "license" : "MIT",
     "authors" : [
         {
             "name": "Alexander Weissman",
-            "homepage": "http://alexanderweissman.com"
+            "homepage": "https://alexanderweissman.com"
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "ezyang/htmlpurifier" : ">=4.6.0",
-        "vlucas/valitron" : "1.2.3"
+        "ezyang/htmlpurifier": "4.7.0",
+        "php": ">=5.6.0",
+        "userfrosting/i18n": "~4.1.0",
+        "userfrosting/support": "~4.1.0",
+        "vlucas/valitron": "1.2.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
     },
     "autoload": {
-        "classmap" : [
-            "fortress/"
-        ]
+        "psr-4": {
+            "UserFrosting\\Fortress\\": "src"
+        }
     }
 }

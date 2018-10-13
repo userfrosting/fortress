@@ -1,0 +1,9 @@
+email: 
+    validators: 
+        required: 
+            message: Please specify your email address.
+
+message: 
+    validators: 
+        required: 
+            message: Please enter a message
