@@ -29,7 +29,10 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
         $clientRules = [];
         $clientMessages = [];
         $implicitRules = [];
+        $fieldName = '';
+        $fieldNameOnly = '';
         foreach ($this->schema->all() as $fieldNameO => $field) {
+            $fieldNameOnly = $fieldNameO;
             if ($arrayPrefix != '') {
                 $fieldName = $arrayPrefix . "[" . $fieldNameO . "]";
             } else {
@@ -50,7 +53,7 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
                     $clientRules[$fieldName] = array_merge($clientRules[$fieldName], $newRules);
                     // Message
                     if (isset($validator['message'])) {
-                        $validator = array_merge(['self' => $fieldName], $validator);
+                        $validator = array_merge(['self' => $fieldNameOnly], $validator);
                         if (!isset($clientMessages[$fieldName])) {
                             $clientMessages[$fieldName] = [];
                         }
