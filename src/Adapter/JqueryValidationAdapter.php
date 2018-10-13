@@ -1,4 +1,5 @@
 <?php
+
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
@@ -23,12 +24,17 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
      * @param boolean $stringEncode Specify whether to return a PHP array, or a JSON-encoded string.
      * @return string|array Returns either the array of rules, or a JSON-encoded representation of that array.
      */
-    public function rules($format = "json", $stringEncode = false)
+    public function rules($format = "json", $stringEncode = false, $arrayPrefix = '')
     {
         $clientRules = [];
         $clientMessages = [];
         $implicitRules = [];
-        foreach ($this->schema->all() as $fieldName => $field) {
+        foreach ($this->schema->all() as $fieldNameO => $field) {
+            if ($arrayPrefix != '') {
+                $fieldName = $arrayPrefix . "[" . $fieldNameO . "]";
+            } else {
+                $fieldName = $fieldNameO;
+            }
             $clientRules[$fieldName] = [];
 
             if (isset($field['validators'])) {

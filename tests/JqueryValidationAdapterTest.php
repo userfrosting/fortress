@@ -9,7 +9,7 @@ use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 class JqueryValidationAdapterTest extends TestCase
 {
     protected $translator;
-    
+
     public function setUp()
     {
         // Create a message translator        
@@ -755,6 +755,23 @@ class JqueryValidationAdapterTest extends TestCase
                 ]
             ]
         ], $result);
+
+        // Srinvas Nukala : Adding Test with Form array prefix 'coolform1'
+        $result1 = $adapter->rules('json', false, 'coolform1');
+
+        $this->assertEquals([
+            'rules' => [
+                'coolform1[plumage]' => [
+                    'required' => true
+                ]
+            ],
+            'messages' => [
+                'coolform1[plumage]' => [
+                    'required' => "Are you sure you don't want to show us your plumage?"
+                ]
+            ]
+        ], $result1);
+
     }
 
     public function testDomainRulesServerOnly()
@@ -781,163 +798,172 @@ class JqueryValidationAdapterTest extends TestCase
             ],
             'messages' => []
         ], $result);
+
+        // Srinvas Nukala : Adding Test with Form array prefix 'coolform1'
+        $result1 = $adapter->rules('json', false, 'coolform1');
+
+        $this->assertEquals([
+            'rules' => [
+                'coolform1[plumage]' => []
+            ],
+            'messages' => []
+        ], $result1);
     }
 
     public function testManyRules()
     {
         // Arrange
-        $schema = new RequestSchemaRepository(array (
-            'user_name' => 
-            array (
-              'validators' => 
-              array (
-                'length' => 
-                array (
-                  'min' => 1,
-                  'max' => 50,
-                  'message' => 'ACCOUNT_USER_CHAR_LIMIT',
+        $schema = new RequestSchemaRepository(array(
+            'user_name' =>
+                array(
+                'validators' =>
+                    array(
+                    'length' =>
+                        array(
+                        'min' => 1,
+                        'max' => 50,
+                        'message' => 'ACCOUNT_USER_CHAR_LIMIT',
+                    ),
+                    'no_leading_whitespace' =>
+                        array(
+                        'message' => "'{{self}}' must not contain leading whitespace.",
+                    ),
+                    'no_trailing_whitespace' =>
+                        array(
+                        'message' => "'{{self}}' must not contain trailing whitespace.",
+                    ),
+                    'required' =>
+                        array(
+                        'message' => 'ACCOUNT_SPECIFY_USERNAME',
+                    ),
+                    'username' =>
+                        array(
+                        'message' => "'{{self}}' must be a valid username.",
+                    ),
                 ),
-                'no_leading_whitespace' => 
-                array (
-                  'message' => "'{{self}}' must not contain leading whitespace.",
-                ),
-                'no_trailing_whitespace' => 
-                array (
-                  'message' => "'{{self}}' must not contain trailing whitespace.",
-                ),
-                'required' => 
-                array (
-                  'message' => 'ACCOUNT_SPECIFY_USERNAME',
-                ),
-                'username' => 
-                array (
-                  'message' => "'{{self}}' must be a valid username.",
-                ),
-              ),
             ),
-            'display_name' => 
-            array (
-              'validators' => 
-              array (
-                'length' => 
-                array (
-                  'min' => 1,
-                  'max' => 50,
-                  'message' => 'ACCOUNT_DISPLAY_CHAR_LIMIT',
+            'display_name' =>
+                array(
+                'validators' =>
+                    array(
+                    'length' =>
+                        array(
+                        'min' => 1,
+                        'max' => 50,
+                        'message' => 'ACCOUNT_DISPLAY_CHAR_LIMIT',
+                    ),
+                    'required' =>
+                        array(
+                        'message' => 'ACCOUNT_SPECIFY_DISPLAY_NAME',
+                    ),
                 ),
-                'required' => 
-                array (
-                  'message' => 'ACCOUNT_SPECIFY_DISPLAY_NAME',
-                ),
-              ),
             ),
-            'secret' => 
-            array (
-              'validators' => 
-              array (
-                'length' => 
-                array (
-                  'min' => 1,
-                  'max' => 100,
-                  'message' => 'Secret must be between {{ min }} and {{ max }} characters long.',
-                  'domain' => 'client',
+            'secret' =>
+                array(
+                'validators' =>
+                    array(
+                    'length' =>
+                        array(
+                        'min' => 1,
+                        'max' => 100,
+                        'message' => 'Secret must be between {{ min }} and {{ max }} characters long.',
+                        'domain' => 'client',
+                    ),
+                    'numeric' =>
+                        array(),
+                    'required' =>
+                        array(
+                        'message' => 'Secret must be specified.',
+                        'domain' => 'server',
+                    ),
                 ),
-                'numeric' => 
-                array (
-                ),
-                'required' => 
-                array (
-                  'message' => 'Secret must be specified.',
-                  'domain' => 'server',
-                ),
-              ),
             ),
-            'puppies' => 
-            array (
-              'validators' => 
-              array (
-                'member_of' => 
-                array (
-                  'values' => 
-                  array (
-                    0 => '0',
-                    1 => '1',
-                  ),
-                  'message' => "The value for '{{self}}' must be '0' or '1'.",
+            'puppies' =>
+                array(
+                'validators' =>
+                    array(
+                    'member_of' =>
+                        array(
+                        'values' =>
+                            array(
+                            0 => '0',
+                            1 => '1',
+                        ),
+                        'message' => "The value for '{{self}}' must be '0' or '1'.",
+                    ),
                 ),
-              ),
-              'transformations' => 
-              array (
-                0 => 'purify',
-                1 => 'trim',
-              ),
+                'transformations' =>
+                    array(
+                    0 => 'purify',
+                    1 => 'trim',
+                ),
             ),
-            'phone' => 
-            array (
-              'validators' => 
-              array (
-                'telephone' => 
-                array (
-                  'message' => "The value for '{{self}}' must be a valid telephone number.",
+            'phone' =>
+                array(
+                'validators' =>
+                    array(
+                    'telephone' =>
+                        array(
+                        'message' => "The value for '{{self}}' must be a valid telephone number.",
+                    ),
                 ),
-              ),
             ),
-            'email' => 
-            array (
-              'validators' => 
-              array (
-                'required' => 
-                array (
-                  'message' => 'ACCOUNT_SPECIFY_EMAIL'
-                ),
-                'length' => 
-                array (
-                  'min' => 1,
-                  'max' => 100,
-                  'message' => 'ACCOUNT_EMAIL_CHAR_LIMIT'
-                ),
-                'email' => 
-                array (
-                  'message' => 'ACCOUNT_INVALID_EMAIL'
-                ),
-              )
-            ),
-            'password' => 
-            array (
-              'validators' => 
-              array (
-                'required' => 
-                array (
-                  'message' => 'ACCOUNT_SPECIFY_PASSWORD'
-                ),
-                'length' => 
-                array (
-                  'min' => 8,
-                  'max' => 50,
-                  'message' => 'ACCOUNT_PASS_CHAR_LIMIT'
-                ),
-              ),
-            ),
-            'passwordc' => 
-            array (
-              'validators' => 
-              array (
-                'required' => 
-                array (
-                  'message' => 'ACCOUNT_SPECIFY_PASSWORD'
-                ),
-                'matches' => 
-                array (
-                  'field' => 'password',
-                  'message' => 'ACCOUNT_PASS_MISMATCH'
-                ),
-                'length' => 
-                array (
-                  'min' => 8,
-                  'max' => 50,
-                  'message' => 'ACCOUNT_PASS_CHAR_LIMIT'
+            'email' =>
+                array(
+                'validators' =>
+                    array(
+                    'required' =>
+                        array(
+                        'message' => 'ACCOUNT_SPECIFY_EMAIL'
+                    ),
+                    'length' =>
+                        array(
+                        'min' => 1,
+                        'max' => 100,
+                        'message' => 'ACCOUNT_EMAIL_CHAR_LIMIT'
+                    ),
+                    'email' =>
+                        array(
+                        'message' => 'ACCOUNT_INVALID_EMAIL'
+                    ),
                 )
-              )
+            ),
+            'password' =>
+                array(
+                'validators' =>
+                    array(
+                    'required' =>
+                        array(
+                        'message' => 'ACCOUNT_SPECIFY_PASSWORD'
+                    ),
+                    'length' =>
+                        array(
+                        'min' => 8,
+                        'max' => 50,
+                        'message' => 'ACCOUNT_PASS_CHAR_LIMIT'
+                    ),
+                ),
+            ),
+            'passwordc' =>
+                array(
+                'validators' =>
+                    array(
+                    'required' =>
+                        array(
+                        'message' => 'ACCOUNT_SPECIFY_PASSWORD'
+                    ),
+                    'matches' =>
+                        array(
+                        'field' => 'password',
+                        'message' => 'ACCOUNT_PASS_MISMATCH'
+                    ),
+                    'length' =>
+                        array(
+                        'min' => 8,
+                        'max' => 50,
+                        'message' => 'ACCOUNT_PASS_CHAR_LIMIT'
+                    )
+                )
             )
         ));
 
@@ -945,126 +971,254 @@ class JqueryValidationAdapterTest extends TestCase
         $adapter = new JqueryValidationAdapter($schema, $this->translator);
         $result = $adapter->rules();
 
-        $this->assertEquals(array (
-            'rules' => 
-                array (
-                  'user_name' => 
-                  array (
-                    'rangelength' => 
-                    array (
-                      0 => 1,
-                      1 => 50
+        $this->assertEquals(array(
+            'rules' =>
+                array(
+                'user_name' =>
+                    array(
+                    'rangelength' =>
+                        array(
+                        0 => 1,
+                        1 => 50
                     ),
                     'noLeadingWhitespace' => true,
                     'noTrailingWhitespace' => true,
                     'required' => true,
                     'username' => true
-                  ),
-                  'display_name' => 
-                  array (
-                    'rangelength' => 
-                    array (
-                      0 => 1,
-                      1 => 50,
+                ),
+                'display_name' =>
+                    array(
+                    'rangelength' =>
+                        array(
+                        0 => 1,
+                        1 => 50,
                     ),
                     'required' => true
-                  ),
-                  'secret' => 
-                  array (
-                    'rangelength' => 
-                    array (
-                      0 => 1,
-                      1 => 100
+                ),
+                'secret' =>
+                    array(
+                    'rangelength' =>
+                        array(
+                        0 => 1,
+                        1 => 100
                     ),
                     'number' => true
-                  ),
-                  'puppies' => 
-                  array (
-                    'memberOf' => 
-                    array (
-                      0 => '0',
-                      1 => '1'
+                ),
+                'puppies' =>
+                    array(
+                    'memberOf' =>
+                        array(
+                        0 => '0',
+                        1 => '1'
                     )
-                  ),
-                  'phone' => 
-                  array (
+                ),
+                'phone' =>
+                    array(
                     'phoneUS' => true
-                  ),
-                  'email' => 
-                  array (
+                ),
+                'email' =>
+                    array(
                     'required' => true,
-                    'rangelength' => 
-                    array (
-                      0 => 1,
-                      1 => 100
+                    'rangelength' =>
+                        array(
+                        0 => 1,
+                        1 => 100
                     ),
                     'email' => true
-                  ),
-                  'password' => 
-                  array (
+                ),
+                'password' =>
+                    array(
                     'required' => true,
-                    'rangelength' => 
-                    array (
-                      0 => 8,
-                      1 => 50
+                    'rangelength' =>
+                        array(
+                        0 => 8,
+                        1 => 50
                     )
-                  ),
-                  'passwordc' => 
-                  array (
+                ),
+                'passwordc' =>
+                    array(
                     'required' => true,
                     'matchFormField' => 'password',
-                    'rangelength' => 
-                    array (
-                      0 => 8,
-                      1 => 50
+                    'rangelength' =>
+                        array(
+                        0 => 8,
+                        1 => 50
                     )
-                  )
-                ),
-            'messages' => 
-                array (
-                  'user_name' => 
-                  array (
+                )
+            ),
+            'messages' =>
+                array(
+                'user_name' =>
+                    array(
                     'rangelength' => 'ACCOUNT_USER_CHAR_LIMIT',
                     'noLeadingWhitespace' => "'user_name' must not contain leading whitespace.",
                     'noTrailingWhitespace' => "'user_name' must not contain trailing whitespace.",
                     'required' => 'ACCOUNT_SPECIFY_USERNAME',
                     'username' => "'user_name' must be a valid username.",
-                  ),
-                  'display_name' => 
-                  array (
+                ),
+                'display_name' =>
+                    array(
                     'rangelength' => 'ACCOUNT_DISPLAY_CHAR_LIMIT',
                     'required' => 'ACCOUNT_SPECIFY_DISPLAY_NAME',
-                  ),
-                  'secret' => 
-                  array (
+                ),
+                'secret' =>
+                    array(
                     'rangelength' => 'Secret must be between 1 and 100 characters long.',
-                  ),
-                  'puppies' => 
-                  array (
+                ),
+                'puppies' =>
+                    array(
                     'memberOf' => "The value for 'puppies' must be '0' or '1'.",
-                  ),
-                  'phone' => 
-                  array (
+                ),
+                'phone' =>
+                    array(
                     'phoneUS' => "The value for 'phone' must be a valid telephone number.",
-                  ),
-                  'email' => 
-                  array (
+                ),
+                'email' =>
+                    array(
                     'required' => 'ACCOUNT_SPECIFY_EMAIL',
                     'rangelength' => 'ACCOUNT_EMAIL_CHAR_LIMIT',
                     'email' => 'ACCOUNT_INVALID_EMAIL',
-                  ),
-                  'password' => 
-                  array (
+                ),
+                'password' =>
+                    array(
                     'required' => 'ACCOUNT_SPECIFY_PASSWORD',
                     'rangelength' => 'ACCOUNT_PASS_CHAR_LIMIT',
-                  ),
-                  'passwordc' => 
-                  array (
+                ),
+                'passwordc' =>
+                    array(
                     'required' => 'ACCOUNT_SPECIFY_PASSWORD',
                     'matchFormField' => 'ACCOUNT_PASS_MISMATCH',
                     'rangelength' => 'ACCOUNT_PASS_CHAR_LIMIT'
-                  )
+                )
+            ),
+        ), $result);
+
+
+        // Srinvas Nukala : Adding Test with Form array prefix 'coolform1'
+        $result1 = $adapter->rules('json', false, 'coolform1');
+
+        $this->assertEquals(array(
+            'rules' =>
+                array(
+                'coolform1[user_name]' =>
+                    array(
+                    'rangelength' =>
+                        array(
+                        0 => 1,
+                        1 => 50
+                    ),
+                    'noLeadingWhitespace' => true,
+                    'noTrailingWhitespace' => true,
+                    'required' => true,
+                    'username' => true
                 ),
-          ), $result);
+                'coolform1[display_name]' =>
+                    array(
+                    'rangelength' =>
+                        array(
+                        0 => 1,
+                        1 => 50,
+                    ),
+                    'required' => true
+                ),
+                'coolform1[secret]' =>
+                    array(
+                    'rangelength' =>
+                        array(
+                        0 => 1,
+                        1 => 100
+                    ),
+                    'number' => true
+                ),
+                'coolform1[puppies]' =>
+                    array(
+                    'memberOf' =>
+                        array(
+                        0 => '0',
+                        1 => '1'
+                    )
+                ),
+                'coolform1[phone]' =>
+                    array(
+                    'phoneUS' => true
+                ),
+                'coolform1[email]' =>
+                    array(
+                    'required' => true,
+                    'rangelength' =>
+                        array(
+                        0 => 1,
+                        1 => 100
+                    ),
+                    'email' => true
+                ),
+                'coolform1[password]' =>
+                    array(
+                    'required' => true,
+                    'rangelength' =>
+                        array(
+                        0 => 8,
+                        1 => 50
+                    )
+                ),
+                'coolform1[passwordc]' =>
+                    array(
+                    'required' => true,
+                    'matchFormField' => 'password',
+                    'rangelength' =>
+                        array(
+                        0 => 8,
+                        1 => 50
+                    )
+                )
+            ),
+            'messages' =>
+                array(
+                'coolform1[user_name]' =>
+                    array(
+                    'rangelength' => 'ACCOUNT_USER_CHAR_LIMIT',
+                    'noLeadingWhitespace' => "'user_name' must not contain leading whitespace.",
+                    'noTrailingWhitespace' => "'user_name' must not contain trailing whitespace.",
+                    'required' => 'ACCOUNT_SPECIFY_USERNAME',
+                    'username' => "'user_name' must be a valid username.",
+                ),
+                'coolform1[display_name]' =>
+                    array(
+                    'rangelength' => 'ACCOUNT_DISPLAY_CHAR_LIMIT',
+                    'required' => 'ACCOUNT_SPECIFY_DISPLAY_NAME',
+                ),
+                'coolform1[secret]' =>
+                    array(
+                    'rangelength' => 'Secret must be between 1 and 100 characters long.',
+                ),
+                'coolform1[puppies]' =>
+                    array(
+                    'memberOf' => "The value for 'puppies' must be '0' or '1'.",
+                ),
+                'coolform1[phone]' =>
+                    array(
+                    'phoneUS' => "The value for 'phone' must be a valid telephone number.",
+                ),
+                'coolform1[email]' =>
+                    array(
+                    'required' => 'ACCOUNT_SPECIFY_EMAIL',
+                    'rangelength' => 'ACCOUNT_EMAIL_CHAR_LIMIT',
+                    'email' => 'ACCOUNT_INVALID_EMAIL',
+                ),
+                'coolform1[password]' =>
+                    array(
+                    'required' => 'ACCOUNT_SPECIFY_PASSWORD',
+                    'rangelength' => 'ACCOUNT_PASS_CHAR_LIMIT',
+                ),
+                'coolform1[passwordc]' =>
+                    array(
+                    'required' => 'ACCOUNT_SPECIFY_PASSWORD',
+                    'matchFormField' => 'ACCOUNT_PASS_MISMATCH',
+                    'rangelength' => 'ACCOUNT_PASS_CHAR_LIMIT'
+                )
+            ),
+        ), $result1);
+
+
     }
 }
