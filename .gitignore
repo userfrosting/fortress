@@ -3,3 +3,4 @@ vendor/
 *.komodoproject
 composer.lock
 test/cache
+.php_cs.cache
