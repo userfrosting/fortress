@@ -3,8 +3,9 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/LICENSE.md (MIT License)
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Fortress;
 
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
@@ -51,7 +52,7 @@ class RequestSchema extends RequestSchemaRepository
 
     /**
      * @deprecated since 4.1
-     * @param string $path Path to the schema file.
+     * @param  string    $path Path to the schema file.
      * @throws Exception The file does not exist or is not a valid format.
      */
     public function loadSchema()

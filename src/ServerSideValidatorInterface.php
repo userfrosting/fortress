@@ -3,8 +3,9 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/LICENSE.md (MIT License)
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Fortress;
 
 use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
@@ -36,8 +37,8 @@ interface ServerSideValidatorInterface
     /**
      * Validate the specified data against the schema rules.
      *
-     * @param array $data An array of data, mapping field names to field values.
-     * @return boolean True if the data was successfully validated, false otherwise.
+     * @param  array $data An array of data, mapping field names to field values.
+     * @return bool  True if the data was successfully validated, false otherwise.
      */
     public function validate(array $data);
 

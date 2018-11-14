@@ -3,8 +3,9 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/LICENSE.md (MIT License)
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Fortress;
 
 use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
@@ -32,8 +33,8 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
 
     /** Create a new server-side validator.
      *
-     * @param RequestSchemaInterface $schema A RequestSchemaInterface object, containing the validation rules.
-     * @param MessageTranslator $translator A MessageTranslator to be used to translate message ids found in the schema.
+     * @param RequestSchemaInterface $schema     A RequestSchemaInterface object, containing the validation rules.
+     * @param MessageTranslator      $translator A MessageTranslator to be used to translate message ids found in the schema.
      */
     public function __construct(RequestSchemaInterface $schema, MessageTranslator $translator)
     {
@@ -49,7 +50,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setSchema(RequestSchemaInterface $schema)
     {
@@ -57,7 +58,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setTranslator(MessageTranslator $translator)
     {
@@ -65,7 +66,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validate(array $data = [])
     {
@@ -75,7 +76,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * We expose this method to the public interface for testing purposes.
      */
@@ -90,7 +91,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
      * @param  string $field
      * @param  mixed  $value
      * @param  string $targetValue
-     * @param  bool $caseSensitive
+     * @param  bool   $caseSensitive
      * @return bool
      */
     protected function validateEqualsValue($field, $value, $params)
@@ -112,7 +113,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
      * @param  string $field
      * @param  mixed  $value
      * @param  string $targetValue
-     * @param  bool $caseSensitive
+     * @param  bool   $caseSensitive
      * @return bool
      */
     protected function validateNotEqualsValue($field, $value, $params)
@@ -144,6 +145,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     protected function validatePhoneUS($field, $value)
     {
         $value = preg_replace('/\s+/', '', $value);
+
         return (strlen($value) > 9) &&
             preg_match('/^(\+?1-?)?(\([2-9]([02-9]\d|1[02-9])\)|[2-9]([02-9]\d|1[02-9]))-?[2-9]([02-9]\d|1[02-9])-?\d{4}$/', $value);
     }
@@ -163,14 +165,14 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     /**
      * Add a rule to the validator, along with a specified error message if that rule is failed by the data.
      *
-     * @param string $rule The name of the validation rule.
+     * @param string $rule       The name of the validation rule.
      * @param string $messageSet The message to display when validation against this rule fails.
      */
     private function ruleWithMessage($rule, $messageSet)
     {
         // Weird way to adapt with Valitron's funky interface
         $params = array_merge([$rule], array_slice(func_get_args(), 2));
-        call_user_func_array([$this,"rule"], $params);
+        call_user_func_array([$this, 'rule'], $params);
         // Set message.  Use Valitron's default message if not specified in the schema.
         if (!$messageSet) {
             $messageSet = "'" . $params[1] . "' " . vsprintf(static::$_ruleMessages[$rule], array_slice(func_get_args(), 3));
@@ -191,108 +193,108 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
             $validators = $field['validators'];
             foreach ($validators as $validatorName => $validator) {
                 // Skip messages that are for client-side use only
-                if (isset($validator['domain']) && $validator['domain'] == "client") {
+                if (isset($validator['domain']) && $validator['domain'] == 'client') {
                     continue;
                 }
 
                 // Generate translated message
                 if (isset($validator['message'])) {
-                    $params = array_merge(["self" => $fieldName], $validator);
+                    $params = array_merge(['self' => $fieldName], $validator);
                     $messageSet = $this->translator->translate($validator['message'], $params);
                 } else {
                     $messageSet = null;
                 }
 
                 // Array validator
-                if ($validatorName == "array") {
+                if ($validatorName == 'array') {
                     // For now, just check that it is an array.  Really we need a new validation rule here.
-                    $this->ruleWithMessage("array", $messageSet, $fieldName);
+                    $this->ruleWithMessage('array', $messageSet, $fieldName);
                 }
                 // Email validator
-                if ($validatorName == "email") {
-                    $this->ruleWithMessage("email", $messageSet, $fieldName);
+                if ($validatorName == 'email') {
+                    $this->ruleWithMessage('email', $messageSet, $fieldName);
                 }
                 // Equals validator
-                if ($validatorName == "equals") {
-                    $this->ruleWithMessage("equalsValue", $messageSet, $fieldName, $validator['value'], $validator['caseSensitive']);
+                if ($validatorName == 'equals') {
+                    $this->ruleWithMessage('equalsValue', $messageSet, $fieldName, $validator['value'], $validator['caseSensitive']);
                 }
                 // Integer validator
-                if ($validatorName == "integer") {
-                    $this->ruleWithMessage("integer", $messageSet, $fieldName);
+                if ($validatorName == 'integer') {
+                    $this->ruleWithMessage('integer', $messageSet, $fieldName);
                 }
                 // String length validator
-                if ($validatorName == "length") {
+                if ($validatorName == 'length') {
                     if (isset($validator['min']) && isset($validator['max'])) {
-                        $this->ruleWithMessage("lengthBetween", $messageSet, $fieldName, $validator['min'], $validator['max']);
+                        $this->ruleWithMessage('lengthBetween', $messageSet, $fieldName, $validator['min'], $validator['max']);
                     } else {
                         if (isset($validator['min'])) {
-                            $this->ruleWithMessage("lengthMin", $messageSet, $fieldName, $validator['min']);
+                            $this->ruleWithMessage('lengthMin', $messageSet, $fieldName, $validator['min']);
                         }
                         if (isset($validator['max'])) {
-                            $this->ruleWithMessage("lengthMax", $messageSet, $fieldName, $validator['max']);
+                            $this->ruleWithMessage('lengthMax', $messageSet, $fieldName, $validator['max']);
                         }
                     }
                 }
                 // Match another field
-                if ($validatorName == "matches") {
-                    $this->ruleWithMessage("equals", $messageSet, $fieldName, $validator['field']);
+                if ($validatorName == 'matches') {
+                    $this->ruleWithMessage('equals', $messageSet, $fieldName, $validator['field']);
                 }
                 // Check membership in array
-                if ($validatorName == "member_of") {
-                    $this->ruleWithMessage("in", $messageSet, $fieldName, $validator['values'], true);    // Strict comparison
+                if ($validatorName == 'member_of') {
+                    $this->ruleWithMessage('in', $messageSet, $fieldName, $validator['values'], true);    // Strict comparison
                 }
                 // No leading whitespace
-                if ($validatorName == "no_leading_whitespace") {
-                    $this->ruleWithMessage("regex", $messageSet, $fieldName, "/^\S.*$/");
+                if ($validatorName == 'no_leading_whitespace') {
+                    $this->ruleWithMessage('regex', $messageSet, $fieldName, "/^\S.*$/");
                 }
                 // No trailing whitespace
-                if ($validatorName == "no_trailing_whitespace") {
-                    $this->ruleWithMessage("regex", $messageSet, $fieldName, "/^.*\S$/");
+                if ($validatorName == 'no_trailing_whitespace') {
+                    $this->ruleWithMessage('regex', $messageSet, $fieldName, "/^.*\S$/");
                 }
                 // Negation of equals validator
-                if ($validatorName == "not_equals") {
-                    $this->ruleWithMessage("notEqualsValue", $messageSet, $fieldName, $validator['value'], $validator['caseSensitive']);
+                if ($validatorName == 'not_equals') {
+                    $this->ruleWithMessage('notEqualsValue', $messageSet, $fieldName, $validator['value'], $validator['caseSensitive']);
                 }
                 // Negation of match another field
-                if ($validatorName == "not_matches") {
-                    $this->ruleWithMessage("different", $messageSet, $fieldName, $validator['field']);
+                if ($validatorName == 'not_matches') {
+                    $this->ruleWithMessage('different', $messageSet, $fieldName, $validator['field']);
                 }
                 // Negation of membership
-                if ($validatorName == "not_member_of") {
-                    $this->ruleWithMessage("notIn", $messageSet, $fieldName, $validator['values'], true);  // Strict comparison
+                if ($validatorName == 'not_member_of') {
+                    $this->ruleWithMessage('notIn', $messageSet, $fieldName, $validator['values'], true);  // Strict comparison
                 }
                 // Numeric validator
-                if ($validatorName == "numeric") {
-                    $this->ruleWithMessage("numeric", $messageSet, $fieldName);
+                if ($validatorName == 'numeric') {
+                    $this->ruleWithMessage('numeric', $messageSet, $fieldName);
                 }
                 // Numeric range validator
-                if ($validatorName == "range") {
+                if ($validatorName == 'range') {
                     if (isset($validator['min'])) {
-                        $this->ruleWithMessage("min", $messageSet, $fieldName, $validator['min']);
+                        $this->ruleWithMessage('min', $messageSet, $fieldName, $validator['min']);
                     }
                     if (isset($validator['max'])) {
-                        $this->ruleWithMessage("max", $messageSet, $fieldName, $validator['max']);
+                        $this->ruleWithMessage('max', $messageSet, $fieldName, $validator['max']);
                     }
                 }
                 // Regex validator
-                if ($validatorName == "regex") {
-                    $this->ruleWithMessage("regex", $messageSet, $fieldName, "/" . $validator['regex'] . "/");
+                if ($validatorName == 'regex') {
+                    $this->ruleWithMessage('regex', $messageSet, $fieldName, '/' . $validator['regex'] . '/');
                 }
                 // Required validator
-                if ($validatorName == "required") {
-                    $this->ruleWithMessage("required", $messageSet, $fieldName);
+                if ($validatorName == 'required') {
+                    $this->ruleWithMessage('required', $messageSet, $fieldName);
                 }
                 // Phone validator
-                if ($validatorName == "telephone") {
-                    $this->ruleWithMessage("phoneUS", $messageSet, $fieldName);
+                if ($validatorName == 'telephone') {
+                    $this->ruleWithMessage('phoneUS', $messageSet, $fieldName);
                 }
                 // URI validator
-                if ($validatorName == "uri") {
-                    $this->ruleWithMessage("url", $messageSet, $fieldName);
+                if ($validatorName == 'uri') {
+                    $this->ruleWithMessage('url', $messageSet, $fieldName);
                 }
                 // Username
-                if ($validatorName == "username") {
-                    $this->ruleWithMessage("username", $messageSet, $fieldName);
+                if ($validatorName == 'username') {
+                    $this->ruleWithMessage('username', $messageSet, $fieldName);
                 }
             }
         }

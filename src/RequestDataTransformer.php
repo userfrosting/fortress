@@ -3,8 +3,9 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/LICENSE.md (MIT License)
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Fortress;
 
 use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
@@ -53,11 +54,12 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     public function setSchema(RequestSchemaInterface $schema)
     {
         $this->schema = $schema;
+
         return $this;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transform(array $data, $onUnexpectedVar = 'skip')
     {
@@ -69,12 +71,12 @@ class RequestDataTransformer implements RequestDataTransformerInterface
             // Handle values not listed in the schema
             if (!array_key_exists($name, $schemaFields)) {
                 switch ($onUnexpectedVar) {
-                    case 'allow' : $transformedData[$name] = $value; break;
-                    case 'error' :
+                    case 'allow': $transformedData[$name] = $value; break;
+                    case 'error':
                         $e = new BadRequestException("The field '$name' is not a valid input field.");
                         throw $e;
                         break;
-                    case 'skip' : default: continue;
+                    case 'skip': default: continue;
                 }
             } else {
                 $transformedData[$name] = $this->transformField($name, $value);
@@ -94,7 +96,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transformField($name, $value)
     {
@@ -112,8 +114,8 @@ class RequestDataTransformer implements RequestDataTransformerInterface
                 switch (strtolower($transformation)) {
                     case 'purify': $transformedValue = $this->purifier->purify($transformedValue); break;
                     case 'escape': $transformedValue = $this->escapeHtmlCharacters($transformedValue); break;
-                    case 'purge' : $transformedValue = $this->purgeHtmlCharacters($transformedValue); break;
-                    case 'trim'  : $transformedValue = $this->trim($transformedValue); break;
+                    case 'purge': $transformedValue = $this->purgeHtmlCharacters($transformedValue); break;
+                    case 'trim': $transformedValue = $this->trim($transformedValue); break;
                     default: break;
                 }
             }
@@ -125,7 +127,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     /**
      * Autodetect if a field is an array or scalar, and filter appropriately.
      *
-     * @param mixed $value
+     * @param  mixed $value
      * @return mixed
      */
     private function escapeHtmlCharacters($value)
@@ -140,7 +142,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     /**
      * Autodetect if a field is an array or scalar, and filter appropriately.
      *
-     * @param mixed $value
+     * @param  mixed $value
      * @return mixed
      */
     private function purgeHtmlCharacters($value)
@@ -155,7 +157,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     /**
      * Autodetect if a field is an array or scalar, and filter appropriately.
      *
-     * @param mixed $value
+     * @param  mixed $value
      * @return mixed
      */
     private function trim($value)

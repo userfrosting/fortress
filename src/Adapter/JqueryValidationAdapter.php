@@ -1,11 +1,11 @@
 <?php
-
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @license   https://github.com/userfrosting/fortress/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Fortress\Adapter;
 
 /**
@@ -21,10 +21,10 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
      * Generate jQuery Validation compatible rules from the specified RequestSchema, as a JSON document.
      * See [this](https://github.com/jzaefferer/jquery-validation/blob/master/demo/bootstrap/index.html#L168-L209) as an example of what this function will generate.
      *
-     * @param boolean $stringEncode Specify whether to return a PHP array, or a JSON-encoded string.
+     * @param  bool         $stringEncode Specify whether to return a PHP array, or a JSON-encoded string.
      * @return string|array Returns either the array of rules, or a JSON-encoded representation of that array.
      */
-    public function rules($format = "json", $stringEncode = false, $arrayPrefix = '')
+    public function rules($format = 'json', $stringEncode = false, $arrayPrefix = '')
     {
         $clientRules = [];
         $clientMessages = [];
@@ -34,7 +34,7 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
         foreach ($this->schema->all() as $fieldNameO => $field) {
             $fieldNameOnly = $fieldNameO;
             if ($arrayPrefix != '') {
-                $fieldName = $arrayPrefix . "[" . $fieldNameO . "]";
+                $fieldName = $arrayPrefix . '[' . $fieldNameO . ']';
             } else {
                 $fieldName = $fieldNameO;
             }
@@ -67,7 +67,7 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
             }
         }
         $result = [
-            'rules' => $clientRules,
+            'rules'    => $clientRules,
             'messages' => $clientMessages
         ];
 
@@ -81,8 +81,8 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
     /**
      * Transform a validator for a particular field into one or more jQueryValidation rules.
      *
-     * @param string $fieldName
-     * @param string $validatorName
+     * @param string   $fieldName
+     * @param string   $validatorName
      * @param string[] $validator
      */
     private function transformValidator($fieldName, $validatorName, array $validator)
@@ -90,18 +90,18 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
         $transformedValidatorJson = [];
         switch ($validatorName) {
             // Required validator
-            case "email":
+            case 'email':
                 $transformedValidatorJson['email'] = true;
                 break;
-            case "equals":
+            case 'equals':
                 if (isset($validator['value'])) {
                     $transformedValidatorJson['equals'] = $validator;
                 }
                 break;
-            case "integer":
+            case 'integer':
                 $transformedValidatorJson['digits'] = true;
                 break;
-            case "length":
+            case 'length':
                 if (isset($validator['min']) && isset($validator['max'])) {
                     $transformedValidatorJson['rangelength'] = [
                         $validator['min'],
@@ -113,41 +113,41 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
                     $transformedValidatorJson['maxlength'] = $validator['max'];
                 }
                 break;
-            case "matches":
+            case 'matches':
                 if (isset($validator['field'])) {
                     $transformedValidatorJson['matchFormField'] = $validator['field'];
                 }
                 break;
-            case "member_of":
+            case 'member_of':
                 if (isset($validator['values'])) {
                     $transformedValidatorJson['memberOf'] = $validator['values'];
                 }
                 break;
-            case "no_leading_whitespace":
+            case 'no_leading_whitespace':
                 $transformedValidatorJson['noLeadingWhitespace'] = true;
                 break;
-            case "no_trailing_whitespace":
+            case 'no_trailing_whitespace':
                 $transformedValidatorJson['noTrailingWhitespace'] = true;
                 break;
-            case "not_equals":
+            case 'not_equals':
                 if (isset($validator['value'])) {
                     $transformedValidatorJson['notEquals'] = $validator;
                 }
                 break;
-            case "not_matches":
+            case 'not_matches':
                 if (isset($validator['field'])) {
                     $transformedValidatorJson['notMatchFormField'] = $validator['field'];
                 }
                 break;
-            case "not_member_of":
+            case 'not_member_of':
                 if (isset($validator['values'])) {
                     $transformedValidatorJson['notMemberOf'] = $validator['values'];
                 }
                 break;
-            case "numeric":
+            case 'numeric':
                 $transformedValidatorJson['number'] = true;
                 break;
-            case "range":
+            case 'range':
                 if (isset($validator['min']) && isset($validator['max'])) {
                     $transformedValidatorJson['range'] = [
                         $validator['min'],
@@ -159,24 +159,25 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
                     $transformedValidatorJson['max'] = $validator['max'];
                 }
                 break;
-            case "regex":
+            case 'regex':
                 $transformedValidatorJson['pattern'] = $validator['regex'];
                 break;
-            case "required":
+            case 'required':
                 $transformedValidatorJson['required'] = true;
                 break;
-            case "telephone":
+            case 'telephone':
                 $transformedValidatorJson['phoneUS'] = true;
                 break;
-            case "uri":
+            case 'uri':
                 $transformedValidatorJson['url'] = true;
                 break;
-            case "username":
+            case 'username':
                 $transformedValidatorJson['username'] = true;
                 break;
             default:
                 break;
         }
+
         return $transformedValidatorJson;
     }
 }

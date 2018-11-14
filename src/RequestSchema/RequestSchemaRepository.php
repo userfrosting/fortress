@@ -3,11 +3,11 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/LICENSE.md (MIT License)
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Fortress\RequestSchema;
 
-use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
 use UserFrosting\Support\Repository\Repository;
 
 /**
@@ -18,7 +18,7 @@ use UserFrosting\Support\Repository\Repository;
 class RequestSchemaRepository extends Repository implements RequestSchemaInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefault($field, $value)
     {
@@ -32,7 +32,7 @@ class RequestSchemaRepository extends Repository implements RequestSchemaInterfa
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function addValidator($field, $validatorName, array $parameters = [])
     {
@@ -50,7 +50,7 @@ class RequestSchemaRepository extends Repository implements RequestSchemaInterfa
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function removeValidator($field, $validatorName)
     {
@@ -60,12 +60,12 @@ class RequestSchemaRepository extends Repository implements RequestSchemaInterfa
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setTransformations($field, $transformations = [])
     {
         if (!is_array($transformations)) {
-            $transformations = array($transformations);
+            $transformations = [$transformations];
         }
 
         if (!isset($this->items[$field])) {
