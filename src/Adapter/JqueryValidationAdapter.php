@@ -1,4 +1,5 @@
 <?php
+
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
@@ -23,12 +24,20 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
      * @param boolean $stringEncode Specify whether to return a PHP array, or a JSON-encoded string.
      * @return string|array Returns either the array of rules, or a JSON-encoded representation of that array.
      */
-    public function rules($format = "json", $stringEncode = false)
+    public function rules($format = "json", $stringEncode = false, $arrayPrefix = '')
     {
         $clientRules = [];
         $clientMessages = [];
         $implicitRules = [];
-        foreach ($this->schema->all() as $fieldName => $field) {
+        $fieldName = '';
+        $fieldNameOnly = '';
+        foreach ($this->schema->all() as $fieldNameO => $field) {
+            $fieldNameOnly = $fieldNameO;
+            if ($arrayPrefix != '') {
+                $fieldName = $arrayPrefix . "[" . $fieldNameO . "]";
+            } else {
+                $fieldName = $fieldNameO;
+            }
             $clientRules[$fieldName] = [];
 
             if (isset($field['validators'])) {
@@ -44,7 +53,7 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
                     $clientRules[$fieldName] = array_merge($clientRules[$fieldName], $newRules);
                     // Message
                     if (isset($validator['message'])) {
-                        $validator = array_merge(['self' => $fieldName], $validator);
+                        $validator = array_merge(['self' => $fieldNameOnly], $validator);
                         if (!isset($clientMessages[$fieldName])) {
                             $clientMessages[$fieldName] = [];
                         }
