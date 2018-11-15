@@ -1,8 +1,12 @@
 # Fortress 4.1
 
-[![Build Status](https://travis-ci.org/userfrosting/fortress.svg?branch=master)](https://travis-ci.org/userfrosting/fortress) [![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support)
+[![Build Status](https://travis-ci.org/userfrosting/fortress.svg?branch=master)](https://travis-ci.org/userfrosting/fortress) [![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support) [![Backers on Open Collective](https://opencollective.com/userfrosting/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/userfrosting/sponsors/badge.svg)](#sponsors)
 
-[![Click here to lend your support to: UserFrosting: A secure, modern user management system for PHP and make a donation at pledgie.com !](https://pledgie.com/campaigns/29583.png?skin_name=chrome)](https://pledgie.com/campaigns/29583)
+<a href="https://opencollective.com/userfrosting#backer" target="_blank">
+  <img src="https://opencollective.com/userfrosting/donate/button.png?color=blue" width=300 />
+</a>
+
+If you simply want to show that you like this project, or want to remember it for later, you should **star**, not **fork**, this repository.  Forking is only for when you are ready to create your own copy of the code to work on.
 
 ### By [Alex Weissman](https://alexanderweissman.com)
 
