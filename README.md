@@ -1,6 +1,10 @@
-# Fortress 4.1
+# Fortress 4
 
-[![Build Status](https://travis-ci.org/userfrosting/fortress.svg?branch=master)](https://travis-ci.org/userfrosting/fortress) [![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support) [![Backers on Open Collective](https://opencollective.com/userfrosting/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/userfrosting/sponsors/badge.svg)](#sponsors)
+[![Build Status](https://travis-ci.org/userfrosting/fortress.svg?branch=master)](https://travis-ci.org/userfrosting/fortress)
+[![codecov](https://codecov.io/gh/userfrosting/fortress/branch/master/graph/badge.svg)](https://codecov.io/gh/userfrosting/fortress)
+[![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support)
+[![Backers on Open Collective](https://opencollective.com/userfrosting/backers/badge.svg)](#backers)
+[![Sponsors on Open Collective](https://opencollective.com/userfrosting/sponsors/badge.svg)](#sponsors)
 
 <a href="https://opencollective.com/userfrosting#backer" target="_blank">
   <img src="https://opencollective.com/userfrosting/donate/button.png?color=blue" width=300 />
@@ -10,7 +14,7 @@ If you simply want to show that you like this project, or want to remember it fo
 
 ### By [Alex Weissman](https://alexanderweissman.com)
 
-Copyright (c) 2015-2017
+Copyright (c) 2015-2019
 
 A schema-driven system for elegant whitelisting, transformation and validation of user input on both the client and server sides from a unified set of rules.
 
