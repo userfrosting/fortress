@@ -71,12 +71,17 @@ class RequestDataTransformer implements RequestDataTransformerInterface
             // Handle values not listed in the schema
             if (!array_key_exists($name, $schemaFields)) {
                 switch ($onUnexpectedVar) {
-                    case 'allow': $transformedData[$name] = $value; break;
+                    case 'allow':
+                        $transformedData[$name] = $value;
+                        break;
                     case 'error':
                         $e = new BadRequestException("The field '$name' is not a valid input field.");
                         throw $e;
                         break;
-                    case 'skip': default: continue;
+                    case 'skip':
+                    default:
+                        continue 2;
+                        break;
                 }
             } else {
                 $transformedData[$name] = $this->transformField($name, $value);
