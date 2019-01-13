@@ -1,6 +1,6 @@
-_meta/
-vendor/
-*.komodoproject
+vendor
 composer.lock
-test/cache
+.DS_Store
+*.komodoproject
 .php_cs.cache
+_meta

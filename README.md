@@ -243,8 +243,6 @@ Alternatively, there might be fields that appear in the form that should be vali
 
 To accomplish this, each validation rule can now accept a `domain` property. Setting to "server" will have it only applied server-side. Setting to "client" will have it only appear in the client-side rules. If not specified, rules will be applied both server- and client-side by default. You can also set this explicitly with the value "both".
 
-## Testing
+## [Style Guide](STYLE-GUIDE.md)
 
-```
-vendor/bin/phpunit
-```
+## [Testing](RUNNING_TESTS.md)
