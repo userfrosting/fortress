@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use UserFrosting\UniformResourceLocator\ResourceLocator;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 use UserFrosting\Support\Repository\PathBuilder\StreamPathBuilder;
@@ -11,18 +11,20 @@ class ExtendSchemaTest extends TestCase
     protected $basePath;
 
     protected $locator;
-    
+
     public function setUp()
     {
         $this->basePath = __DIR__ . '/data';
 
         // Arrange
-        $this->locator = new UniformResourceLocator($this->basePath);
+        $this->locator = new ResourceLocator($this->basePath);
 
-        // Add paths one at a time to simulate how they are added in SprinkleManager
-        $this->locator->addPath('schema', '', 'core/schema');
-        $this->locator->addPath('schema', '', 'account/schema');
-        $this->locator->addPath('schema', '', 'admin/schema');
+        $this->locator->registerStream('schema');
+
+        // Add them one at a time to simulate how they are added in SprinkleManager
+        $this->locator->registerLocation('core');
+        $this->locator->registerLocation('account');
+        $this->locator->registerLocation('admin');
     }
 
     public function testExtendYamlSchema()
@@ -49,7 +51,7 @@ class ExtendSchemaTest extends TestCase
                     ]
                 ]
             ],
-            "email" => [ 
+            "email" => [
                 "validators" => [
                     "length" => [
                         "min" => 1,
