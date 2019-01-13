@@ -31,8 +31,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Implement equals, not_equals, telephone, uri, and username rules
 
 
-[v4.1.3]: https://github.com/userfrosting/fortress/compare/v4.1.2...v4.1.3
-[v4.1.2]: https://github.com/userfrosting/fortress/compare/v4.1.1...v4.1.2
-[v4.1.1]: https://github.com/userfrosting/fortress/compare/4.1.0...v4.1.1
+[4.2.0]: https://github.com/userfrosting/fortress/compare/4.1.2...4.2.0
+[4.1.3]: https://github.com/userfrosting/fortress/compare/4.1.2...4.1.3
+[4.1.2]: https://github.com/userfrosting/fortress/compare/v4.1.1...4.1.2
+[4.1.1]: https://github.com/userfrosting/fortress/compare/4.1.0...v4.1.1
 [4.1.0]: https://github.com/userfrosting/fortress/compare/4.0.1...4.1.0
 [4.0.1]: https://github.com/userfrosting/fortress/compare/4.0.0...4.0.1
