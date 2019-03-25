@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Fortress (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress

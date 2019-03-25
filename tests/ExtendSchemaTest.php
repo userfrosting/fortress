@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * UserFrosting Fortress (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
+ */
+
 use PHPUnit\Framework\TestCase;
 use UserFrosting\UniformResourceLocator\ResourceLocator;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
@@ -39,37 +47,37 @@ class ExtendSchemaTest extends TestCase
 
         // Assert
         $this->assertEquals([
-            "name" => [
-                "validators" => [
-                    "length" => [
-                        "min" => 1,
-                        "max" => 200,
-                        "message" => "Please enter a name between 1 and 200 characters."
+            'name' => [
+                'validators' => [
+                    'length' => [
+                        'min'     => 1,
+                        'max'     => 200,
+                        'message' => 'Please enter a name between 1 and 200 characters.'
                     ],
-                    "required" => [
-                        "message" => "Please specify your name."
+                    'required' => [
+                        'message' => 'Please specify your name.'
                     ]
                 ]
             ],
-            "email" => [
-                "validators" => [
-                    "length" => [
-                        "min" => 1,
-                        "max" => 150,
-                        "message" => "Please enter an email address between 1 and 150 characters."
+            'email' => [
+                'validators' => [
+                    'length' => [
+                        'min'     => 1,
+                        'max'     => 150,
+                        'message' => 'Please enter an email address between 1 and 150 characters.'
                     ],
-                    "email" => [
-                        "message" => "That does not appear to be a valid email address."
+                    'email' => [
+                        'message' => 'That does not appear to be a valid email address.'
                     ],
-                    "required" => [
-                        "message" => "Please specify your email address."
+                    'required' => [
+                        'message' => 'Please specify your email address.'
                     ]
                 ]
             ],
-            "message" => [
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
+            'message' => [
+                'validators' => [
+                    'required' => [
+                        'message' => 'Please enter a message'
                     ]
                 ]
             ]

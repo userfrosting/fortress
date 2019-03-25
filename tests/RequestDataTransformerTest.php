@@ -1,7 +1,14 @@
 <?php
 
+/*
+ * UserFrosting Fortress (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
+ */
+
 use PHPUnit\Framework\TestCase;
-use UserFrosting\Fortress\RequestSchema;
 use UserFrosting\Fortress\RequestDataTransformer;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Support\Repository\Loader\YamlFileLoader;
@@ -11,7 +18,7 @@ class RequestDataTransformerTest extends TestCase
     protected $basePath;
 
     protected $transformer;
-    
+
     public function setUp()
     {
         $this->basePath = __DIR__ . '/data';
@@ -29,8 +36,8 @@ class RequestDataTransformerTest extends TestCase
     {
         // Arrange
         $rawInput = [
-            'email' => 'david@owlfancy.com',
-            'admin' => 1,
+            'email'       => 'david@owlfancy.com',
+            'admin'       => 1,
             'description' => 'Some stuff to describe'
         ];
 
@@ -38,17 +45,17 @@ class RequestDataTransformerTest extends TestCase
         $schema = new RequestSchemaRepository();
 
         $schema->mergeItems(null, [
-            'email' => [],
+            'email'       => [],
             'description' => null  // Replicating an input that has no validation operations
         ]);
         $this->transformer = new RequestDataTransformer($schema);
-        
+
         // Act
         $result = $this->transformer->transform($rawInput, 'skip');
 
         // Assert
         $transformedData = [
-            'email' => 'david@owlfancy.com',
+            'email'       => 'david@owlfancy.com',
             'description' => 'Some stuff to describe'
         ];
 
@@ -62,15 +69,15 @@ class RequestDataTransformerTest extends TestCase
     {
         // Act
         $rawInput = [
-            'display_name' => "THE GREATEST  "
+            'display_name' => 'THE GREATEST  '
         ];
-        
+
         $result = $this->transformer->transform($rawInput, 'skip');
 
         // Assert
         $transformedData = [
-            'email' => 'david@owlfancy.com',
-            'display_name' => "THE GREATEST"
+            'email'        => 'david@owlfancy.com',
+            'display_name' => 'THE GREATEST'
         ];
 
         $this->assertEquals($transformedData, $result);
@@ -83,15 +90,15 @@ class RequestDataTransformerTest extends TestCase
     {
         // Act
         $rawInput = [
-            'display_name' => "<b>My Super-Important Name</b>"
+            'display_name' => '<b>My Super-Important Name</b>'
         ];
-        
+
         $result = $this->transformer->transform($rawInput, 'skip');
 
         // Assert
         $transformedData = [
-            'email' => 'david@owlfancy.com',
-            'display_name' => "&#60;b&#62;My Super-Important Name&#60;/b&#62;"
+            'email'        => 'david@owlfancy.com',
+            'display_name' => '&#60;b&#62;My Super-Important Name&#60;/b&#62;'
         ];
 
         $this->assertEquals($transformedData, $result);
@@ -104,15 +111,15 @@ class RequestDataTransformerTest extends TestCase
     {
         // Act
         $rawInput = [
-            'user_name' => "<b>My Super-Important Name</b>"
+            'user_name' => '<b>My Super-Important Name</b>'
         ];
-        
+
         $result = $this->transformer->transform($rawInput, 'skip');
 
         // Assert
         $transformedData = [
-            'email' => 'david@owlfancy.com',
-            'user_name' => "My Super-Important Name"
+            'email'     => 'david@owlfancy.com',
+            'user_name' => 'My Super-Important Name'
         ];
 
         $this->assertEquals($transformedData, $result);
@@ -127,13 +134,13 @@ class RequestDataTransformerTest extends TestCase
         $rawInput = [
             'puppies' => "<script>I'm definitely really a puppy  </script><b>0</b>"
         ];
-        
+
         $result = $this->transformer->transform($rawInput, 'skip');
 
         // Assert
         $transformedData = [
-            'email' => 'david@owlfancy.com',
-            'puppies' => "<b>0</b>"
+            'email'   => 'david@owlfancy.com',
+            'puppies' => '<b>0</b>'
         ];
 
         $this->assertEquals($transformedData, $result);

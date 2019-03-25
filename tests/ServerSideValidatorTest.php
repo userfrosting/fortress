@@ -1,18 +1,25 @@
 <?php
 
+/*
+ * UserFrosting Fortress (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
+ */
+
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Fortress\ServerSideValidator;
 use UserFrosting\I18n\MessageTranslator;
 
-
 class ServerSideValidatorTest extends TestCase
 {
     protected $translator;
-    
+
     public function setUp()
     {
-        // Create a message translator        
+        // Create a message translator
         $this->translator = new MessageTranslator();
     }
 
@@ -55,9 +62,9 @@ class ServerSideValidatorTest extends TestCase
             'voles' => [
                 'validators' => [
                     'equals' => [
-                        'value' => 8,
+                        'value'         => 8,
                         'caseSensitive' => false,
-                        'message' => 'Voles must be equal to {{value}}.'
+                        'message'       => 'Voles must be equal to {{value}}.'
                     ]
                 ]
             ]
@@ -125,9 +132,9 @@ class ServerSideValidatorTest extends TestCase
             'screech' => [
                 'validators' => [
                     'length' => [
-                        'min' => 5,
-                        'max' => 10,
-                        'message' => "Your screech must be between {{min}} and {{max}} characters long."
+                        'min'     => 5,
+                        'max'     => 10,
+                        'message' => 'Your screech must be between {{min}} and {{max}} characters long.'
                     ]
                 ]
             ]
@@ -163,8 +170,8 @@ class ServerSideValidatorTest extends TestCase
             'screech' => [
                 'validators' => [
                     'length' => [
-                        'min' => 5,
-                        'message' => "Your screech must be at least {{min}} characters long."
+                        'min'     => 5,
+                        'message' => 'Your screech must be at least {{min}} characters long.'
                     ]
                 ]
             ]
@@ -196,8 +203,8 @@ class ServerSideValidatorTest extends TestCase
             'screech' => [
                 'validators' => [
                     'length' => [
-                        'max' => 10,
-                        'message' => "Your screech must be no more than {{max}} characters long."
+                        'max'     => 10,
+                        'message' => 'Your screech must be no more than {{max}} characters long.'
                     ]
                 ]
             ]
@@ -228,7 +235,7 @@ class ServerSideValidatorTest extends TestCase
             'password' => [
                 'validators' => [
                     'matches' => [
-                        'field' => 'passwordc',
+                        'field'   => 'passwordc',
                         'message' => "The value of this field does not match the value of the '{{field}}' field."
                     ]
                 ]
@@ -239,7 +246,7 @@ class ServerSideValidatorTest extends TestCase
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'password' => 'secret',
+            'password'  => 'secret',
             'passwordc' => 'secret'
         ]);
 
@@ -250,7 +257,7 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'password' => 'secret',
+            'password'  => 'secret',
             'passwordc' => 'hoothoot'
         ]));
     }
@@ -262,8 +269,8 @@ class ServerSideValidatorTest extends TestCase
             'genus' => [
                 'validators' => [
                     'member_of' => [
-                        'values' => ["Megascops", "Bubo", "Glaucidium", "Tyto", "Athene"],
-                        'message' => "Sorry, that is not one of the permitted genuses."
+                        'values'  => ['Megascops', 'Bubo', 'Glaucidium', 'Tyto', 'Athene'],
+                        'message' => 'Sorry, that is not one of the permitted genuses.'
                     ]
                 ]
             ]
@@ -294,7 +301,7 @@ class ServerSideValidatorTest extends TestCase
             'user_name' => [
                 'validators' => [
                     'no_leading_whitespace' => [
-                        'message' => "{{self}} cannot begin with whitespace characters"
+                        'message' => '{{self}} cannot begin with whitespace characters'
                     ]
                 ]
             ]
@@ -322,7 +329,7 @@ class ServerSideValidatorTest extends TestCase
             'user_name' => [
                 'validators' => [
                     'no_trailing_whitespace' => [
-                        'message' => "{{self}} cannot end with whitespace characters"
+                        'message' => '{{self}} cannot end with whitespace characters'
                     ]
                 ]
             ]
@@ -356,9 +363,9 @@ class ServerSideValidatorTest extends TestCase
             'voles' => [
                 'validators' => [
                     'not_equals' => [
-                        'value' => 0,
+                        'value'         => 0,
                         'caseSensitive' => false,
-                        'message' => 'Voles must be not be equal to {{value}}.'
+                        'message'       => 'Voles must be not be equal to {{value}}.'
                     ]
                 ]
             ]
@@ -390,8 +397,8 @@ class ServerSideValidatorTest extends TestCase
             'password' => [
                 'validators' => [
                     'not_matches' => [
-                        'field' => 'user_name',
-                        'message' => "Your password cannot be the same as your username."
+                        'field'   => 'user_name',
+                        'message' => 'Your password cannot be the same as your username.'
                     ]
                 ]
             ]
@@ -401,7 +408,7 @@ class ServerSideValidatorTest extends TestCase
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'password' => 'secret',
+            'password'  => 'secret',
             'user_name' => 'alexw'
         ]);
 
@@ -412,7 +419,7 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'password' => 'secret',
+            'password'  => 'secret',
             'user_name' => 'secret'
         ]));
     }
@@ -424,8 +431,8 @@ class ServerSideValidatorTest extends TestCase
             'genus' => [
                 'validators' => [
                     'not_member_of' => [
-                        'values' => ["Myodes", "Microtus", "Neodon", "Alticola"],
-                        'message' => "Sorry, it would appear that you are not an owl."
+                        'values'  => ['Myodes', 'Microtus', 'Neodon', 'Alticola'],
+                        'message' => 'Sorry, it would appear that you are not an owl.'
                     ]
                 ]
             ]
@@ -456,7 +463,7 @@ class ServerSideValidatorTest extends TestCase
             'accuracy' => [
                 'validators' => [
                     'numeric' => [
-                        'message' => "Sorry, your strike accuracy must be a number."
+                        'message' => 'Sorry, your strike accuracy must be a number.'
                     ]
                 ]
             ]
@@ -499,9 +506,9 @@ class ServerSideValidatorTest extends TestCase
             'voles' => [
                 'validators' => [
                     'range' => [
-                        'min' => 5,
-                        'max' => 10,
-                        'message' => "You must catch {{min}} - {{max}} voles."
+                        'min'     => 5,
+                        'max'     => 10,
+                        'message' => 'You must catch {{min}} - {{max}} voles.'
                     ]
                 ]
             ]
@@ -541,8 +548,8 @@ class ServerSideValidatorTest extends TestCase
             'screech' => [
                 'validators' => [
                     'regex' => [
-                        'regex' => "^who(o*)$",
-                        'message' => "You did not provide a valid screech."
+                        'regex'   => '^who(o*)$',
+                        'message' => 'You did not provide a valid screech.'
                     ]
                 ]
             ]
@@ -577,7 +584,7 @@ class ServerSideValidatorTest extends TestCase
             'species' => [
                 'validators' => [
                     'required' => [
-                        'message' => "Please tell us your species."
+                        'message' => 'Please tell us your species.'
                     ]
                 ]
             ]
@@ -610,7 +617,7 @@ class ServerSideValidatorTest extends TestCase
             'phone' => [
                 'validators' => [
                     'telephone' => [
-                        'message' => "Whoa there, check your phone number again."
+                        'message' => 'Whoa there, check your phone number again.'
                     ]
                 ]
             ]
@@ -761,7 +768,7 @@ class ServerSideValidatorTest extends TestCase
             'plumage' => [
                 'validators' => [
                     'required' => [
-                        'domain' => 'client',
+                        'domain'  => 'client',
                         'message' => "Are you sure you don't want to show us your plumage?"
                     ]
                 ]
@@ -787,7 +794,7 @@ class ServerSideValidatorTest extends TestCase
             'plumage' => [
                 'validators' => [
                     'required' => [
-                        'domain' => 'server',
+                        'domain'  => 'server',
                         'message' => "Are you sure you don't want to show us your plumage?"
                     ]
                 ]

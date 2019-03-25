@@ -1,7 +1,14 @@
 <?php
 
+/*
+ * UserFrosting Fortress (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
+ */
+
 use PHPUnit\Framework\TestCase;
-use UserFrosting\Fortress\RequestSchema;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 
@@ -10,16 +17,16 @@ class RequestSchemaTest extends TestCase
     protected $basePath;
 
     protected $contactSchema;
-    
+
     public function setUp()
     {
         $this->basePath = __DIR__ . '/data';
 
         $this->contactSchema = [
-            "message" => [
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
+            'message' => [
+                'validators' => [
+                    'required' => [
+                        'message' => 'Please enter a message'
                     ]
                 ]
             ]
@@ -59,16 +66,16 @@ class RequestSchemaTest extends TestCase
         $schema = new RequestSchemaRepository($loader->load());
 
         // Act
-        $schema->setDefault('message', "I require more voles.");
+        $schema->setDefault('message', 'I require more voles.');
         $result = $schema->all();
 
         // Assert
         $contactSchema = [
-            "message" => [
-                "default" => "I require more voles.",
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
+            'message' => [
+                'default'    => 'I require more voles.',
+                'validators' => [
+                    'required' => [
+                        'message' => 'Please enter a message'
                     ]
                 ]
             ]
@@ -84,21 +91,21 @@ class RequestSchemaTest extends TestCase
 
         // Act
         $schema->addValidator('message', 'length', [
-            'max' => 10000,
+            'max'     => 10000,
             'message' => 'Your message is too long!'
         ]);
         $result = $schema->all();
 
         // Assert
         $contactSchema = [
-            "message" => [
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
+            'message' => [
+                'validators' => [
+                    'required' => [
+                        'message' => 'Please enter a message'
                     ],
-                    "length" => [
-                        "max" => 10000,
-                        "message" => "Your message is too long!"
+                    'length' => [
+                        'max'     => 10000,
+                        'message' => 'Your message is too long!'
                     ]
                 ]
             ]
@@ -110,14 +117,14 @@ class RequestSchemaTest extends TestCase
     {
         // Arrange
         $schema = new RequestSchemaRepository([
-            "message" => [
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
+            'message' => [
+                'validators' => [
+                    'required' => [
+                        'message' => 'Please enter a message'
                     ],
-                    "length" => [
-                        "max" => 10000,
-                        "message" => "Your message is too long!"
+                    'length' => [
+                        'max'     => 10000,
+                        'message' => 'Your message is too long!'
                     ]
                 ]
             ]
@@ -133,11 +140,11 @@ class RequestSchemaTest extends TestCase
 
         // Assert
         $contactSchema = [
-            "message" => [
-                "validators" => [
-                    "length" => [
-                        "max" => 10000,
-                        "message" => "Your message is too long!"
+            'message' => [
+                'validators' => [
+                    'length' => [
+                        'max'     => 10000,
+                        'message' => 'Your message is too long!'
                     ]
                 ]
             ]
@@ -158,15 +165,15 @@ class RequestSchemaTest extends TestCase
 
         // Assert
         $contactSchema = [
-            "message" => [
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
+            'message' => [
+                'validators' => [
+                    'required' => [
+                        'message' => 'Please enter a message'
                     ]
                 ],
-                "transformations" => [
-                    "purge",
-                    "owlify"
+                'transformations' => [
+                    'purge',
+                    'owlify'
                 ]
             ]
         ];
