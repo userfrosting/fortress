@@ -85,6 +85,25 @@ class RequestSchemaRepositoryTest extends TestCase
         $this->assertArraySubset($contactSchema, $result);
     }
 
+    public function testSetDefaultWithMissingField()
+    {
+        // Arrange
+        $loader = new YamlFileLoader($this->basePath.'/contact.yaml');
+        $schema = new RequestSchemaRepository($loader->load());
+
+        // Act
+        $schema->setDefault('foo', 'bar');
+        $result = $schema->all();
+
+        // Assert
+        $contactSchema = [
+              'foo' => [
+                  'default' => 'bar',
+              ],
+          ];
+        $this->assertArraySubset($contactSchema, $result);
+    }
+
     public function testAddValidator()
     {
         // Arrange
@@ -105,6 +124,33 @@ class RequestSchemaRepositoryTest extends TestCase
                     'required' => [
                         'message' => 'Please enter a message',
                     ],
+                    'length' => [
+                        'max'     => 10000,
+                        'message' => 'Your message is too long!',
+                    ],
+                ],
+            ],
+        ];
+        $this->assertArraySubset($contactSchema, $result);
+    }
+
+    public function testAddValidatorWithMissingField()
+    {
+        // Arrange
+        $loader = new YamlFileLoader($this->basePath.'/contact.yaml');
+        $schema = new RequestSchemaRepository($loader->load());
+
+        // Act
+        $schema->addValidator('foo', 'length', [
+            'max'     => 10000,
+            'message' => 'Your message is too long!',
+        ]);
+        $result = $schema->all();
+
+        // Assert
+        $contactSchema = [
+            'foo' => [
+                'validators' => [
                     'length' => [
                         'max'     => 10000,
                         'message' => 'Your message is too long!',
@@ -173,6 +219,54 @@ class RequestSchemaRepositoryTest extends TestCase
                         'message' => 'Please enter a message',
                     ],
                 ],
+                'transformations' => [
+                    'purge',
+                    'owlify',
+                ],
+            ],
+        ];
+        $this->assertArraySubset($contactSchema, $result);
+    }
+
+    public function testSetTransformationNotAnArray()
+    {
+        // Arrange
+        $loader = new YamlFileLoader($this->basePath.'/contact.yaml');
+        $schema = new RequestSchemaRepository($loader->load());
+
+        // Act
+        $schema->setTransformations('message', 'purge');
+        $result = $schema->all();
+
+        // Assert
+        $contactSchema = [
+            'message' => [
+                'validators' => [
+                    'required' => [
+                        'message' => 'Please enter a message',
+                    ],
+                ],
+                'transformations' => [
+                    'purge',
+                ],
+            ],
+        ];
+        $this->assertArraySubset($contactSchema, $result);
+    }
+
+    public function testSetTransformationWithMissingField()
+    {
+        // Arrange
+        $loader = new YamlFileLoader($this->basePath.'/contact.yaml');
+        $schema = new RequestSchemaRepository($loader->load());
+
+        // Act
+        $schema->setTransformations('foo', ['purge', 'owlify']);
+        $result = $schema->all();
+
+        // Assert
+        $contactSchema = [
+            'foo' => [
                 'transformations' => [
                     'purge',
                     'owlify',
