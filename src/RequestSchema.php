@@ -14,7 +14,7 @@ use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 
 /**
- * RequestSchema Class
+ * RequestSchema Class.
  *
  * Represents a schema for an HTTP request, compliant with the WDVSS standard (https://github.com/alexweissman/wdvss)
  *
@@ -45,6 +45,7 @@ class RequestSchema extends RequestSchemaRepository
 
     /**
      * @deprecated since 4.1
+     *
      * @return array The schema data.
      */
     public function getSchema()
@@ -54,7 +55,9 @@ class RequestSchema extends RequestSchemaRepository
 
     /**
      * @deprecated since 4.1
-     * @param  string    $path Path to the schema file.
+     *
+     * @param string $path Path to the schema file.
+     *
      * @throws Exception The file does not exist or is not a valid format.
      */
     public function loadSchema()

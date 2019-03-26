@@ -14,7 +14,7 @@ use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
 use UserFrosting\I18n\MessageTranslator;
 
 /**
- * ServerSideValidator Interface
+ * ServerSideValidator Interface.
  *
  * Loads validation rules from a schema and validates a target array of data.
  *
@@ -39,20 +39,21 @@ interface ServerSideValidatorInterface
     /**
      * Validate the specified data against the schema rules.
      *
-     * @param  array $data An array of data, mapping field names to field values.
-     * @return bool  True if the data was successfully validated, false otherwise.
+     * @param array $data An array of data, mapping field names to field values.
+     *
+     * @return bool True if the data was successfully validated, false otherwise.
      */
     public function validate(array $data);
 
     /**
-     *  Get array of fields and data
+     *  Get array of fields and data.
      *
      * @return array
      */
     public function data();
 
     /**
-     * Get array of error messages
+     * Get array of error messages.
      *
      * @return array|bool
      */

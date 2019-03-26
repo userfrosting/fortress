@@ -32,10 +32,10 @@ class JqueryValidationAdapterTest extends TestCase
             'email' => [
                 'validators' => [
                     'email' => [
-                        'message' => 'Not a valid email address...we think.'
-                    ]
-                ]
-            ]
+                        'message' => 'Not a valid email address...we think.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -45,14 +45,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'email' => [
-                    'email' => true
-                ]
+                    'email' => true,
+                ],
             ],
             'messages' => [
                 'email' => [
-                    'email' => 'Not a valid email address...we think.'
-                ]
-            ]
+                    'email' => 'Not a valid email address...we think.',
+                ],
+            ],
         ], $result);
     }
 
@@ -65,10 +65,10 @@ class JqueryValidationAdapterTest extends TestCase
                     'equals' => [
                         'value'         => 8,
                         'caseSensitive' => false,
-                        'message'       => 'Voles must be equal to {{value}}.'
-                    ]
-                ]
-            ]
+                        'message'       => 'Voles must be equal to {{value}}.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -81,15 +81,15 @@ class JqueryValidationAdapterTest extends TestCase
                     'equals' => [
                         'value'         => 8,
                         'caseSensitive' => false,
-                        'message'       => 'Voles must be equal to {{value}}.'
-                    ]
-                ]
+                        'message'       => 'Voles must be equal to {{value}}.',
+                    ],
+                ],
             ],
             'messages' => [
                 'voles' => [
-                    'equals' => 'Voles must be equal to 8.'
-                ]
-            ]
+                    'equals' => 'Voles must be equal to 8.',
+                ],
+            ],
         ], $result);
     }
 
@@ -100,10 +100,10 @@ class JqueryValidationAdapterTest extends TestCase
             'voles' => [
                 'validators' => [
                     'integer' => [
-                        'message' => 'Voles must be numeric.'
-                    ]
-                ]
-            ]
+                        'message' => 'Voles must be numeric.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -113,14 +113,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'voles' => [
-                    'digits' => true
-                ]
+                    'digits' => true,
+                ],
             ],
             'messages' => [
                 'voles' => [
-                    'digits' => 'Voles must be numeric.'
-                ]
-            ]
+                    'digits' => 'Voles must be numeric.',
+                ],
+            ],
         ], $result);
     }
 
@@ -133,10 +133,10 @@ class JqueryValidationAdapterTest extends TestCase
                     'length' => [
                         'min'     => 5,
                         'max'     => 10,
-                        'message' => 'Your screech must be between {{min}} and {{max}} characters long.'
-                    ]
-                ]
-            ]
+                        'message' => 'Your screech must be between {{min}} and {{max}} characters long.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -146,14 +146,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'screech' => [
-                    'rangelength' => [5, 10]
-                ]
+                    'rangelength' => [5, 10],
+                ],
             ],
             'messages' => [
                 'screech' => [
-                    'rangelength' => 'Your screech must be between 5 and 10 characters long.'
-                ]
-            ]
+                    'rangelength' => 'Your screech must be between 5 and 10 characters long.',
+                ],
+            ],
         ], $result);
     }
 
@@ -165,10 +165,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'length' => [
                         'min'     => 5,
-                        'message' => 'Your screech must be at least {{min}} characters long.'
-                    ]
-                ]
-            ]
+                        'message' => 'Your screech must be at least {{min}} characters long.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -178,14 +178,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'screech' => [
-                    'minlength' => 5
-                ]
+                    'minlength' => 5,
+                ],
             ],
             'messages' => [
                 'screech' => [
-                    'minlength' => 'Your screech must be at least 5 characters long.'
-                ]
-            ]
+                    'minlength' => 'Your screech must be at least 5 characters long.',
+                ],
+            ],
         ], $result);
     }
 
@@ -197,10 +197,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'length' => [
                         'max'     => 10,
-                        'message' => 'Your screech must be no more than {{max}} characters long.'
-                    ]
-                ]
-            ]
+                        'message' => 'Your screech must be no more than {{max}} characters long.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -210,14 +210,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'screech' => [
-                    'maxlength' => 10
-                ]
+                    'maxlength' => 10,
+                ],
             ],
             'messages' => [
                 'screech' => [
-                    'maxlength' => 'Your screech must be no more than 10 characters long.'
-                ]
-            ]
+                    'maxlength' => 'Your screech must be no more than 10 characters long.',
+                ],
+            ],
         ], $result);
     }
 
@@ -229,10 +229,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'matches' => [
                         'field'   => 'passwordc',
-                        'message' => "The value of this field does not match the value of the '{{field}}' field."
-                    ]
-                ]
-            ]
+                        'message' => "The value of this field does not match the value of the '{{field}}' field.",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -242,14 +242,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'password' => [
-                    'matchFormField' => 'passwordc'
-                ]
+                    'matchFormField' => 'passwordc',
+                ],
             ],
             'messages' => [
                 'password' => [
-                    'matchFormField' => "The value of this field does not match the value of the 'passwordc' field."
-                ]
-            ]
+                    'matchFormField' => "The value of this field does not match the value of the 'passwordc' field.",
+                ],
+            ],
         ], $result);
     }
 
@@ -261,10 +261,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'member_of' => [
                         'values'  => ['Megascops', 'Bubo', 'Glaucidium', 'Tyto', 'Athene'],
-                        'message' => 'Sorry, that is not one of the permitted genuses.'
-                    ]
-                ]
-            ]
+                        'message' => 'Sorry, that is not one of the permitted genuses.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -274,14 +274,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'genus' => [
-                    'memberOf' => ['Megascops', 'Bubo', 'Glaucidium', 'Tyto', 'Athene']
-                ]
+                    'memberOf' => ['Megascops', 'Bubo', 'Glaucidium', 'Tyto', 'Athene'],
+                ],
             ],
             'messages' => [
                 'genus' => [
-                    'memberOf' => 'Sorry, that is not one of the permitted genuses.'
-                ]
-            ]
+                    'memberOf' => 'Sorry, that is not one of the permitted genuses.',
+                ],
+            ],
         ], $result);
     }
 
@@ -292,10 +292,10 @@ class JqueryValidationAdapterTest extends TestCase
             'user_name' => [
                 'validators' => [
                     'no_leading_whitespace' => [
-                        'message' => "'{{self}}' cannot begin with whitespace characters"
-                    ]
-                ]
-            ]
+                        'message' => "'{{self}}' cannot begin with whitespace characters",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -305,14 +305,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'user_name' => [
-                    'noLeadingWhitespace' => true
-                ]
+                    'noLeadingWhitespace' => true,
+                ],
             ],
             'messages' => [
                 'user_name' => [
-                    'noLeadingWhitespace' => "'user_name' cannot begin with whitespace characters"
-                ]
-            ]
+                    'noLeadingWhitespace' => "'user_name' cannot begin with whitespace characters",
+                ],
+            ],
         ], $result);
     }
 
@@ -323,10 +323,10 @@ class JqueryValidationAdapterTest extends TestCase
             'user_name' => [
                 'validators' => [
                     'no_trailing_whitespace' => [
-                        'message' => "'{{self}}' cannot end with whitespace characters"
-                    ]
-                ]
-            ]
+                        'message' => "'{{self}}' cannot end with whitespace characters",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -336,14 +336,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'user_name' => [
-                    'noTrailingWhitespace' => true
-                ]
+                    'noTrailingWhitespace' => true,
+                ],
             ],
             'messages' => [
                 'user_name' => [
-                    'noTrailingWhitespace' => "'user_name' cannot end with whitespace characters"
-                ]
-            ]
+                    'noTrailingWhitespace' => "'user_name' cannot end with whitespace characters",
+                ],
+            ],
         ], $result);
     }
 
@@ -357,10 +357,10 @@ class JqueryValidationAdapterTest extends TestCase
                     'not_equals' => [
                         'value'         => 0,
                         'caseSensitive' => false,
-                        'message'       => 'Voles must not be equal to {{value}}.'
-                    ]
-                ]
-            ]
+                        'message'       => 'Voles must not be equal to {{value}}.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -373,15 +373,15 @@ class JqueryValidationAdapterTest extends TestCase
                     'notEquals' => [
                         'value'         => 0,
                         'caseSensitive' => false,
-                        'message'       => 'Voles must not be equal to {{value}}.'
-                    ]
-                ]
+                        'message'       => 'Voles must not be equal to {{value}}.',
+                    ],
+                ],
             ],
             'messages' => [
                 'voles' => [
-                    'notEquals' => 'Voles must not be equal to 0.'
-                ]
-            ]
+                    'notEquals' => 'Voles must not be equal to 0.',
+                ],
+            ],
         ], $result);
     }
 
@@ -393,10 +393,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'not_matches' => [
                         'field'   => 'user_name',
-                        'message' => 'Your password cannot be the same as your username.'
-                    ]
-                ]
-            ]
+                        'message' => 'Your password cannot be the same as your username.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -406,14 +406,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'password' => [
-                    'notMatchFormField' => 'user_name'
-                ]
+                    'notMatchFormField' => 'user_name',
+                ],
             ],
             'messages' => [
                 'password' => [
-                    'notMatchFormField' => 'Your password cannot be the same as your username.'
-                ]
-            ]
+                    'notMatchFormField' => 'Your password cannot be the same as your username.',
+                ],
+            ],
         ], $result);
     }
 
@@ -425,10 +425,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'not_member_of' => [
                         'values'  => ['Myodes', 'Microtus', 'Neodon', 'Alticola'],
-                        'message' => 'Sorry, it would appear that you are not an owl.'
-                    ]
-                ]
-            ]
+                        'message' => 'Sorry, it would appear that you are not an owl.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -438,14 +438,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'genus' => [
-                    'notMemberOf' => ['Myodes', 'Microtus', 'Neodon', 'Alticola']
-                ]
+                    'notMemberOf' => ['Myodes', 'Microtus', 'Neodon', 'Alticola'],
+                ],
             ],
             'messages' => [
                 'genus' => [
-                    'notMemberOf' => 'Sorry, it would appear that you are not an owl.'
-                ]
-            ]
+                    'notMemberOf' => 'Sorry, it would appear that you are not an owl.',
+                ],
+            ],
         ], $result);
     }
 
@@ -456,10 +456,10 @@ class JqueryValidationAdapterTest extends TestCase
             'accuracy' => [
                 'validators' => [
                     'numeric' => [
-                        'message' => 'Sorry, your strike accuracy must be a number.'
-                    ]
-                ]
-            ]
+                        'message' => 'Sorry, your strike accuracy must be a number.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -469,14 +469,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'accuracy' => [
-                    'number' => true
-                ]
+                    'number' => true,
+                ],
             ],
             'messages' => [
                 'accuracy' => [
-                    'number' => 'Sorry, your strike accuracy must be a number.'
-                ]
-            ]
+                    'number' => 'Sorry, your strike accuracy must be a number.',
+                ],
+            ],
         ], $result);
     }
 
@@ -489,10 +489,10 @@ class JqueryValidationAdapterTest extends TestCase
                     'range' => [
                         'min'     => 5,
                         'max'     => 10,
-                        'message' => 'You must catch {{min}} - {{max}} voles.'
-                    ]
-                ]
-            ]
+                        'message' => 'You must catch {{min}} - {{max}} voles.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -502,14 +502,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'voles' => [
-                    'range' => [5, 10]
-                ]
+                    'range' => [5, 10],
+                ],
             ],
             'messages' => [
                 'voles' => [
-                    'range' => 'You must catch 5 - 10 voles.'
-                ]
-            ]
+                    'range' => 'You must catch 5 - 10 voles.',
+                ],
+            ],
         ], $result);
     }
 
@@ -521,10 +521,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'range' => [
                         'min'     => 5,
-                        'message' => 'You must catch at least {{min}} voles.'
-                    ]
-                ]
-            ]
+                        'message' => 'You must catch at least {{min}} voles.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -534,14 +534,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'voles' => [
-                    'min' => 5
-                ]
+                    'min' => 5,
+                ],
             ],
             'messages' => [
                 'voles' => [
-                    'min' => 'You must catch at least 5 voles.'
-                ]
-            ]
+                    'min' => 'You must catch at least 5 voles.',
+                ],
+            ],
         ], $result);
     }
 
@@ -553,10 +553,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'range' => [
                         'max'     => 10,
-                        'message' => 'You must catch no more than {{max}} voles.'
-                    ]
-                ]
-            ]
+                        'message' => 'You must catch no more than {{max}} voles.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -566,14 +566,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'voles' => [
-                    'max' => 10
-                ]
+                    'max' => 10,
+                ],
             ],
             'messages' => [
                 'voles' => [
-                    'max' => 'You must catch no more than 10 voles.'
-                ]
-            ]
+                    'max' => 'You must catch no more than 10 voles.',
+                ],
+            ],
         ], $result);
     }
 
@@ -585,10 +585,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'regex' => [
                         'regex'   => '^who(o*)$',
-                        'message' => 'You did not provide a valid screech.'
-                    ]
-                ]
-            ]
+                        'message' => 'You did not provide a valid screech.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -598,14 +598,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'screech' => [
-                    'pattern' => '^who(o*)$'
-                ]
+                    'pattern' => '^who(o*)$',
+                ],
             ],
             'messages' => [
                 'screech' => [
-                    'pattern' => 'You did not provide a valid screech.'
-                ]
-            ]
+                    'pattern' => 'You did not provide a valid screech.',
+                ],
+            ],
         ], $result);
     }
 
@@ -616,10 +616,10 @@ class JqueryValidationAdapterTest extends TestCase
             'species' => [
                 'validators' => [
                     'required' => [
-                        'message' => 'Please tell us your species.'
-                    ]
-                ]
-            ]
+                        'message' => 'Please tell us your species.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -629,14 +629,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'species' => [
-                    'required' => true
-                ]
+                    'required' => true,
+                ],
             ],
             'messages' => [
                 'species' => [
-                    'required' => 'Please tell us your species.'
-                ]
-            ]
+                    'required' => 'Please tell us your species.',
+                ],
+            ],
         ], $result);
     }
 
@@ -647,10 +647,10 @@ class JqueryValidationAdapterTest extends TestCase
             'phone' => [
                 'validators' => [
                     'telephone' => [
-                        'message' => 'Whoa there, check your phone number again.'
-                    ]
-                ]
-            ]
+                        'message' => 'Whoa there, check your phone number again.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -660,14 +660,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'phone' => [
-                    'phoneUS' => true
-                ]
+                    'phoneUS' => true,
+                ],
             ],
             'messages' => [
                 'phone' => [
-                    'phoneUS' => 'Whoa there, check your phone number again.'
-                ]
-            ]
+                    'phoneUS' => 'Whoa there, check your phone number again.',
+                ],
+            ],
         ], $result);
     }
 
@@ -678,10 +678,10 @@ class JqueryValidationAdapterTest extends TestCase
             'website' => [
                 'validators' => [
                     'uri' => [
-                        'message' => "That's not even a valid URL..."
-                    ]
-                ]
-            ]
+                        'message' => "That's not even a valid URL...",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -691,14 +691,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'website' => [
-                    'url' => true
-                ]
+                    'url' => true,
+                ],
             ],
             'messages' => [
                 'website' => [
-                    'url' => "That's not even a valid URL..."
-                ]
-            ]
+                    'url' => "That's not even a valid URL...",
+                ],
+            ],
         ], $result);
     }
 
@@ -709,10 +709,10 @@ class JqueryValidationAdapterTest extends TestCase
             'user_name' => [
                 'validators' => [
                     'username' => [
-                        'message' => "Sorry buddy, that's not a valid username."
-                    ]
-                ]
-            ]
+                        'message' => "Sorry buddy, that's not a valid username.",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -722,14 +722,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'user_name' => [
-                    'username' => true
-                ]
+                    'username' => true,
+                ],
             ],
             'messages' => [
                 'user_name' => [
-                    'username' => "Sorry buddy, that's not a valid username."
-                ]
-            ]
+                    'username' => "Sorry buddy, that's not a valid username.",
+                ],
+            ],
         ], $result);
     }
 
@@ -741,10 +741,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'required' => [
                         'domain'  => 'client',
-                        'message' => "Are you sure you don't want to show us your plumage?"
-                    ]
-                ]
-            ]
+                        'message' => "Are you sure you don't want to show us your plumage?",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -754,14 +754,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'plumage' => [
-                    'required' => true
-                ]
+                    'required' => true,
+                ],
             ],
             'messages' => [
                 'plumage' => [
-                    'required' => "Are you sure you don't want to show us your plumage?"
-                ]
-            ]
+                    'required' => "Are you sure you don't want to show us your plumage?",
+                ],
+            ],
         ], $result);
 
         // Srinvas Nukala : Adding Test with Form array prefix 'coolform1'
@@ -770,14 +770,14 @@ class JqueryValidationAdapterTest extends TestCase
         $this->assertEquals([
             'rules' => [
                 'coolform1[plumage]' => [
-                    'required' => true
-                ]
+                    'required' => true,
+                ],
             ],
             'messages' => [
                 'coolform1[plumage]' => [
-                    'required' => "Are you sure you don't want to show us your plumage?"
-                ]
-            ]
+                    'required' => "Are you sure you don't want to show us your plumage?",
+                ],
+            ],
         ], $result1);
     }
 
@@ -789,10 +789,10 @@ class JqueryValidationAdapterTest extends TestCase
                 'validators' => [
                     'required' => [
                         'domain'  => 'server',
-                        'message' => "Are you sure you don't want to show us your plumage?"
-                    ]
-                ]
-            ]
+                        'message' => "Are you sure you don't want to show us your plumage?",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -801,9 +801,9 @@ class JqueryValidationAdapterTest extends TestCase
 
         $this->assertEquals([
             'rules' => [
-                'plumage' => []
+                'plumage' => [],
             ],
-            'messages' => []
+            'messages' => [],
         ], $result);
 
         // Srinvas Nukala : Adding Test with Form array prefix 'coolform1'
@@ -811,9 +811,9 @@ class JqueryValidationAdapterTest extends TestCase
 
         $this->assertEquals([
             'rules' => [
-                'coolform1[plumage]' => []
+                'coolform1[plumage]' => [],
             ],
-            'messages' => []
+            'messages' => [],
         ], $result1);
     }
 
@@ -894,46 +894,46 @@ class JqueryValidationAdapterTest extends TestCase
             'email' => [
                 'validators' => [
                     'required' => [
-                        'message' => 'ACCOUNT_SPECIFY_EMAIL'
+                        'message' => 'ACCOUNT_SPECIFY_EMAIL',
                     ],
                     'length' => [
                         'min'     => 1,
                         'max'     => 100,
-                        'message' => 'ACCOUNT_EMAIL_CHAR_LIMIT'
+                        'message' => 'ACCOUNT_EMAIL_CHAR_LIMIT',
                     ],
                     'email' => [
-                        'message' => 'ACCOUNT_INVALID_EMAIL'
+                        'message' => 'ACCOUNT_INVALID_EMAIL',
                     ],
-                ]
+                ],
             ],
             'password' => [
                 'validators' => [
                     'required' => [
-                        'message' => 'ACCOUNT_SPECIFY_PASSWORD'
+                        'message' => 'ACCOUNT_SPECIFY_PASSWORD',
                     ],
                     'length' => [
                         'min'     => 8,
                         'max'     => 50,
-                        'message' => 'ACCOUNT_PASS_CHAR_LIMIT'
+                        'message' => 'ACCOUNT_PASS_CHAR_LIMIT',
                     ],
                 ],
             ],
             'passwordc' => [
                 'validators' => [
                     'required' => [
-                        'message' => 'ACCOUNT_SPECIFY_PASSWORD'
+                        'message' => 'ACCOUNT_SPECIFY_PASSWORD',
                     ],
                     'matches' => [
                         'field'   => 'password',
-                        'message' => 'ACCOUNT_PASS_MISMATCH'
+                        'message' => 'ACCOUNT_PASS_MISMATCH',
                     ],
                     'length' => [
                         'min'     => 8,
                         'max'     => 50,
-                        'message' => 'ACCOUNT_PASS_CHAR_LIMIT'
-                    ]
-                ]
-            ]
+                        'message' => 'ACCOUNT_PASS_CHAR_LIMIT',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -945,59 +945,59 @@ class JqueryValidationAdapterTest extends TestCase
                 'user_name' => [
                     'rangelength' => [
                         0 => 1,
-                        1 => 50
+                        1 => 50,
                     ],
                     'noLeadingWhitespace'  => true,
                     'noTrailingWhitespace' => true,
                     'required'             => true,
-                    'username'             => true
+                    'username'             => true,
                 ],
                 'display_name' => [
                     'rangelength' => [
                         0 => 1,
                         1 => 50,
                     ],
-                    'required' => true
+                    'required' => true,
                 ],
                 'secret' => [
                     'rangelength' => [
                         0 => 1,
-                        1 => 100
+                        1 => 100,
                     ],
-                    'number' => true
+                    'number' => true,
                 ],
                 'puppies' => [
                     'memberOf' => [
                         0 => '0',
-                        1 => '1'
-                    ]
+                        1 => '1',
+                    ],
                 ],
                 'phone' => [
-                    'phoneUS' => true
+                    'phoneUS' => true,
                 ],
                 'email' => [
                     'required'    => true,
                     'rangelength' => [
                         0 => 1,
-                        1 => 100
+                        1 => 100,
                     ],
-                    'email' => true
+                    'email' => true,
                 ],
                 'password' => [
                     'required'    => true,
                     'rangelength' => [
                         0 => 8,
-                        1 => 50
-                    ]
+                        1 => 50,
+                    ],
                 ],
                 'passwordc' => [
                     'required'       => true,
                     'matchFormField' => 'password',
                     'rangelength'    => [
                         0 => 8,
-                        1 => 50
-                    ]
-                ]
+                        1 => 50,
+                    ],
+                ],
             ],
             'messages' => [
                 'user_name' => [
@@ -1032,8 +1032,8 @@ class JqueryValidationAdapterTest extends TestCase
                 'passwordc' => [
                     'required'       => 'ACCOUNT_SPECIFY_PASSWORD',
                     'matchFormField' => 'ACCOUNT_PASS_MISMATCH',
-                    'rangelength'    => 'ACCOUNT_PASS_CHAR_LIMIT'
-                ]
+                    'rangelength'    => 'ACCOUNT_PASS_CHAR_LIMIT',
+                ],
             ],
         ], $result);
 
@@ -1045,59 +1045,59 @@ class JqueryValidationAdapterTest extends TestCase
                 'coolform1[user_name]' => [
                     'rangelength' => [
                         0 => 1,
-                        1 => 50
+                        1 => 50,
                     ],
                     'noLeadingWhitespace'  => true,
                     'noTrailingWhitespace' => true,
                     'required'             => true,
-                    'username'             => true
+                    'username'             => true,
                 ],
                 'coolform1[display_name]' => [
                     'rangelength' => [
                         0 => 1,
                         1 => 50,
                     ],
-                    'required' => true
+                    'required' => true,
                 ],
                 'coolform1[secret]' => [
                     'rangelength' => [
                         0 => 1,
-                        1 => 100
+                        1 => 100,
                     ],
-                    'number' => true
+                    'number' => true,
                 ],
                 'coolform1[puppies]' => [
                     'memberOf' => [
                         0 => '0',
-                        1 => '1'
-                    ]
+                        1 => '1',
+                    ],
                 ],
                 'coolform1[phone]' => [
-                    'phoneUS' => true
+                    'phoneUS' => true,
                 ],
                 'coolform1[email]' => [
                     'required'    => true,
                     'rangelength' => [
                         0 => 1,
-                        1 => 100
+                        1 => 100,
                     ],
-                    'email' => true
+                    'email' => true,
                 ],
                 'coolform1[password]' => [
                     'required'    => true,
                     'rangelength' => [
                         0 => 8,
-                        1 => 50
-                    ]
+                        1 => 50,
+                    ],
                 ],
                 'coolform1[passwordc]' => [
                     'required'       => true,
                     'matchFormField' => 'password',
                     'rangelength'    => [
                         0 => 8,
-                        1 => 50
-                    ]
-                ]
+                        1 => 50,
+                    ],
+                ],
             ],
             'messages' => [
                 'coolform1[user_name]' => [
@@ -1132,8 +1132,8 @@ class JqueryValidationAdapterTest extends TestCase
                 'coolform1[passwordc]' => [
                     'required'       => 'ACCOUNT_SPECIFY_PASSWORD',
                     'matchFormField' => 'ACCOUNT_PASS_MISMATCH',
-                    'rangelength'    => 'ACCOUNT_PASS_CHAR_LIMIT'
-                ]
+                    'rangelength'    => 'ACCOUNT_PASS_CHAR_LIMIT',
+                ],
             ],
         ], $result1);
     }

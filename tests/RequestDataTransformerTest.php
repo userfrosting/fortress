@@ -23,16 +23,16 @@ class RequestDataTransformerTest extends TestCase
 
     public function setUp()
     {
-        $this->basePath = __DIR__ . '/data';
+        $this->basePath = __DIR__.'/data';
 
         // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/register.yaml');
+        $loader = new YamlFileLoader($this->basePath.'/register.yaml');
         $schema = new RequestSchemaRepository($loader->load());
         $this->transformer = new RequestDataTransformer($schema);
     }
 
     /**
-     * Basic whitelisting
+     * Basic whitelisting.
      */
     public function testBasic()
     {
@@ -40,7 +40,7 @@ class RequestDataTransformerTest extends TestCase
         $rawInput = [
             'email'       => 'david@owlfancy.com',
             'admin'       => 1,
-            'description' => 'Some stuff to describe'
+            'description' => 'Some stuff to describe',
         ];
 
         // Arrange
@@ -48,7 +48,7 @@ class RequestDataTransformerTest extends TestCase
 
         $schema->mergeItems(null, [
             'email'       => [],
-            'description' => null  // Replicating an input that has no validation operations
+            'description' => null,  // Replicating an input that has no validation operations
         ]);
         $this->transformer = new RequestDataTransformer($schema);
 
@@ -58,20 +58,20 @@ class RequestDataTransformerTest extends TestCase
         // Assert
         $transformedData = [
             'email'       => 'david@owlfancy.com',
-            'description' => 'Some stuff to describe'
+            'description' => 'Some stuff to describe',
         ];
 
         $this->assertEquals($transformedData, $result);
     }
 
     /**
-     * "Trim" transformer
+     * "Trim" transformer.
      */
     public function testTrim()
     {
         // Act
         $rawInput = [
-            'display_name' => 'THE GREATEST  '
+            'display_name' => 'THE GREATEST  ',
         ];
 
         $result = $this->transformer->transform($rawInput, 'skip');
@@ -79,20 +79,20 @@ class RequestDataTransformerTest extends TestCase
         // Assert
         $transformedData = [
             'email'        => 'david@owlfancy.com',
-            'display_name' => 'THE GREATEST'
+            'display_name' => 'THE GREATEST',
         ];
 
         $this->assertEquals($transformedData, $result);
     }
 
     /**
-     * "Escape" transformer
+     * "Escape" transformer.
      */
     public function testEscape()
     {
         // Act
         $rawInput = [
-            'display_name' => '<b>My Super-Important Name</b>'
+            'display_name' => '<b>My Super-Important Name</b>',
         ];
 
         $result = $this->transformer->transform($rawInput, 'skip');
@@ -100,20 +100,20 @@ class RequestDataTransformerTest extends TestCase
         // Assert
         $transformedData = [
             'email'        => 'david@owlfancy.com',
-            'display_name' => '&#60;b&#62;My Super-Important Name&#60;/b&#62;'
+            'display_name' => '&#60;b&#62;My Super-Important Name&#60;/b&#62;',
         ];
 
         $this->assertEquals($transformedData, $result);
     }
 
     /**
-     * "Purge" transformer
+     * "Purge" transformer.
      */
     public function testPurge()
     {
         // Act
         $rawInput = [
-            'user_name' => '<b>My Super-Important Name</b>'
+            'user_name' => '<b>My Super-Important Name</b>',
         ];
 
         $result = $this->transformer->transform($rawInput, 'skip');
@@ -121,20 +121,20 @@ class RequestDataTransformerTest extends TestCase
         // Assert
         $transformedData = [
             'email'     => 'david@owlfancy.com',
-            'user_name' => 'My Super-Important Name'
+            'user_name' => 'My Super-Important Name',
         ];
 
         $this->assertEquals($transformedData, $result);
     }
 
     /**
-     * "Purify" transformer
+     * "Purify" transformer.
      */
     public function testPurify()
     {
         // Act
         $rawInput = [
-            'puppies' => "<script>I'm definitely really a puppy  </script><b>0</b>"
+            'puppies' => "<script>I'm definitely really a puppy  </script><b>0</b>",
         ];
 
         $result = $this->transformer->transform($rawInput, 'skip');
@@ -142,7 +142,7 @@ class RequestDataTransformerTest extends TestCase
         // Assert
         $transformedData = [
             'email'   => 'david@owlfancy.com',
-            'puppies' => '<b>0</b>'
+            'puppies' => '<b>0</b>',
         ];
 
         $this->assertEquals($transformedData, $result);

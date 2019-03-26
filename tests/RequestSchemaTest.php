@@ -22,23 +22,23 @@ class RequestSchemaTest extends TestCase
 
     public function setUp()
     {
-        $this->basePath = __DIR__ . '/data';
+        $this->basePath = __DIR__.'/data';
 
         $this->contactSchema = [
             'message' => [
                 'validators' => [
                     'required' => [
-                        'message' => 'Please enter a message'
-                    ]
-                ]
-            ]
+                        'message' => 'Please enter a message',
+                    ],
+                ],
+            ],
         ];
     }
 
     public function testReadJsonSchema()
     {
         // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/contact.json');
+        $loader = new YamlFileLoader($this->basePath.'/contact.json');
         $schema = new RequestSchemaRepository($loader->load());
 
         // Act
@@ -51,7 +51,7 @@ class RequestSchemaTest extends TestCase
     public function testReadYamlSchema()
     {
         // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/contact.yaml');
+        $loader = new YamlFileLoader($this->basePath.'/contact.yaml');
         $schema = new RequestSchemaRepository($loader->load());
 
         // Act
@@ -64,7 +64,7 @@ class RequestSchemaTest extends TestCase
     public function testSetDefault()
     {
         // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/contact.yaml');
+        $loader = new YamlFileLoader($this->basePath.'/contact.yaml');
         $schema = new RequestSchemaRepository($loader->load());
 
         // Act
@@ -77,10 +77,10 @@ class RequestSchemaTest extends TestCase
                 'default'    => 'I require more voles.',
                 'validators' => [
                     'required' => [
-                        'message' => 'Please enter a message'
-                    ]
-                ]
-            ]
+                        'message' => 'Please enter a message',
+                    ],
+                ],
+            ],
         ];
         $this->assertArraySubset($contactSchema, $result);
     }
@@ -88,13 +88,13 @@ class RequestSchemaTest extends TestCase
     public function testAddValidator()
     {
         // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/contact.yaml');
+        $loader = new YamlFileLoader($this->basePath.'/contact.yaml');
         $schema = new RequestSchemaRepository($loader->load());
 
         // Act
         $schema->addValidator('message', 'length', [
             'max'     => 10000,
-            'message' => 'Your message is too long!'
+            'message' => 'Your message is too long!',
         ]);
         $result = $schema->all();
 
@@ -103,14 +103,14 @@ class RequestSchemaTest extends TestCase
             'message' => [
                 'validators' => [
                     'required' => [
-                        'message' => 'Please enter a message'
+                        'message' => 'Please enter a message',
                     ],
                     'length' => [
                         'max'     => 10000,
-                        'message' => 'Your message is too long!'
-                    ]
-                ]
-            ]
+                        'message' => 'Your message is too long!',
+                    ],
+                ],
+            ],
         ];
         $this->assertArraySubset($contactSchema, $result);
     }
@@ -122,14 +122,14 @@ class RequestSchemaTest extends TestCase
             'message' => [
                 'validators' => [
                     'required' => [
-                        'message' => 'Please enter a message'
+                        'message' => 'Please enter a message',
                     ],
                     'length' => [
                         'max'     => 10000,
-                        'message' => 'Your message is too long!'
-                    ]
-                ]
-            ]
+                        'message' => 'Your message is too long!',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -146,10 +146,10 @@ class RequestSchemaTest extends TestCase
                 'validators' => [
                     'length' => [
                         'max'     => 10000,
-                        'message' => 'Your message is too long!'
-                    ]
-                ]
-            ]
+                        'message' => 'Your message is too long!',
+                    ],
+                ],
+            ],
         ];
 
         $this->assertEquals($contactSchema, $result);
@@ -158,7 +158,7 @@ class RequestSchemaTest extends TestCase
     public function testSetTransformation()
     {
         // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/contact.yaml');
+        $loader = new YamlFileLoader($this->basePath.'/contact.yaml');
         $schema = new RequestSchemaRepository($loader->load());
 
         // Act
@@ -170,14 +170,14 @@ class RequestSchemaTest extends TestCase
             'message' => [
                 'validators' => [
                     'required' => [
-                        'message' => 'Please enter a message'
-                    ]
+                        'message' => 'Please enter a message',
+                    ],
                 ],
                 'transformations' => [
                     'purge',
-                    'owlify'
-                ]
-            ]
+                    'owlify',
+                ],
+            ],
         ];
         $this->assertArraySubset($contactSchema, $result);
     }

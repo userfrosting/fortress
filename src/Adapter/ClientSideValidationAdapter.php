@@ -14,7 +14,7 @@ use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
 use UserFrosting\I18n\MessageTranslator;
 
 /**
- * ClientSideValidationAdapter Class
+ * ClientSideValidationAdapter Class.
  *
  * Loads validation rules from a schema and generates client-side rules compatible with a particular client-side (usually Javascript) plugin.
  *
@@ -75,9 +75,11 @@ abstract class ClientSideValidationAdapter
      * Generate and return the validation rules for this specific validation adapter.
      *
      * This method returns a collection of rules, in the format required by the specified plugin.
-     * @param  string $format       The format in which to return the rules.  For example, "json" or "html5".
-     * @param  bool   $stringEncode In the case of JSON rules, specify whether or not to encode the result as a serialized JSON string.
-     * @return mixed  The validation rule collection.
+     *
+     * @param string $format       The format in which to return the rules.  For example, "json" or "html5".
+     * @param bool   $stringEncode In the case of JSON rules, specify whether or not to encode the result as a serialized JSON string.
+     *
+     * @return mixed The validation rule collection.
      */
     abstract public function rules($format = 'json', $stringEncode = true);
 }

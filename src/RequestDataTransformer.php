@@ -14,7 +14,7 @@ use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
 use UserFrosting\Support\Exception\BadRequestException;
 
 /**
- * RequestDataTransformer Class
+ * RequestDataTransformer Class.
  *
  * Perform a series of transformations on a set of data fields, as specified by a RequestSchemaInterface.
  *
@@ -78,6 +78,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
                         break;
                     case 'error':
                         $e = new BadRequestException("The field '$name' is not a valid input field.");
+
                         throw $e;
                         break;
                     case 'skip':
@@ -134,7 +135,8 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     /**
      * Autodetect if a field is an array or scalar, and filter appropriately.
      *
-     * @param  mixed $value
+     * @param mixed $value
+     *
      * @return mixed
      */
     private function escapeHtmlCharacters($value)
@@ -149,7 +151,8 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     /**
      * Autodetect if a field is an array or scalar, and filter appropriately.
      *
-     * @param  mixed $value
+     * @param mixed $value
+     *
      * @return mixed
      */
     private function purgeHtmlCharacters($value)
@@ -164,7 +167,8 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     /**
      * Autodetect if a field is an array or scalar, and filter appropriately.
      *
-     * @param  mixed $value
+     * @param mixed $value
+     *
      * @return mixed
      */
     private function trim($value)

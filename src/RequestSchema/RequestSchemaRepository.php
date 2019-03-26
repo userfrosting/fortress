@@ -13,7 +13,7 @@ namespace UserFrosting\Fortress\RequestSchema;
 use UserFrosting\Support\Repository\Repository;
 
 /**
- * Represents a schema for an HTTP request, compliant with the WDVSS standard (https://github.com/alexweissman/wdvss)
+ * Represents a schema for an HTTP request, compliant with the WDVSS standard (https://github.com/alexweissman/wdvss).
  *
  * @author Alexander Weissman (https://alexanderweissman.com)
  */
