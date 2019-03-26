@@ -92,8 +92,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
      *
      * @param string $field
      * @param mixed  $value
-     * @param string $targetValue
-     * @param bool   $caseSensitive
+     * @param array  $params
      *
      * @return bool
      */
@@ -115,8 +114,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
      *
      * @param string $field
      * @param mixed  $value
-     * @param string $targetValue
-     * @param bool   $caseSensitive
+     * @param array  $params
      *
      * @return bool
      */

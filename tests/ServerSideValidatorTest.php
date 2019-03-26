@@ -81,6 +81,7 @@ class ServerSideValidatorTest extends TestCase
             'array' => [
                 'validators' => [
                     'array' => [
+                        'message' => 'Array must be an array.',
                     ],
                 ],
             ],
