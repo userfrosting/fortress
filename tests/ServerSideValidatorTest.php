@@ -25,6 +25,24 @@ class ServerSideValidatorTest extends TestCase
         $this->translator = new MessageTranslator();
     }
 
+    public function testValidateNoValidators()
+    {
+        // Arrange
+        $schema = new RequestSchemaRepository([
+            'email' => [],
+        ]);
+
+        // Act
+        $validator = new ServerSideValidator($schema, $this->translator);
+
+        $result = $validator->validate([
+            'email' => 'david@owlfancy.com',
+        ]);
+
+        // Check passing validation
+        $this->assertTrue($result);
+    }
+
     public function testValidateEmail()
     {
         // Arrange
@@ -53,6 +71,37 @@ class ServerSideValidatorTest extends TestCase
         // Check failing validation
         $this->assertFalse($validator->validate([
             'email' => 'screeeech',
+        ]));
+    }
+
+    public function testValidateArray()
+    {
+        // Arrange
+        $schema = new RequestSchemaRepository([
+            'array' => [
+                'validators' => [
+                    'array' => [
+                    ],
+                ],
+            ],
+        ]);
+
+        // Act
+        $validator = new ServerSideValidator($schema, $this->translator);
+
+        $result = $validator->validate([
+            'array' => ['foo', 'bar'],
+        ]);
+
+        // Check that the correct Valitron rule was generated
+        $this->assertTrue($validator->hasRule('array', 'array'));
+
+        // Check passing validation
+        $this->assertTrue($result);
+
+        // Check failing validation
+        $this->assertFalse($validator->validate([
+            'array' => 'screeeech',
         ]));
     }
 
