@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 
-class RequestSchemaTest extends TestCase
+class RequestSchemaRepositoryTest extends TestCase
 {
     protected $basePath;
 
