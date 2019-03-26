@@ -8,6 +8,8 @@
  * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
  */
 
+namespace UserFrosting\Fortress\Tests;
+
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\Adapter\JqueryValidationAdapter;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
