@@ -177,10 +177,14 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
         // Weird way to adapt with Valitron's funky interface
         $params = array_merge([$rule], array_slice(func_get_args(), 2));
         call_user_func_array([$this, 'rule'], $params);
+
         // Set message.  Use Valitron's default message if not specified in the schema.
         if (!$messageSet) {
-            $messageSet = "'".$params[1]."' ".vsprintf(static::$_ruleMessages[$rule], array_slice(func_get_args(), 3));
+            $message = (isset(static::$_ruleMessages[$rule])) ? static::$_ruleMessages[$rule] : null;
+            $message = vsprintf($message, array_slice(func_get_args(), 3));
+            $messageSet = "'{$params[1]}' $message";
         }
+
         $this->message($messageSet);
     }
 

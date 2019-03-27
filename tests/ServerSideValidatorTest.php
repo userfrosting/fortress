@@ -78,7 +78,7 @@ class ServerSideValidatorTest extends TestCase
     {
         // Arrange
         $schema = new RequestSchemaRepository([
-            'array' => [
+            'screech' => [
                 'validators' => [
                     'array' => [
                         'message' => 'Array must be an array.',
@@ -91,18 +91,18 @@ class ServerSideValidatorTest extends TestCase
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'array' => ['foo', 'bar'],
+            'screech' => ['foo', 'bar'],
         ]);
 
         // Check that the correct Valitron rule was generated
-        $this->assertTrue($validator->hasRule('array', 'array'));
+        $this->assertTrue($validator->hasRule('array', 'screech'));
 
         // Check passing validation
         $this->assertTrue($result);
 
         // Check failing validation
         $this->assertFalse($validator->validate([
-            'array' => 'screeeech',
+            'screech' => 'screeeech',
         ]));
     }
 
@@ -863,5 +863,33 @@ class ServerSideValidatorTest extends TestCase
 
         // Check passing validation
         $this->assertFalse($result);
+    }
+
+    /**
+     * @depends testValidateUsername
+     */
+    public function testValidateWithNoValidatorMessage()
+    {
+        // Arrange
+        $schema = new RequestSchemaRepository([
+            'user_name' => [
+                'validators' => [
+                    'username' => [],
+                ],
+            ],
+        ]);
+
+        // Act
+        $validator = new ServerSideValidator($schema, $this->translator);
+
+        $result = $validator->validate([
+            'user_name' => 'alex.weissman',
+        ]);
+
+        // Check that the correct Valitron rule was generated
+        $this->assertTrue($validator->hasRule('username', 'user_name'));
+
+        // Check passing validation
+        $this->assertTrue($result);
     }
 }
