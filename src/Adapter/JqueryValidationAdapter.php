@@ -23,7 +23,9 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
      * Generate jQuery Validation compatible rules from the specified RequestSchema, as a JSON document.
      * See [this](https://github.com/jzaefferer/jquery-validation/blob/master/demo/bootstrap/index.html#L168-L209) as an example of what this function will generate.
      *
-     * @param bool $stringEncode Specify whether to return a PHP array, or a JSON-encoded string.
+     * @param string $format       (Default: json)
+     * @param bool   $stringEncode Specify whether to return a PHP array, or a JSON-encoded string. (default: false)
+     * @param string $arrayPrefix  (Default: '')
      *
      * @return string|array Returns either the array of rules, or a JSON-encoded representation of that array.
      */

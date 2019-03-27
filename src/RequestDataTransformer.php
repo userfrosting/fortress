@@ -28,7 +28,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
     protected $schema;
 
     /**
-     * @var HTMLPurifier
+     * @var \HTMLPurifier
      */
     protected $purifier;
 

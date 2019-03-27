@@ -64,6 +64,63 @@ class RequestDataTransformerTest extends TestCase
         $this->assertEquals($transformedData, $result);
     }
 
+    public function testBasicWithOnUnexpectedVarAllow()
+    {
+        // Arrange
+        $rawInput = [
+            'email'       => 'david@owlfancy.com',
+            'admin'       => 1,
+            'description' => 'Some stuff to describe',
+        ];
+
+        // Arrange
+        $schema = new RequestSchemaRepository();
+
+        $schema->mergeItems(null, [
+            'email'       => [],
+            'description' => null,  // Replicating an input that has no validation operations
+        ]);
+        $this->transformer = new RequestDataTransformer($schema);
+
+        // Act
+        $result = $this->transformer->transform($rawInput, 'allow');
+
+        // Assert
+        $transformedData = [
+            'email'       => 'david@owlfancy.com',
+            'admin'       => 1,
+            'description' => 'Some stuff to describe',
+        ];
+
+        $this->assertEquals($transformedData, $result);
+    }
+
+    /**
+     * @expectedException \UserFrosting\Support\Exception\BadRequestException
+     * @expectedExceptionMessage The field 'admin' is not a valid input field.
+     */
+    public function testBasicWithOnUnexpectedVarError()
+    {
+        // Arrange
+        $rawInput = [
+            'email'       => 'david@owlfancy.com',
+            'admin'       => 1,
+            'description' => 'Some stuff to describe',
+        ];
+
+        // Arrange
+        $schema = new RequestSchemaRepository();
+
+        $schema->mergeItems(null, [
+            'email'       => [],
+            'description' => null,  // Replicating an input that has no validation operations
+        ]);
+        $this->transformer = new RequestDataTransformer($schema);
+
+        // Act
+        $result = $this->transformer->transform($rawInput, 'error');
+    }
+
     /**
      * "Trim" transformer.
      */
@@ -107,6 +164,27 @@ class RequestDataTransformerTest extends TestCase
     }
 
     /**
+     * @depends testEscape
+     */
+    public function testEscapeWithArrayValue()
+    {
+        // Act
+        $rawInput = [
+            'display_name' => ['<b>My Super-Important Name</b>'],
+        ];
+
+        $result = $this->transformer->transform($rawInput, 'skip');
+
+        // Assert
+        $transformedData = [
+            'email'        => 'david@owlfancy.com',
+            'display_name' => ['&#60;b&#62;My Super-Important Name&#60;/b&#62;'],
+        ];
+
+        $this->assertEquals($transformedData, $result);
+    }
+
+    /**
      * "Purge" transformer.
      */
     public function testPurge()
@@ -122,6 +200,27 @@ class RequestDataTransformerTest extends TestCase
         $transformedData = [
             'email'     => 'david@owlfancy.com',
             'user_name' => 'My Super-Important Name',
+        ];
+
+        $this->assertEquals($transformedData, $result);
+    }
+
+    /**
+     * @depends testPurge
+     */
+    public function testPurgeWithArrayValue()
+    {
+        // Act
+        $rawInput = [
+            'user_name' => ['<b>My Super-Important Name</b>'],
+        ];
+
+        $result = $this->transformer->transform($rawInput, 'skip');
+
+        // Assert
+        $transformedData = [
+            'email'     => 'david@owlfancy.com',
+            'user_name' => ['My Super-Important Name'],
         ];
 
         $this->assertEquals($transformedData, $result);
