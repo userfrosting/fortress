@@ -490,6 +490,9 @@ class FormValidationAdapterTest extends TestCase
                     ],
                 ],
             ],
+            'passwordc' => [
+                'validators' => [],
+            ],
         ]);
 
         $expectedResult = [
@@ -501,6 +504,9 @@ class FormValidationAdapterTest extends TestCase
                     ],
                 ],
             ],
+            'passwordc' => [
+                'validators' => [],
+            ],
         ];
 
         // Act
@@ -508,7 +514,7 @@ class FormValidationAdapterTest extends TestCase
         $result = $adapter->rules();
 
         // Assert
-        $this->assertEquals(json_encode($expectedResult, JSON_PRETTY_PRINT), $result);
+        $this->assertEquals(json_encode($expectedResult, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT), $result);
 
         // Test with html5 format
         $result = $adapter->rules('html5');
