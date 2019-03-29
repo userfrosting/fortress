@@ -103,7 +103,7 @@ message:
 {
     "require": {
         "php": ">=5.6.0",
-        "userfrosting/fortress": "^4.1.0"
+        "userfrosting/fortress": "^4.2.0"
     }
 }
 ```
