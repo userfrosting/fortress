@@ -7,8 +7,8 @@
 
 | Branch | Build | Coverage | Style |
 | ------ |:-----:|:--------:|:-----:|
-| [master][Fortress]  | [![][fortress-master-build]][fortress-travis] | [![][fortress-master-codecov]][fortress-codecov] | [![][config-style-master]][config-style] |
-| [develop][fortress-develop] | [![][fortress-develop-build]][fortress-travis] | [![][fortress-develop-codecov]][fortress-codecov] | [![][config-style-develop]][config-style] |
+| [master][Fortress]  | [![][fortress-master-build]][fortress-travis] | [![][fortress-master-codecov]][fortress-codecov] | [![][fortress-style-master]][fortress-style] |
+| [develop][fortress-develop] | [![][fortress-develop-build]][fortress-travis] | [![][fortress-develop-codecov]][fortress-codecov] | [![][fortress-style-develop]][fortress-style] |
 
 <!-- Links -->
 [Fortress]: https://github.com/userfrosting/fortress
