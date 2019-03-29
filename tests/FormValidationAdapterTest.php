@@ -67,7 +67,7 @@ class FormValidationAdapterTest extends TestCase
 
     /**
      * N.B.: equals is not a supported validator in FormValidationAdapter.
-     * Let's test what's happening when this happens
+     * Let's test what's happening when this happens.
      */
     public function testValidateEquals()
     {
@@ -513,8 +513,8 @@ class FormValidationAdapterTest extends TestCase
         // Test with html5 format
         $result = $adapter->rules('html5');
         $expectedResult = [
-            'password' => 'data-fv-identical=true data-fv-identical-message="The value of this field does not match the value of the \'{{field}}\' field." ',
-            'passwordc' => 'data-fv-identical=true data-fv-identical-message="The value of this field does not match the value of the \'{{field}}\' field." data-fv-identical-field=password '
+            'password'  => 'data-fv-identical=true data-fv-identical-message="The value of this field does not match the value of the \'{{field}}\' field." ',
+            'passwordc' => 'data-fv-identical=true data-fv-identical-message="The value of this field does not match the value of the \'{{field}}\' field." data-fv-identical-field=password ',
         ];
         $this->assertEquals($expectedResult, $result);
     }
