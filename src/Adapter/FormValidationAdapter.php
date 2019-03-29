@@ -43,7 +43,7 @@ class FormValidationAdapter extends ClientSideValidationAdapter
     {
         $clientRules = [];
         $implicitRules = [];
-        foreach ($this->schema->getSchema() as $fieldName => $field) {
+        foreach ($this->schema->all() as $fieldName => $field) {
             $clientRules[$fieldName] = [];
             $clientRules[$fieldName]['validators'] = [];
 
@@ -72,7 +72,7 @@ class FormValidationAdapter extends ClientSideValidationAdapter
     {
         $clientRules = [];
         $implicitRules = [];
-        foreach ($this->schema->getSchema() as $fieldName => $field) {
+        foreach ($this->schema->all() as $fieldName => $field) {
             $fieldRules = '';
             $validators = $field['validators'];
 
@@ -275,8 +275,6 @@ class FormValidationAdapter extends ClientSideValidationAdapter
             $msg = '';
             if (isset($validator['message'])) {
                 $msg = $validator['message'];
-            } else {
-                return $attr;
             }
             $attr .= "$prefix-message=\"$msg\" ";
         }
