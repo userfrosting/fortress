@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Fortress (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
@@ -13,7 +14,7 @@ use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 
 /**
- * RequestSchema Class
+ * RequestSchema Class.
  *
  * Represents a schema for an HTTP request, compliant with the WDVSS standard (https://github.com/alexweissman/wdvss)
  *
@@ -22,7 +23,7 @@ use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 class RequestSchema extends RequestSchemaRepository
 {
     /**
-     * @var UserFrosting\Support\Repository\Loader\FileRepositoryLoader
+     * @var \UserFrosting\Support\Repository\Loader\FileRepositoryLoader
      */
     protected $loader;
 
@@ -43,21 +44,12 @@ class RequestSchema extends RequestSchemaRepository
     }
 
     /**
-     * @deprecated since 4.1
+     * @deprecated since 4.1. Use `all()` instead
+     *
      * @return array The schema data.
      */
     public function getSchema()
     {
         return $this->items;
-    }
-
-    /**
-     * @deprecated since 4.1
-     * @param  string    $path Path to the schema file.
-     * @throws Exception The file does not exist or is not a valid format.
-     */
-    public function loadSchema()
-    {
-        return $this->load($path);
     }
 }

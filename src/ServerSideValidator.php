@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Fortress (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
@@ -14,7 +15,7 @@ use UserFrosting\I18n\MessageTranslator;
 use Valitron\Validator;
 
 /**
- * ServerSideValidator Class
+ * ServerSideValidator Class.
  *
  * Loads validation rules from a schema and validates a target array of data.
  *
@@ -89,10 +90,10 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     /**
      * Validate that a field has a particular value.
      *
-     * @param  string $field
-     * @param  mixed  $value
-     * @param  string $targetValue
-     * @param  bool   $caseSensitive
+     * @param string $field
+     * @param mixed  $value
+     * @param array  $params
+     *
      * @return bool
      */
     protected function validateEqualsValue($field, $value, $params)
@@ -111,10 +112,10 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     /**
      * Validate that a field does NOT have a particular value.
      *
-     * @param  string $field
-     * @param  mixed  $value
-     * @param  string $targetValue
-     * @param  bool   $caseSensitive
+     * @param string $field
+     * @param mixed  $value
+     * @param array  $params
+     *
      * @return bool
      */
     protected function validateNotEqualsValue($field, $value, $params)
@@ -124,7 +125,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
 
     /**
      * Matches US phone number format
-     * Ported from jqueryValidation rules
+     * Ported from jqueryValidation rules.
      *
      * where the area code may not start with 1 and the prefix may not start with 1
      * allows '-' or ' ' as a separator and allows parens around area code
@@ -139,8 +140,9 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
      * and not
      * 212 123 4567
      *
-     * @param  string $field
-     * @param  mixed  $value
+     * @param string $field
+     * @param mixed  $value
+     *
      * @return bool
      */
     protected function validatePhoneUS($field, $value)
@@ -152,10 +154,11 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     }
 
     /**
-     * Validate that a field contains only valid username characters: alpha-numeric characters, dots, dashes, and underscores
+     * Validate that a field contains only valid username characters: alpha-numeric characters, dots, dashes, and underscores.
      *
-     * @param  string $field
-     * @param  mixed  $value
+     * @param string $field
+     * @param mixed  $value
+     *
      * @return bool
      */
     protected function validateUsername($field, $value)
@@ -174,10 +177,14 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
         // Weird way to adapt with Valitron's funky interface
         $params = array_merge([$rule], array_slice(func_get_args(), 2));
         call_user_func_array([$this, 'rule'], $params);
+
         // Set message.  Use Valitron's default message if not specified in the schema.
         if (!$messageSet) {
-            $messageSet = "'" . $params[1] . "' " . vsprintf(static::$_ruleMessages[$rule], array_slice(func_get_args(), 3));
+            $message = (isset(static::$_ruleMessages[$rule])) ? static::$_ruleMessages[$rule] : null;
+            $message = vsprintf($message, array_slice(func_get_args(), 3));
+            $messageSet = "'{$params[1]}' $message";
         }
+
         $this->message($messageSet);
     }
 
@@ -279,7 +286,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
                 }
                 // Regex validator
                 if ($validatorName == 'regex') {
-                    $this->ruleWithMessage('regex', $messageSet, $fieldName, '/' . $validator['regex'] . '/');
+                    $this->ruleWithMessage('regex', $messageSet, $fieldName, '/'.$validator['regex'].'/');
                 }
                 // Required validator
                 if ($validatorName == 'required') {

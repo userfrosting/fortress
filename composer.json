@@ -26,5 +26,10 @@
         "psr-4": {
             "UserFrosting\\Fortress\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "UserFrosting\\Fortress\\Tests\\": "tests"
+        }
     }
 }

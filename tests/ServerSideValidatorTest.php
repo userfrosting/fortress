@@ -1,19 +1,46 @@
 <?php
 
+/*
+ * UserFrosting Fortress (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
+ */
+
+namespace UserFrosting\Fortress\Tests;
+
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Fortress\ServerSideValidator;
 use UserFrosting\I18n\MessageTranslator;
 
-
 class ServerSideValidatorTest extends TestCase
 {
     protected $translator;
-    
+
     public function setUp()
     {
-        // Create a message translator        
+        // Create a message translator
         $this->translator = new MessageTranslator();
+    }
+
+    public function testValidateNoValidators()
+    {
+        // Arrange
+        $schema = new RequestSchemaRepository([
+            'email' => [],
+        ]);
+
+        // Act
+        $validator = new ServerSideValidator($schema, $this->translator);
+
+        $result = $validator->validate([
+            'email' => 'david@owlfancy.com',
+        ]);
+
+        // Check passing validation
+        $this->assertTrue($result);
     }
 
     public function testValidateEmail()
@@ -23,16 +50,16 @@ class ServerSideValidatorTest extends TestCase
             'email' => [
                 'validators' => [
                     'email' => [
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'email' => 'david@owlfancy.com'
+            'email' => 'david@owlfancy.com',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -43,7 +70,39 @@ class ServerSideValidatorTest extends TestCase
 
         // Check failing validation
         $this->assertFalse($validator->validate([
-            'email' => 'screeeech'
+            'email' => 'screeeech',
+        ]));
+    }
+
+    public function testValidateArray()
+    {
+        // Arrange
+        $schema = new RequestSchemaRepository([
+            'screech' => [
+                'validators' => [
+                    'array' => [
+                        'message' => 'Array must be an array.',
+                    ],
+                ],
+            ],
+        ]);
+
+        // Act
+        $validator = new ServerSideValidator($schema, $this->translator);
+
+        $result = $validator->validate([
+            'screech' => ['foo', 'bar'],
+        ]);
+
+        // Check that the correct Valitron rule was generated
+        $this->assertTrue($validator->hasRule('array', 'screech'));
+
+        // Check passing validation
+        $this->assertTrue($result);
+
+        // Check failing validation
+        $this->assertFalse($validator->validate([
+            'screech' => 'screeeech',
         ]));
     }
 
@@ -55,19 +114,19 @@ class ServerSideValidatorTest extends TestCase
             'voles' => [
                 'validators' => [
                     'equals' => [
-                        'value' => 8,
+                        'value'         => 8,
                         'caseSensitive' => false,
-                        'message' => 'Voles must be equal to {{value}}.'
-                    ]
-                ]
-            ]
+                        'message'       => 'Voles must be equal to {{value}}.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'voles' => 8
+            'voles' => 8,
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -78,7 +137,7 @@ class ServerSideValidatorTest extends TestCase
 
         // Check failing validation
         $this->assertFalse($validator->validate([
-            'voles' => 3
+            'voles' => 3,
         ]));
     }
 
@@ -89,17 +148,17 @@ class ServerSideValidatorTest extends TestCase
             'voles' => [
                 'validators' => [
                     'integer' => [
-                        'message' => 'Voles must be numeric.'
-                    ]
-                ]
-            ]
+                        'message' => 'Voles must be numeric.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'voles' => 8
+            'voles' => 8,
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -110,11 +169,11 @@ class ServerSideValidatorTest extends TestCase
 
         // Check failing validations
         $this->assertFalse($validator->validate([
-            'voles' => 'yes'
+            'voles' => 'yes',
         ]));
 
         $this->assertFalse($validator->validate([
-            'voles' => 0.5
+            'voles' => 0.5,
         ]));
     }
 
@@ -125,19 +184,19 @@ class ServerSideValidatorTest extends TestCase
             'screech' => [
                 'validators' => [
                     'length' => [
-                        'min' => 5,
-                        'max' => 10,
-                        'message' => "Your screech must be between {{min}} and {{max}} characters long."
-                    ]
-                ]
-            ]
+                        'min'     => 5,
+                        'max'     => 10,
+                        'message' => 'Your screech must be between {{min}} and {{max}} characters long.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'screech' => 'cawwwwww'
+            'screech' => 'cawwwwww',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -148,11 +207,11 @@ class ServerSideValidatorTest extends TestCase
 
         // Check failing validations
         $this->assertFalse($validator->validate([
-            'screech' => 'caw'
+            'screech' => 'caw',
         ]));
 
         $this->assertFalse($validator->validate([
-            'screech' => 'cawwwwwwwwwwwwwwwwwww'
+            'screech' => 'cawwwwwwwwwwwwwwwwwww',
         ]));
     }
 
@@ -163,18 +222,18 @@ class ServerSideValidatorTest extends TestCase
             'screech' => [
                 'validators' => [
                     'length' => [
-                        'min' => 5,
-                        'message' => "Your screech must be at least {{min}} characters long."
-                    ]
-                ]
-            ]
+                        'min'     => 5,
+                        'message' => 'Your screech must be at least {{min}} characters long.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'screech' => 'cawwwwww'
+            'screech' => 'cawwwwww',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -185,7 +244,7 @@ class ServerSideValidatorTest extends TestCase
 
         // Check failing validations
         $this->assertFalse($validator->validate([
-            'screech' => 'caw'
+            'screech' => 'caw',
         ]));
     }
 
@@ -196,18 +255,18 @@ class ServerSideValidatorTest extends TestCase
             'screech' => [
                 'validators' => [
                     'length' => [
-                        'max' => 10,
-                        'message' => "Your screech must be no more than {{max}} characters long."
-                    ]
-                ]
-            ]
+                        'max'     => 10,
+                        'message' => 'Your screech must be no more than {{max}} characters long.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'screech' => 'cawwwwww'
+            'screech' => 'cawwwwww',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -217,7 +276,7 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'screech' => 'cawwwwwwwwwwwwwwwwwww'
+            'screech' => 'cawwwwwwwwwwwwwwwwwww',
         ]));
     }
 
@@ -228,19 +287,19 @@ class ServerSideValidatorTest extends TestCase
             'password' => [
                 'validators' => [
                     'matches' => [
-                        'field' => 'passwordc',
-                        'message' => "The value of this field does not match the value of the '{{field}}' field."
-                    ]
-                ]
-            ]
+                        'field'   => 'passwordc',
+                        'message' => "The value of this field does not match the value of the '{{field}}' field.",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'password' => 'secret',
-            'passwordc' => 'secret'
+            'password'  => 'secret',
+            'passwordc' => 'secret',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -250,8 +309,8 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'password' => 'secret',
-            'passwordc' => 'hoothoot'
+            'password'  => 'secret',
+            'passwordc' => 'hoothoot',
         ]));
     }
 
@@ -262,18 +321,18 @@ class ServerSideValidatorTest extends TestCase
             'genus' => [
                 'validators' => [
                     'member_of' => [
-                        'values' => ["Megascops", "Bubo", "Glaucidium", "Tyto", "Athene"],
-                        'message' => "Sorry, that is not one of the permitted genuses."
-                    ]
-                ]
-            ]
+                        'values'  => ['Megascops', 'Bubo', 'Glaucidium', 'Tyto', 'Athene'],
+                        'message' => 'Sorry, that is not one of the permitted genuses.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'genus' => 'Megascops'
+            'genus' => 'Megascops',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -283,7 +342,7 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'genus' => 'Dolomedes'
+            'genus' => 'Dolomedes',
         ]));
     }
 
@@ -294,24 +353,24 @@ class ServerSideValidatorTest extends TestCase
             'user_name' => [
                 'validators' => [
                     'no_leading_whitespace' => [
-                        'message' => "{{self}} cannot begin with whitespace characters"
-                    ]
-                ]
-            ]
+                        'message' => '{{self}} cannot begin with whitespace characters',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'user_name' => 'alexw'
+            'user_name' => 'alexw',
         ]);
 
         // Check passing validation
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'user_name' => ' alexw'
+            'user_name' => ' alexw',
         ]));
     }
 
@@ -322,17 +381,17 @@ class ServerSideValidatorTest extends TestCase
             'user_name' => [
                 'validators' => [
                     'no_trailing_whitespace' => [
-                        'message' => "{{self}} cannot end with whitespace characters"
-                    ]
-                ]
-            ]
+                        'message' => '{{self}} cannot end with whitespace characters',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'user_name' => 'alexw'
+            'user_name' => 'alexw',
         ]);
 
         // Check passing validation
@@ -340,11 +399,11 @@ class ServerSideValidatorTest extends TestCase
 
         // Should still allow starting with whitespace
         $this->assertTrue($validator->validate([
-            'user_name' => ' alexw'
+            'user_name' => ' alexw',
         ]));
 
         $this->assertFalse($validator->validate([
-            'user_name' => 'alexw '
+            'user_name' => 'alexw ',
         ]));
     }
 
@@ -356,19 +415,19 @@ class ServerSideValidatorTest extends TestCase
             'voles' => [
                 'validators' => [
                     'not_equals' => [
-                        'value' => 0,
+                        'value'         => 0,
                         'caseSensitive' => false,
-                        'message' => 'Voles must be not be equal to {{value}}.'
-                    ]
-                ]
-            ]
+                        'message'       => 'Voles must be not be equal to {{value}}.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'voles' => 8
+            'voles' => 8,
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -379,7 +438,7 @@ class ServerSideValidatorTest extends TestCase
 
         // Check failing validation
         $this->assertFalse($validator->validate([
-            'voles' => 0
+            'voles' => 0,
         ]));
     }
 
@@ -390,19 +449,19 @@ class ServerSideValidatorTest extends TestCase
             'password' => [
                 'validators' => [
                     'not_matches' => [
-                        'field' => 'user_name',
-                        'message' => "Your password cannot be the same as your username."
-                    ]
-                ]
-            ]
+                        'field'   => 'user_name',
+                        'message' => 'Your password cannot be the same as your username.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'password' => 'secret',
-            'user_name' => 'alexw'
+            'password'  => 'secret',
+            'user_name' => 'alexw',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -412,8 +471,8 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'password' => 'secret',
-            'user_name' => 'secret'
+            'password'  => 'secret',
+            'user_name' => 'secret',
         ]));
     }
 
@@ -424,18 +483,18 @@ class ServerSideValidatorTest extends TestCase
             'genus' => [
                 'validators' => [
                     'not_member_of' => [
-                        'values' => ["Myodes", "Microtus", "Neodon", "Alticola"],
-                        'message' => "Sorry, it would appear that you are not an owl."
-                    ]
-                ]
-            ]
+                        'values'  => ['Myodes', 'Microtus', 'Neodon', 'Alticola'],
+                        'message' => 'Sorry, it would appear that you are not an owl.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'genus' => 'Megascops'
+            'genus' => 'Megascops',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -445,7 +504,7 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'genus' => 'Myodes'
+            'genus' => 'Myodes',
         ]));
     }
 
@@ -456,17 +515,17 @@ class ServerSideValidatorTest extends TestCase
             'accuracy' => [
                 'validators' => [
                     'numeric' => [
-                        'message' => "Sorry, your strike accuracy must be a number."
-                    ]
-                ]
-            ]
+                        'message' => 'Sorry, your strike accuracy must be a number.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'accuracy' => 0.99
+            'accuracy' => 0.99,
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -476,19 +535,19 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertTrue($validator->validate([
-            'accuracy' => '0.99'
+            'accuracy' => '0.99',
         ]));
 
         $this->assertTrue($validator->validate([
-            'accuracy' => ''
+            'accuracy' => '',
         ]));
 
         $this->assertFalse($validator->validate([
-            'accuracy' => false
+            'accuracy' => false,
         ]));
 
         $this->assertFalse($validator->validate([
-            'accuracy' => 'yes'
+            'accuracy' => 'yes',
         ]));
     }
 
@@ -499,19 +558,19 @@ class ServerSideValidatorTest extends TestCase
             'voles' => [
                 'validators' => [
                     'range' => [
-                        'min' => 5,
-                        'max' => 10,
-                        'message' => "You must catch {{min}} - {{max}} voles."
-                    ]
-                ]
-            ]
+                        'min'     => 5,
+                        'max'     => 10,
+                        'message' => 'You must catch {{min}} - {{max}} voles.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'voles' => 6
+            'voles' => 6,
         ]);
 
         // Check that the correct Valitron rules were generated
@@ -522,15 +581,15 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'voles' => 2
+            'voles' => 2,
         ]));
 
         $this->assertFalse($validator->validate([
-            'voles' => 10000
+            'voles' => 10000,
         ]));
 
         $this->assertFalse($validator->validate([
-            'voles' => 'yes'
+            'voles' => 'yes',
         ]));
     }
 
@@ -541,18 +600,18 @@ class ServerSideValidatorTest extends TestCase
             'screech' => [
                 'validators' => [
                     'regex' => [
-                        'regex' => "^who(o*)$",
-                        'message' => "You did not provide a valid screech."
-                    ]
-                ]
-            ]
+                        'regex'   => '^who(o*)$',
+                        'message' => 'You did not provide a valid screech.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'screech' => 'whooooooooo'
+            'screech' => 'whooooooooo',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -562,11 +621,11 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'screech' => 'whoot'
+            'screech' => 'whoot',
         ]));
 
         $this->assertFalse($validator->validate([
-            'screech' => 'ribbit'
+            'screech' => 'ribbit',
         ]));
     }
 
@@ -577,17 +636,17 @@ class ServerSideValidatorTest extends TestCase
             'species' => [
                 'validators' => [
                     'required' => [
-                        'message' => "Please tell us your species."
-                    ]
-                ]
-            ]
+                        'message' => 'Please tell us your species.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'species' => 'Athene noctua'
+            'species' => 'Athene noctua',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -597,7 +656,7 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertFalse($validator->validate([
-            'species' => ''
+            'species' => '',
         ]));
 
         $this->assertFalse($validator->validate([]));
@@ -610,17 +669,17 @@ class ServerSideValidatorTest extends TestCase
             'phone' => [
                 'validators' => [
                     'telephone' => [
-                        'message' => "Whoa there, check your phone number again."
-                    ]
-                ]
-            ]
+                        'message' => 'Whoa there, check your phone number again.',
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'phone' => '1(212)-999-2345'
+            'phone' => '1(212)-999-2345',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -630,23 +689,23 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertTrue($validator->validate([
-            'phone' => '212 999 2344'
+            'phone' => '212 999 2344',
         ]));
 
         $this->assertTrue($validator->validate([
-            'phone' => '212-999-0983'
+            'phone' => '212-999-0983',
         ]));
 
         $this->assertFalse($validator->validate([
-            'phone' => '111-123-5434'
+            'phone' => '111-123-5434',
         ]));
 
         $this->assertFalse($validator->validate([
-            'phone' => '212 123 4567'
+            'phone' => '212 123 4567',
         ]));
 
         $this->assertFalse($validator->validate([
-            'phone' => ''
+            'phone' => '',
         ]));
     }
 
@@ -657,17 +716,17 @@ class ServerSideValidatorTest extends TestCase
             'website' => [
                 'validators' => [
                     'uri' => [
-                        'message' => "That's not even a valid URL..."
-                    ]
-                ]
-            ]
+                        'message' => "That's not even a valid URL...",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'website' => 'http://www.owlfancy.com'
+            'website' => 'http://www.owlfancy.com',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -677,28 +736,28 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertTrue($validator->validate([
-            'website' => 'http://owlfancy.com'
+            'website' => 'http://owlfancy.com',
         ]));
 
         $this->assertTrue($validator->validate([
-            'website' => 'https://learn.userfrosting.com'
+            'website' => 'https://learn.userfrosting.com',
         ]));
 
         // Note that we require URLs to begin with http(s)://
         $this->assertFalse($validator->validate([
-            'website' => 'www.owlfancy.com'
+            'website' => 'www.owlfancy.com',
         ]));
 
         $this->assertFalse($validator->validate([
-            'website' => 'owlfancy.com'
+            'website' => 'owlfancy.com',
         ]));
 
         $this->assertFalse($validator->validate([
-            'website' => 'owls'
+            'website' => 'owls',
         ]));
 
         $this->assertFalse($validator->validate([
-            'website' => ''
+            'website' => '',
         ]));
     }
 
@@ -709,17 +768,17 @@ class ServerSideValidatorTest extends TestCase
             'user_name' => [
                 'validators' => [
                     'username' => [
-                        'message' => "Sorry buddy, that's not a valid username."
-                    ]
-                ]
-            ]
+                        'message' => "Sorry buddy, that's not a valid username.",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
         $validator = new ServerSideValidator($schema, $this->translator);
 
         $result = $validator->validate([
-            'user_name' => 'alex.weissman'
+            'user_name' => 'alex.weissman',
         ]);
 
         // Check that the correct Valitron rule was generated
@@ -729,28 +788,28 @@ class ServerSideValidatorTest extends TestCase
         $this->assertTrue($result);
 
         $this->assertTrue($validator->validate([
-            'user_name' => 'alexweissman'
+            'user_name' => 'alexweissman',
         ]));
 
         $this->assertTrue($validator->validate([
-            'user_name' => 'alex-weissman-the-wise'
+            'user_name' => 'alex-weissman-the-wise',
         ]));
 
         // Note that we require URLs to begin with http(s)://
         $this->assertFalse($validator->validate([
-            'user_name' => "<script>alert('I got you');</script>"
+            'user_name' => "<script>alert('I got you');</script>",
         ]));
 
         $this->assertFalse($validator->validate([
-            'user_name' => '#owlfacts'
+            'user_name' => '#owlfacts',
         ]));
 
         $this->assertFalse($validator->validate([
-            'user_name' => 'Did you ever hear the tragedy of Darth Plagueis the Wise?'
+            'user_name' => 'Did you ever hear the tragedy of Darth Plagueis the Wise?',
         ]));
 
         $this->assertFalse($validator->validate([
-            'user_name' => ''
+            'user_name' => '',
         ]));
     }
 
@@ -761,11 +820,11 @@ class ServerSideValidatorTest extends TestCase
             'plumage' => [
                 'validators' => [
                     'required' => [
-                        'domain' => 'client',
-                        'message' => "Are you sure you don't want to show us your plumage?"
-                    ]
-                ]
-            ]
+                        'domain'  => 'client',
+                        'message' => "Are you sure you don't want to show us your plumage?",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -787,11 +846,11 @@ class ServerSideValidatorTest extends TestCase
             'plumage' => [
                 'validators' => [
                     'required' => [
-                        'domain' => 'server',
-                        'message' => "Are you sure you don't want to show us your plumage?"
-                    ]
-                ]
-            ]
+                        'domain'  => 'server',
+                        'message' => "Are you sure you don't want to show us your plumage?",
+                    ],
+                ],
+            ],
         ]);
 
         // Act
@@ -804,5 +863,33 @@ class ServerSideValidatorTest extends TestCase
 
         // Check passing validation
         $this->assertFalse($result);
+    }
+
+    /**
+     * @depends testValidateUsername
+     */
+    public function testValidateWithNoValidatorMessage()
+    {
+        // Arrange
+        $schema = new RequestSchemaRepository([
+            'user_name' => [
+                'validators' => [
+                    'username' => [],
+                ],
+            ],
+        ]);
+
+        // Act
+        $validator = new ServerSideValidator($schema, $this->translator);
+
+        $result = $validator->validate([
+            'user_name' => 'alex.weissman',
+        ]);
+
+        // Check that the correct Valitron rule was generated
+        $this->assertTrue($validator->hasRule('username', 'user_name'));
+
+        // Check passing validation
+        $this->assertTrue($result);
     }
 }

@@ -1,175 +1,46 @@
 <?php
 
+/*
+ * UserFrosting Fortress (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/fortress
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman
+ * @license   https://github.com/userfrosting/fortress/blob/master/LICENSE.md (MIT License)
+ */
+
+namespace UserFrosting\Fortress\Tests;
+
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\RequestSchema;
-use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
-use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 
 class RequestSchemaTest extends TestCase
 {
-    protected $basePath;
-
-    protected $contactSchema;
-    
     public function setUp()
     {
-        $this->basePath = __DIR__ . '/data';
+        $this->basePath = __DIR__.'/data/contact.json';
 
         $this->contactSchema = [
-            "message" => [
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
-                    ]
-                ]
-            ]
-        ];
-    }
-
-    public function testReadJsonSchema()
-    {
-        // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/contact.json');
-        $schema = new RequestSchemaRepository($loader->load());
-
-        // Act
-        $result = $schema->all();
-
-        // Assert
-        $this->assertArraySubset($this->contactSchema, $result);
-    }
-
-    public function testReadYamlSchema()
-    {
-        // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/contact.yaml');
-        $schema = new RequestSchemaRepository($loader->load());
-
-        // Act
-        $result = $schema->all();
-
-        // Assert
-        $this->assertArraySubset($this->contactSchema, $result);
-    }
-
-    public function testSetDefault()
-    {
-        // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/contact.yaml');
-        $schema = new RequestSchemaRepository($loader->load());
-
-        // Act
-        $schema->setDefault('message', "I require more voles.");
-        $result = $schema->all();
-
-        // Assert
-        $contactSchema = [
-            "message" => [
-                "default" => "I require more voles.",
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
-                    ]
-                ]
-            ]
-        ];
-        $this->assertArraySubset($contactSchema, $result);
-    }
-
-    public function testAddValidator()
-    {
-        // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/contact.yaml');
-        $schema = new RequestSchemaRepository($loader->load());
-
-        // Act
-        $schema->addValidator('message', 'length', [
-            'max' => 10000,
-            'message' => 'Your message is too long!'
-        ]);
-        $result = $schema->all();
-
-        // Assert
-        $contactSchema = [
-            "message" => [
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
+            'message' => [
+                'validators' => [
+                    'required' => [
+                        'message' => 'Please enter a message',
                     ],
-                    "length" => [
-                        "max" => 10000,
-                        "message" => "Your message is too long!"
-                    ]
-                ]
-            ]
-        ];
-        $this->assertArraySubset($contactSchema, $result);
-    }
-
-    public function testRemoveValidator()
-    {
-        // Arrange
-        $schema = new RequestSchemaRepository([
-            "message" => [
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
-                    ],
-                    "length" => [
-                        "max" => 10000,
-                        "message" => "Your message is too long!"
-                    ]
-                ]
-            ]
-        ]);
-
-        // Act
-        $schema->removeValidator('message', 'required');
-        // Check that attempting to remove a rule that doesn't exist, will have no effect
-        $schema->removeValidator('wings', 'required');
-        $schema->removeValidator('message', 'telephone');
-
-        $result = $schema->all();
-
-        // Assert
-        $contactSchema = [
-            "message" => [
-                "validators" => [
-                    "length" => [
-                        "max" => 10000,
-                        "message" => "Your message is too long!"
-                    ]
-                ]
-            ]
-        ];
-
-        $this->assertEquals($contactSchema, $result);
-    }
-
-    public function testSetTransformation()
-    {
-        // Arrange
-        $loader = new YamlFileLoader($this->basePath . '/contact.yaml');
-        $schema = new RequestSchemaRepository($loader->load());
-
-        // Act
-        $schema->setTransformations('message', ['purge', 'owlify']);
-        $result = $schema->all();
-
-        // Assert
-        $contactSchema = [
-            "message" => [
-                "validators" => [
-                    "required" => [
-                        "message" => "Please enter a message"
-                    ]
                 ],
-                "transformations" => [
-                    "purge",
-                    "owlify"
-                ]
-            ]
+            ],
         ];
-        $this->assertArraySubset($contactSchema, $result);
+    }
+
+    public function testWithNoPath()
+    {
+        $requestSchema = new RequestSchema();
+        $this->assertSame([], $requestSchema->getSchema());
+        $this->assertSame($requestSchema->all(), $requestSchema->getSchema());
+    }
+
+    public function testWithPath()
+    {
+        $requestSchema = new RequestSchema($this->basePath);
+        $this->assertArraySubset($this->contactSchema, $requestSchema->getSchema());
+        $this->assertSame($requestSchema->all(), $requestSchema->getSchema());
     }
 }

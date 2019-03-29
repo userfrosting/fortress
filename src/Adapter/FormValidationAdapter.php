@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Fortress (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/fortress
@@ -10,7 +11,7 @@
 namespace UserFrosting\Fortress\Adapter;
 
 /**
- * FormValidationAdapter Class
+ * FormValidationAdapter Class.
  *
  * Loads validation rules from a schema and generates client-side rules compatible with the [FormValidation](http://formvalidation.io) JS plugin.
  *
@@ -34,14 +35,15 @@ class FormValidationAdapter extends ClientSideValidationAdapter
      * Generate FormValidation compatible rules from the specified RequestSchema, as a JSON document.
      * See [this](http://formvalidation.io/getting-started/#calling-plugin) as an example of what this function will generate.
      *
-     * @param  bool         $encode Specify whether to return a PHP array, or a JSON-encoded string.
+     * @param bool $encode Specify whether to return a PHP array, or a JSON-encoded string.
+     *
      * @return string|array Returns either the array of rules, or a JSON-encoded representation of that array.
      */
     public function formValidationRulesJson($encode = true)
     {
         $clientRules = [];
         $implicitRules = [];
-        foreach ($this->schema->getSchema() as $fieldName => $field) {
+        foreach ($this->schema->all() as $fieldName => $field) {
             $clientRules[$fieldName] = [];
             $clientRules[$fieldName]['validators'] = [];
 
@@ -70,7 +72,7 @@ class FormValidationAdapter extends ClientSideValidationAdapter
     {
         $clientRules = [];
         $implicitRules = [];
-        foreach ($this->schema->getSchema() as $fieldName => $field) {
+        foreach ($this->schema->all() as $fieldName => $field) {
             $fieldRules = '';
             $validators = $field['validators'];
 
@@ -243,13 +245,13 @@ class FormValidationAdapter extends ClientSideValidationAdapter
                 break;
             case 'member_of':
                 if (isset($validator['values'])) {
-                    $params['regexp'] = '^' . implode('|', $validator['values']) . '$';
+                    $params['regexp'] = '^'.implode('|', $validator['values']).'$';
                 }
                 $transformedValidatorJson['regexp'] = $params;
                 break;
             case 'not_member_of':
                 if (isset($validator['values'])) {
-                    $params['regexp'] = '^(?!' . implode('|', $validator['values']) . '$).*$';
+                    $params['regexp'] = '^(?!'.implode('|', $validator['values']).'$).*$';
                 }
                 $transformedValidatorJson['regexp'] = $params;
                 break;
@@ -273,8 +275,6 @@ class FormValidationAdapter extends ClientSideValidationAdapter
             $msg = '';
             if (isset($validator['message'])) {
                 $msg = $validator['message'];
-            } else {
-                return $attr;
             }
             $attr .= "$prefix-message=\"$msg\" ";
         }
