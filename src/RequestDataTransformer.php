@@ -139,7 +139,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
      *
      * @return mixed
      */
-    private function escapeHtmlCharacters($value)
+    protected function escapeHtmlCharacters($value)
     {
         if (is_array($value)) {
             return filter_var_array($value, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -155,7 +155,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
      *
      * @return mixed
      */
-    private function purgeHtmlCharacters($value)
+    protected function purgeHtmlCharacters($value)
     {
         if (is_array($value)) {
             return filter_var_array($value, FILTER_SANITIZE_STRING);
@@ -171,7 +171,7 @@ class RequestDataTransformer implements RequestDataTransformerInterface
      *
      * @return mixed
      */
-    private function trim($value)
+    protected function trim($value)
     {
         if (is_array($value)) {
             return array_map('trim', $value);
