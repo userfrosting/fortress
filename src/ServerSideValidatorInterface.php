@@ -11,7 +11,7 @@
 namespace UserFrosting\Fortress;
 
 use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
-use UserFrosting\I18n\MessageTranslator;
+use UserFrosting\I18n\Translator;
 
 /**
  * ServerSideValidator Interface.
@@ -30,11 +30,11 @@ interface ServerSideValidatorInterface
     public function setSchema(RequestSchemaInterface $schema);
 
     /**
-     * Set the translator for this validator, as a valid MessageTranslator object.
+     * Set the translator for this validator, as a valid Translator object.
      *
-     * @param MessageTranslator $translator A MessageTranslator to be used to translate message ids found in the schema.
+     * @param Translator $translator A Translator to be used to translate message ids found in the schema.
      */
-    public function setTranslator(MessageTranslator $translator);
+    public function setTranslator(Translator $translator);
 
     /**
      * Validate the specified data against the schema rules.

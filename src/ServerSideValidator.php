@@ -11,7 +11,7 @@
 namespace UserFrosting\Fortress;
 
 use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
-use UserFrosting\I18n\MessageTranslator;
+use UserFrosting\I18n\Translator;
 use Valitron\Validator;
 
 /**
@@ -29,16 +29,16 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     protected $schema;
 
     /**
-     * @var MessageTranslator
+     * @var Translator
      */
     protected $translator;
 
     /** Create a new server-side validator.
      *
      * @param RequestSchemaInterface $schema     A RequestSchemaInterface object, containing the validation rules.
-     * @param MessageTranslator      $translator A MessageTranslator to be used to translate message ids found in the schema.
+     * @param Translator             $translator A Translator to be used to translate message ids found in the schema.
      */
-    public function __construct(RequestSchemaInterface $schema, MessageTranslator $translator)
+    public function __construct(RequestSchemaInterface $schema, Translator $translator)
     {
         // Set schema
         $this->setSchema($schema);
@@ -62,7 +62,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     /**
      * {@inheritdoc}
      */
-    public function setTranslator(MessageTranslator $translator)
+    public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
     }

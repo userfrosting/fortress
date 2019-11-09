@@ -11,7 +11,7 @@
 namespace UserFrosting\Fortress\Adapter;
 
 use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
-use UserFrosting\I18n\MessageTranslator;
+use UserFrosting\I18n\Translator;
 
 /**
  * ClientSideValidationAdapter Class.
@@ -28,7 +28,7 @@ abstract class ClientSideValidationAdapter
     protected $schema;
 
     /**
-     * @var MessageTranslator
+     * @var Translator
      */
     protected $translator;
 
@@ -36,9 +36,9 @@ abstract class ClientSideValidationAdapter
      * Create a new client-side validator.
      *
      * @param RequestSchemaInterface $schema     A RequestSchema object, containing the validation rules.
-     * @param MessageTranslator      $translator A MessageTranslator to be used to translate message ids found in the schema.
+     * @param Translator             $translator A Translator to be used to translate message ids found in the schema.
      */
-    public function __construct(RequestSchemaInterface $schema, MessageTranslator $translator)
+    public function __construct(RequestSchemaInterface $schema, Translator $translator)
     {
         // Set schema
         $this->setSchema($schema);
@@ -62,9 +62,9 @@ abstract class ClientSideValidationAdapter
     /**
      * Set the translator for this validator, as a valid MessageTranslator object.
      *
-     * @param MessageTranslator $translator A MessageTranslator to be used to translate message ids found in the schema.
+     * @param Translator $translator A Translator to be used to translate message ids found in the schema.
      */
-    public function setTranslator(MessageTranslator $translator)
+    public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
 
