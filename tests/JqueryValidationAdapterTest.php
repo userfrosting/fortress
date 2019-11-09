@@ -13,9 +13,9 @@ namespace UserFrosting\Fortress\Tests;
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\Adapter\JqueryValidationAdapter;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
-use UserFrosting\I18n\Translator;
 use UserFrosting\I18n\DictionaryInterface;
 use UserFrosting\I18n\LocaleInterface;
+use UserFrosting\I18n\Translator;
 use UserFrosting\Support\Repository\Repository;
 
 class JqueryValidationAdapterTest extends TestCase

@@ -13,9 +13,9 @@ namespace UserFrosting\Fortress\Tests;
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Fortress\ServerSideValidator;
-use UserFrosting\I18n\Translator;
 use UserFrosting\I18n\DictionaryInterface;
 use UserFrosting\I18n\LocaleInterface;
+use UserFrosting\I18n\Translator;
 use UserFrosting\Support\Repository\Repository;
 
 class ServerSideValidatorTest extends TestCase
