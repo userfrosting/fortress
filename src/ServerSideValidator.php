@@ -170,7 +170,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
      * Add a rule to the validator, along with a specified error message if that rule is failed by the data.
      *
      * @param string $rule       The name of the validation rule.
-     * @param string $messageSet The message to display when validation against this rule fails.
+     * @param string|null $messageSet The message to display when validation against this rule fails.
      */
     private function ruleWithMessage($rule, $messageSet)
     {
