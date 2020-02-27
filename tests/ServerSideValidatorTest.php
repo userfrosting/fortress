@@ -13,10 +13,7 @@ namespace UserFrosting\Fortress\Tests;
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Fortress\ServerSideValidator;
-use UserFrosting\I18n\DictionaryInterface;
-use UserFrosting\I18n\LocaleInterface;
 use UserFrosting\I18n\Translator;
-use UserFrosting\Support\Repository\Repository;
 
 class ServerSideValidatorTest extends TestCase
 {
@@ -25,7 +22,7 @@ class ServerSideValidatorTest extends TestCase
     public function setUp()
     {
         // Create a message translator
-        $this->translator = new Translator(new DictionaryStubC());
+        $this->translator = new Translator(new DictionaryStub());
     }
 
     public function testValidateNoValidators()
@@ -894,21 +891,5 @@ class ServerSideValidatorTest extends TestCase
 
         // Check passing validation
         $this->assertTrue($result);
-    }
-}
-
-class DictionaryStubC extends Repository implements DictionaryInterface
-{
-    public function __construct()
-    {
-    }
-
-    public function getDictionary(): array
-    {
-        return [];
-    }
-
-    public function getLocale(): LocaleInterface
-    {
     }
 }

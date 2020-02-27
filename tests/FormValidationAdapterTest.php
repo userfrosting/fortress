@@ -13,10 +13,7 @@ namespace UserFrosting\Fortress\Tests;
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\Adapter\FormValidationAdapter;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
-use UserFrosting\I18n\DictionaryInterface;
-use UserFrosting\I18n\LocaleInterface;
 use UserFrosting\I18n\Translator;
-use UserFrosting\Support\Repository\Repository;
 
 class FormValidationAdapterTest extends TestCase
 {
@@ -25,7 +22,7 @@ class FormValidationAdapterTest extends TestCase
     public function setUp()
     {
         // Create a message translator
-        $this->translator = new Translator(new DictionaryStubA());
+        $this->translator = new Translator(new DictionaryStub());
     }
 
     public function testValidateEmail()
@@ -683,21 +680,5 @@ class FormValidationAdapterTest extends TestCase
         $result = $adapter->rules('html5');
         $expectedResult = ['plumage' => ''];
         $this->assertEquals($expectedResult, $result);
-    }
-}
-
-class DictionaryStubA extends Repository implements DictionaryInterface
-{
-    public function __construct()
-    {
-    }
-
-    public function getDictionary(): array
-    {
-        return [];
-    }
-
-    public function getLocale(): LocaleInterface
-    {
     }
 }

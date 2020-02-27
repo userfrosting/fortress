@@ -13,10 +13,7 @@ namespace UserFrosting\Fortress\Tests;
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\Adapter\JqueryValidationAdapter;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
-use UserFrosting\I18n\DictionaryInterface;
-use UserFrosting\I18n\LocaleInterface;
 use UserFrosting\I18n\Translator;
-use UserFrosting\Support\Repository\Repository;
 
 class JqueryValidationAdapterTest extends TestCase
 {
@@ -25,7 +22,7 @@ class JqueryValidationAdapterTest extends TestCase
     public function setUp()
     {
         // Create a message translator
-        $this->translator = new Translator(new DictionaryStubB());
+        $this->translator = new Translator(new DictionaryStub());
     }
 
     public function testValidateEmail()
@@ -1172,21 +1169,5 @@ class JqueryValidationAdapterTest extends TestCase
                 'user_name' => [],
             ],
         ], $result);
-    }
-}
-
-class DictionaryStubB extends Repository implements DictionaryInterface
-{
-    public function __construct()
-    {
-    }
-
-    public function getDictionary(): array
-    {
-        return [];
-    }
-
-    public function getLocale(): LocaleInterface
-    {
     }
 }
