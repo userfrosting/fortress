@@ -172,7 +172,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
      * @param string $rule       The name of the validation rule.
      * @param string $messageSet The message to display when validation against this rule fails.
      */
-    private function ruleWithMessage($rule, $messageSet)
+    protected function ruleWithMessage($rule, $messageSet)
     {
         // Weird way to adapt with Valitron's funky interface
         $params = array_merge([$rule], array_slice(func_get_args(), 2));
@@ -191,7 +191,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     /**
      * Generate and add rules from the schema.
      */
-    private function generateSchemaRules()
+    protected function generateSchemaRules()
     {
         foreach ($this->schema->all() as $fieldName => $field) {
             if (!isset($field['validators'])) {
