@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Added support for `UserFrosting/i18n` 4.4.0
 - Fix bad param when loading YAML from `RequestSchema`
 - Enables extension of the `RequestDataTransformer` class by allowing implementation of a custom `transformField` function ([#29])
+- Changed private method into protected ones to improve extensibility ([#30])
 
 ## [4.3.0] - 2019-06-22
 - Dropping support for PHP 5.6 & 7.0
@@ -61,3 +62,4 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [4.0.1]: https://github.com/userfrosting/fortress/compare/4.0.0...4.0.1
 [#24]: https://github.com/userfrosting/fortress/issues/24
 [#29]: https://github.com/userfrosting/fortress/pull/29
+[#30]: https://github.com/userfrosting/fortress/pull/30
