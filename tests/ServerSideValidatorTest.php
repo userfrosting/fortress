@@ -13,7 +13,7 @@ namespace UserFrosting\Fortress\Tests;
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
 use UserFrosting\Fortress\ServerSideValidator;
-use UserFrosting\I18n\MessageTranslator;
+use UserFrosting\I18n\Translator;
 
 class ServerSideValidatorTest extends TestCase
 {
@@ -22,7 +22,7 @@ class ServerSideValidatorTest extends TestCase
     public function setUp()
     {
         // Create a message translator
-        $this->translator = new MessageTranslator();
+        $this->translator = new Translator(new DictionaryStub());
     }
 
     public function testValidateNoValidators()

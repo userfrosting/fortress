@@ -11,7 +11,7 @@
 namespace UserFrosting\Fortress;
 
 use UserFrosting\Fortress\RequestSchema\RequestSchemaInterface;
-use UserFrosting\I18n\MessageTranslator;
+use UserFrosting\I18n\Translator;
 use Valitron\Validator;
 
 /**
@@ -29,16 +29,16 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     protected $schema;
 
     /**
-     * @var MessageTranslator
+     * @var Translator
      */
     protected $translator;
 
     /** Create a new server-side validator.
      *
      * @param RequestSchemaInterface $schema     A RequestSchemaInterface object, containing the validation rules.
-     * @param MessageTranslator      $translator A MessageTranslator to be used to translate message ids found in the schema.
+     * @param Translator             $translator A Translator to be used to translate message ids found in the schema.
      */
-    public function __construct(RequestSchemaInterface $schema, MessageTranslator $translator)
+    public function __construct(RequestSchemaInterface $schema, Translator $translator)
     {
         // Set schema
         $this->setSchema($schema);
@@ -62,7 +62,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     /**
      * {@inheritdoc}
      */
-    public function setTranslator(MessageTranslator $translator)
+    public function setTranslator(Translator $translator)
     {
         $this->translator = $translator;
     }
@@ -169,10 +169,10 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     /**
      * Add a rule to the validator, along with a specified error message if that rule is failed by the data.
      *
-     * @param string $rule       The name of the validation rule.
-     * @param string $messageSet The message to display when validation against this rule fails.
+     * @param string      $rule       The name of the validation rule.
+     * @param string|null $messageSet The message to display when validation against this rule fails.
      */
-    private function ruleWithMessage($rule, $messageSet)
+    protected function ruleWithMessage($rule, $messageSet)
     {
         // Weird way to adapt with Valitron's funky interface
         $params = array_merge([$rule], array_slice(func_get_args(), 2));
@@ -191,7 +191,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     /**
      * Generate and add rules from the schema.
      */
-    private function generateSchemaRules()
+    protected function generateSchemaRules()
     {
         foreach ($this->schema->all() as $fieldName => $field) {
             if (!isset($field['validators'])) {

@@ -39,7 +39,7 @@ class RequestSchema extends RequestSchemaRepository
         if (!is_null($path)) {
             $this->loader = new YamlFileLoader($path);
 
-            $this->items = $this->loader->load($path);
+            $this->items = $this->loader->load();
         }
     }
 

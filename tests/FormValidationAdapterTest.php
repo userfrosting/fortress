@@ -13,7 +13,7 @@ namespace UserFrosting\Fortress\Tests;
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\Adapter\FormValidationAdapter;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
-use UserFrosting\I18n\MessageTranslator;
+use UserFrosting\I18n\Translator;
 
 class FormValidationAdapterTest extends TestCase
 {
@@ -22,7 +22,7 @@ class FormValidationAdapterTest extends TestCase
     public function setUp()
     {
         // Create a message translator
-        $this->translator = new MessageTranslator();
+        $this->translator = new Translator(new DictionaryStub());
     }
 
     public function testValidateEmail()

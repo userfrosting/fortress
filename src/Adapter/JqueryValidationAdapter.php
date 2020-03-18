@@ -90,7 +90,7 @@ class JqueryValidationAdapter extends ClientSideValidationAdapter
      * @param string   $validatorName
      * @param string[] $validator
      */
-    private function transformValidator($fieldName, $validatorName, array $validator)
+    protected function transformValidator($fieldName, $validatorName, array $validator)
     {
         $transformedValidatorJson = [];
         switch ($validatorName) {

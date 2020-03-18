@@ -181,11 +181,12 @@ To process an array of user input, create a `ServerSideValidator` object with th
 
 ### Translator object
 
-Fortress requires a `MessageTranslator` (see [i18n](https://github.com/userfrosting/i18n)) object to translate message keys that may appear in rules:
+Fortress requires a `Translator` (see [i18n](https://github.com/userfrosting/i18n)) object to translate message keys that may appear in rules:
 
 ```
-$localeLoader = new \UserFrosting\Support\Loader\ArrayFileLoader('locales/en_US/translations.php');
-$translator = new \UserFrosting\I18n\MessageTranslator($localeLoader->load());
+$locale = new \UserFrosting\I18n\Locale('en_US');
+$dictionary = new \UserFrosting\I18n\Dictionary($locale, $this->ci->locator);
+$translator = new \UserFrosting\I18n\Translator($dictionary);
 ```
 
 Then, call `validate` on the input array. `validate` will return false if any of the rules are failed. Call `errors` to get the list of generated error messages. You might want to store these error messages to a flash messaging system so they can be shown to the user.

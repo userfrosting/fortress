@@ -97,10 +97,10 @@ class RequestSchemaRepositoryTest extends TestCase
 
         // Assert
         $contactSchema = [
-              'foo' => [
-                  'default' => 'bar',
-              ],
-          ];
+            'foo' => [
+                'default' => 'bar',
+            ],
+        ];
         $this->assertArraySubset($contactSchema, $result);
     }
 
