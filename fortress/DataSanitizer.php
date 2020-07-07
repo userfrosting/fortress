@@ -75,7 +75,7 @@ interface DataSanitizerInterface {
                 switch ($on_unexpected_var) {
                     case "allow" : $sanitizedData[$name] = $this->purgeHtmlCharacters($value); break;
                     case "error" : throw new \Exception("The field '$name' is not a valid input field."); break;
-                    case "skip" : default: continue;
+                    case "skip" : default: continue 2;
                 }
             } else {
                 $sanitizedData[$name] = $this->sanitizeField($name, $value);
