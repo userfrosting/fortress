@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+  schedule:
+  - cron: "0 0 * * 5"
+
+jobs:
+  PHPUnit:
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php_versions: ['7.1', '7.2', '7.3', '7.4']
+
+    name: PHPUnit Tests - ${{ matrix.php_versions }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup PHP, with composer and extensions
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php_versions }}
+        extensions: mbstring, dom, fileinfo, gd, memcached, redis
+        coverage: xdebug
+        tools: pecl
+    - name: Install Dependencies
+      run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    - name: Execute tests via PHPUnit
+      run: vendor/bin/phpunit
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./_meta/coverage.xml
+        fail_ci_if_error: true

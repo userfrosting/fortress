@@ -20,7 +20,7 @@ class RequestSchemaRepositoryTest extends TestCase
 
     protected $contactSchema;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->basePath = __DIR__.'/data';
 

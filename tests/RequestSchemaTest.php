@@ -15,7 +15,7 @@ use UserFrosting\Fortress\RequestSchema;
 
 class RequestSchemaTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->basePath = __DIR__.'/data/contact.json';
 

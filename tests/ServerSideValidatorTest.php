@@ -19,7 +19,7 @@ class ServerSideValidatorTest extends TestCase
 {
     protected $translator;
 
-    public function setUp()
+    public function setUp(): void
     {
         // Create a message translator
         $this->translator = new Translator(new DictionaryStub());

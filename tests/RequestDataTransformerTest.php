@@ -21,7 +21,7 @@ class RequestDataTransformerTest extends TestCase
 
     protected $transformer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->basePath = __DIR__.'/data';
 
