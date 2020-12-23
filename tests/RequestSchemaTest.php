@@ -46,8 +46,8 @@ class RequestSchemaTest extends TestCase
 
     /**
      * Test depreated code.
-     * 
-     * @depends testWithPath 
+     *
+     * @depends testWithPath
      */
     public function testDeprecatedSupport()
     {
