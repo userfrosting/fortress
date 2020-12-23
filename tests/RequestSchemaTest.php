@@ -33,14 +33,14 @@ class RequestSchemaTest extends TestCase
     public function testWithNoPath()
     {
         $requestSchema = new RequestSchema();
-        $this->assertSame([], $requestSchema->getSchema());
-        $this->assertSame($requestSchema->all(), $requestSchema->getSchema());
+        $this->assertSame([], $requestSchema->all());
+        $this->assertSame($requestSchema->all(), $requestSchema->all());
     }
 
     public function testWithPath()
     {
         $requestSchema = new RequestSchema($this->basePath);
-        $this->assertArraySubset($this->contactSchema, $requestSchema->getSchema());
-        $this->assertSame($requestSchema->all(), $requestSchema->getSchema());
+        $this->assertSame($this->contactSchema['message'], $requestSchema->all()['message']);
+        $this->assertSame($requestSchema->all(), $requestSchema->all());
     }
 }
