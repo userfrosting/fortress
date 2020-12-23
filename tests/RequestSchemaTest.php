@@ -43,4 +43,15 @@ class RequestSchemaTest extends TestCase
         $this->assertSame($this->contactSchema['message'], $requestSchema->all()['message']);
         $this->assertSame($requestSchema->all(), $requestSchema->all());
     }
+
+    /**
+     * Test depreated code.
+     * 
+     * @depends testWithPath 
+     */
+    public function testDeprecatedSupport()
+    {
+        $requestSchema = new RequestSchema($this->basePath);
+        $this->assertSame($requestSchema->all(), $requestSchema->getSchema());
+    }
 }
