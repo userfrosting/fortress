@@ -74,6 +74,7 @@ class ServerSideValidator extends Validator implements ServerSideValidatorInterf
     {
         $this->_fields = $data;         // Setting the parent class Validator's field data.
         $this->generateSchemaRules();   // Build Validator rules from the schema.
+
         return parent::validate();      // Validate!
     }
 

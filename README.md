@@ -2,7 +2,7 @@
 
 [![Latest Version](https://img.shields.io/github/release/userfrosting/fortress.svg)](https://github.com/userfrosting/fortress/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
-[![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support)
+[![Join the chat at https://chat.userfrosting.com/channel/support](https://chat.userfrosting.com/api/v1/shield.svg?name=UserFrosting)](https://chat.userfrosting.com/channel/support)
 [![Donate](https://img.shields.io/badge/Open%20Collective-Donate-blue.svg)](https://opencollective.com/userfrosting#backer)
 
 | Branch | Build | Coverage | Style |
@@ -14,12 +14,12 @@
 [Fortress]: https://github.com/userfrosting/fortress
 [fortress-develop]: https://github.com/userfrosting/fortress/tree/develop
 [fortress-version]: https://img.shields.io/github/release/userfrosting/fortress.svg
-[fortress-master-build]: https://travis-ci.org/userfrosting/fortress.svg?branch=master
+[fortress-master-build]: https://github.com/userfrosting/fortress/workflows/Build/badge.svg?branch=master
 [fortress-master-codecov]: https://codecov.io/gh/userfrosting/fortress/branch/master/graph/badge.svg
-[fortress-develop-build]: https://travis-ci.org/userfrosting/fortress.svg?branch=develop
+[fortress-develop-build]: https://github.com/userfrosting/fortress/workflows/Build/badge.svg?branch=develop
 [fortress-develop-codecov]: https://codecov.io/gh/userfrosting/fortress/branch/develop/graph/badge.svg
 [fortress-releases]: https://github.com/userfrosting/fortress/releases
-[fortress-travis]: https://travis-ci.org/userfrosting/fortress
+[fortress-travis]: https://github.com/userfrosting/fortress/actions?query=workflow%3ABuild
 [fortress-codecov]: https://codecov.io/gh/userfrosting/fortress
 [fortress-style-master]: https://github.styleci.io/repos/30551954/shield?branch=master&style=flat
 [fortress-style-develop]: https://github.styleci.io/repos/30551954/shield?branch=develop&style=flat

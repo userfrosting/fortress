@@ -20,7 +20,7 @@ class RequestSchemaRepositoryTest extends TestCase
 
     protected $contactSchema;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->basePath = __DIR__.'/data';
 
@@ -45,7 +45,7 @@ class RequestSchemaRepositoryTest extends TestCase
         $result = $schema->all();
 
         // Assert
-        $this->assertArraySubset($this->contactSchema, $result);
+        $this->assertSame($this->contactSchema['message'], $result['message']);
     }
 
     public function testReadYamlSchema()
@@ -58,7 +58,7 @@ class RequestSchemaRepositoryTest extends TestCase
         $result = $schema->all();
 
         // Assert
-        $this->assertArraySubset($this->contactSchema, $result);
+        $this->assertSame($this->contactSchema['message'], $result['message']);
     }
 
     public function testSetDefault()
@@ -74,15 +74,15 @@ class RequestSchemaRepositoryTest extends TestCase
         // Assert
         $contactSchema = [
             'message' => [
-                'default'    => 'I require more voles.',
                 'validators' => [
                     'required' => [
                         'message' => 'Please enter a message',
                     ],
                 ],
+                'default'    => 'I require more voles.',
             ],
         ];
-        $this->assertArraySubset($contactSchema, $result);
+        $this->assertSame($contactSchema['message'], $result['message']);
     }
 
     public function testSetDefaultWithMissingField()
@@ -101,7 +101,7 @@ class RequestSchemaRepositoryTest extends TestCase
                 'default' => 'bar',
             ],
         ];
-        $this->assertArraySubset($contactSchema, $result);
+        $this->assertSame($contactSchema['foo'], $result['foo']);
     }
 
     public function testAddValidator()
@@ -131,7 +131,7 @@ class RequestSchemaRepositoryTest extends TestCase
                 ],
             ],
         ];
-        $this->assertArraySubset($contactSchema, $result);
+        $this->assertSame($contactSchema['message'], $result['message']);
     }
 
     public function testAddValidatorWithMissingField()
@@ -158,7 +158,7 @@ class RequestSchemaRepositoryTest extends TestCase
                 ],
             ],
         ];
-        $this->assertArraySubset($contactSchema, $result);
+        $this->assertSame($contactSchema['foo'], $result['foo']);
     }
 
     public function testRemoveValidator()
@@ -225,7 +225,7 @@ class RequestSchemaRepositoryTest extends TestCase
                 ],
             ],
         ];
-        $this->assertArraySubset($contactSchema, $result);
+        $this->assertsame($contactSchema['message'], $result['message']);
     }
 
     public function testSetTransformationNotAnArray()
@@ -251,7 +251,7 @@ class RequestSchemaRepositoryTest extends TestCase
                 ],
             ],
         ];
-        $this->assertArraySubset($contactSchema, $result);
+        $this->assertsame($contactSchema['message'], $result['message']);
     }
 
     public function testSetTransformationWithMissingField()
@@ -273,6 +273,6 @@ class RequestSchemaRepositoryTest extends TestCase
                 ],
             ],
         ];
-        $this->assertArraySubset($contactSchema, $result);
+        $this->assertSame($contactSchema['foo'], $result['foo']);
     }
 }

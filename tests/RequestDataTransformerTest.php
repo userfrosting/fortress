@@ -13,6 +13,7 @@ namespace UserFrosting\Fortress\Tests;
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Fortress\RequestDataTransformer;
 use UserFrosting\Fortress\RequestSchema\RequestSchemaRepository;
+use UserFrosting\Support\Exception\BadRequestException;
 use UserFrosting\Support\Repository\Loader\YamlFileLoader;
 
 class RequestDataTransformerTest extends TestCase
@@ -21,7 +22,7 @@ class RequestDataTransformerTest extends TestCase
 
     protected $transformer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->basePath = __DIR__.'/data';
 
@@ -95,10 +96,6 @@ class RequestDataTransformerTest extends TestCase
         $this->assertEquals($transformedData, $result);
     }
 
-    /**
-     * @expectedException \UserFrosting\Support\Exception\BadRequestException
-     * @expectedExceptionMessage The field 'admin' is not a valid input field.
-     */
     public function testBasicWithOnUnexpectedVarError()
     {
         // Arrange
@@ -117,8 +114,12 @@ class RequestDataTransformerTest extends TestCase
         ]);
         $this->transformer = new RequestDataTransformer($schema);
 
+        // Set expectations
+        $this->expectException(BadRequestException::class);
+        $this->expectExceptionMessage("The field 'admin' is not a valid input field.");
+
         // Act
-        $result = $this->transformer->transform($rawInput, 'error');
+        $this->transformer->transform($rawInput, 'error');
     }
 
     /**

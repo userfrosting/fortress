@@ -19,4 +19,8 @@
           <directory suffix=".php">src/</directory>
       </whitelist>
     </filter>
+    <logging>
+        <log type="coverage-html" target="_meta/coverage"/>
+        <log type="coverage-clover" target="_meta/coverage.xml"/>
+    </logging>
 </phpunit>

@@ -15,7 +15,7 @@ use UserFrosting\Fortress\RequestSchema;
 
 class RequestSchemaTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->basePath = __DIR__.'/data/contact.json';
 
@@ -33,14 +33,25 @@ class RequestSchemaTest extends TestCase
     public function testWithNoPath()
     {
         $requestSchema = new RequestSchema();
-        $this->assertSame([], $requestSchema->getSchema());
-        $this->assertSame($requestSchema->all(), $requestSchema->getSchema());
+        $this->assertSame([], $requestSchema->all());
+        $this->assertSame($requestSchema->all(), $requestSchema->all());
     }
 
     public function testWithPath()
     {
         $requestSchema = new RequestSchema($this->basePath);
-        $this->assertArraySubset($this->contactSchema, $requestSchema->getSchema());
+        $this->assertSame($this->contactSchema['message'], $requestSchema->all()['message']);
+        $this->assertSame($requestSchema->all(), $requestSchema->all());
+    }
+
+    /**
+     * Test depreated code.
+     *
+     * @depends testWithPath
+     */
+    public function testDeprecatedSupport()
+    {
+        $requestSchema = new RequestSchema($this->basePath);
         $this->assertSame($requestSchema->all(), $requestSchema->getSchema());
     }
 }
