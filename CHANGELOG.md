@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [4.4.1]
+- Replaced Travis with GitHub Action for build
+- Upgrade deprecation in tests
+
 ## [4.4.0] - 2020-03-17
 - Added support for `UserFrosting/i18n` 4.4.0
 - Fix bad param when loading YAML from `RequestSchema`
@@ -50,6 +54,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Implement equals, not_equals, telephone, uri, and username rules
 
 
+[4.4.1]: https://github.com/userfrosting/fortress/compare/4.4.0...4.4.1
 [4.4.0]: https://github.com/userfrosting/fortress/compare/4.3.0...4.4.0
 [4.3.0]: https://github.com/userfrosting/fortress/compare/4.2.2...4.3.0
 [4.2.2]: https://github.com/userfrosting/fortress/compare/4.2.1...4.2.2
