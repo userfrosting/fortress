@@ -21,6 +21,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Setup PHP, with composer and extensions
       uses: shivammathur/setup-php@v2
       with:
@@ -28,11 +29,15 @@ jobs:
         extensions: mbstring, dom, fileinfo, gd, memcached, redis
         coverage: xdebug
         tools: pecl
+
     - name: Install Dependencies
       run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
     - name: Execute tests via PHPUnit
       run: vendor/bin/phpunit
+
     - name: Upload coverage to Codecov
+      if: github.event_name != 'schedule'
       uses: codecov/codecov-action@v1
       with:
         file: ./_meta/coverage.xml
